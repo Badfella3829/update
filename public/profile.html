@@ -204,7 +204,7 @@
 </div>
 
 <!-- ORIGINAL LOGIC FILE (UNTOUCHED) -->
-<script type="module" src="../js/profile.js"></script>
+<script type="module" src="js/profile.js"></script>
 
 <script>
   window.addEventListener("load", () => {
@@ -233,7 +233,7 @@
 
 <!-- ================= STEP-5 ADD START (SECURITY HARDENING) ================= -->
 <script type="module">
-  import { auth } from "../js/firebase.js";
+  import { auth } from "js/firebase.js";
   import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
   auth.onAuthStateChanged(user => {

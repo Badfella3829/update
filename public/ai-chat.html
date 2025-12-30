@@ -6,9 +6,9 @@
   <title>TechVyro AI Chat</title>
 
   <!-- 🔒 GLOBAL + AI + PREMIUM UI -->
-  <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/ai.css">
-  <link rel="stylesheet" href="../css/premium.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/ai.css">
+  <link rel="stylesheet" href="css/premium.css">
 
   <style>
     /* ===== PAGE LOADER (SAME UI) ===== */
@@ -99,7 +99,7 @@
 
 <!-- ================= AUTH SECURITY (UNCHANGED) ================= -->
 <script type="module">
-  import { auth } from "../js/firebase.js";
+  import { auth } from "js/firebase.js";
 
   auth.onAuthStateChanged(user => {
     if (!user) {
@@ -109,8 +109,8 @@
 </script>
 
 <!-- 🔥 PREMIUM GUARD SCRIPTS (UNCHANGED) -->
-<script src="../js/auth-plan.js"></script>
-<script src="../js/premium-guard.js"></script>
+<script src="js/auth-plan.js"></script>
+<script src="js/premium-guard.js"></script>
 
 <!-- ================= 🔐 USAGE LIMIT LOGIC (UNCHANGED) ================= -->
 <script>

@@ -132,7 +132,7 @@
   </style>
 
   <!-- 🔥 ADDED: PREMIUM CSS (ONLY ADD) -->
-  <link rel="stylesheet" href="../css/premium.css">
+  <link rel="stylesheet" href="css/premium.css">
 </head>
 
 <body>
@@ -171,7 +171,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Analytics Logic (ORIGINAL FILE – UNTOUCHED) -->
-<script type="module" src="../js/analytics.js"></script>
+<script type="module" src="js/analytics.js"></script>
 
 <script>
   window.addEventListener("load", () => {
@@ -181,7 +181,7 @@
 
 <!-- ================= STEP-5 ADD START (AUTH SECURITY) ================= -->
 <script type="module">
-  import { auth } from "../js/firebase.js";
+  import { auth } from "js/firebase.js";
 
   auth.onAuthStateChanged(user => {
     if (!user) {
@@ -192,8 +192,8 @@
 <!-- ================= STEP-5 ADD END ================= -->
 
 <!-- 🔥 ADDED: PREMIUM GUARD SCRIPTS (ONLY ADD) -->
-<script src="../js/auth-plan.js"></script>
-<script src="../js/premium-guard.js"></script>
+<script src="js/auth-plan.js"></script>
+<script src="js/premium-guard.js"></script>
 
 <!-- ================= 🔐 STEP-6 ADD START (CLASSIC READ-ONLY LOGIC) ================= -->
 <script>

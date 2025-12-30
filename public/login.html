@@ -230,7 +230,7 @@
   let sendPasswordResetEmail = null;
   
   try {
-    const fb = await import('../js/firebase.js');
+    const fb = await import('js/firebase.js');
     const fbAuth = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
     auth = fb.auth;
     signInWithEmailAndPassword = fbAuth.signInWithEmailAndPassword;
