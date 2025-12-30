@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>Dashboard — TechVyro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND THEME ================= */
+  :root {
+    --bg-dark: #020617;
+    --card-bg: rgba(20, 26, 46, 0.6);
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,.35);
+    --text-main: #e5e7eb;
+    --text-muted: #9aa0b4;
+    --border: rgba(255,255,255,0.08);
+    --sidebar-width: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, sans-serif; outline: none; scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1000px; /* 3D Depth */
+  }
+
+  /* ================= BACKGROUND FX ================= */
+  .hero-glow {
+    position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= SIDEBAR ================= */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; padding: 25px;
+    z-index: 100; transition: 0.3s ease; flex-shrink: 0;
+  }
+
+  .brand {
+    font-size: 24px; font-weight: 900; letter-spacing: -1px; color: #fff; text-decoration: none;
+    margin-bottom: 30px; display: block; padding-left: 5px;
+  }
+  .brand span { color: var(--blue); }
+
+  /* Navigation List */
+  .nav-menu {
+    list-style: none; flex: 1; overflow-y: auto; padding-right: 5px;
+  }
+  .nav-menu::-webkit-scrollbar { width: 4px; }
+  .nav-menu::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+  .nav-label {
+    font-size: 11px; text-transform: uppercase; color: var(--text-muted);
+    letter-spacing: 1px; margin: 20px 0 8px 10px; font-weight: 700; opacity: 0.7;
+  }
+
+  .nav-item {
+    padding: 12px 14px; color: var(--text-muted); font-weight: 500; font-size: 14px;
+    border-radius: 12px; cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+    text-decoration: none;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    background: rgba(59, 130, 246, 0.1); color: #fff;
+    box-shadow: 0 0 15px rgba(59,130,246,0.1);
+  }
+
+  /* BOTTOM SIDEBAR */
+  .sidebar-footer {
+    margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  /* Upgrade Button */
+  .sidebar-upgrade-btn {
+    background: linear-gradient(135deg, var(--blue), #4f46e5);
+    color: white; border: none; padding: 14px; border-radius: 12px;
+    font-weight: 700; font-size: 14px; cursor: pointer; text-align: center;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+    transition: .3s; text-decoration: none; display: block;
+  }
+  .sidebar-upgrade-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5); }
+
+  /* Social Icons */
+  .social-icons { display: flex; justify-content: center; gap: 15px; }
+  .s-icon { 
+    width: 36px; height: 36px; border-radius: 10px; 
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center; transition: .2s; 
+  }
+  .s-icon svg { width: 18px; height: 18px; fill: #94a3b8; }
+  
+  .s-icon.ig:hover { background: #E1306C; border-color: #E1306C; transform: translateY(-3px); }
+  .s-icon.tg:hover { background: #229ED9; border-color: #229ED9; transform: translateY(-3px); }
+  .s-icon.yt:hover { background: #FF0000; border-color: #FF0000; transform: translateY(-3px); }
+  .s-icon:hover svg { fill: #fff; }
+
+  /* ================= MAIN CONTENT ================= */
+  .main-content {
+    flex: 1; overflow-y: auto; padding: 0 40px 40px 40px; position: relative;
+  }
+
+  /* HEADER */
+  .header {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    margin-bottom: 40px; padding: 30px 0; border-bottom: 1px solid var(--border);
+    position: relative; 
+  }
+
+  .page-title h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .page-title p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+
+  /* Credits Graph */
+  .credit-box {
+    text-align: center; background: rgba(20, 26, 46, 0.8); border: 1px solid var(--border);
+    padding: 10px 24px; border-radius: 50px; min-width: 240px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
+  .credit-text { font-size: 14px; font-weight: 800; color: var(--blue); margin-bottom: 6px; }
+  .credit-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
+  .credit-fill { height: 100%; width: 100%; background: var(--blue); box-shadow: 0 0 10px var(--blue); transition: width 0.4s ease; }
+
+  /* Logout */
+  .header-right { justify-self: end; }
+  .logout-btn {
+    background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.3s;
+  }
+  .logout-btn:hover { background: #ef4444; color: #fff; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+
+  /* ================= 3D GRIDS ================= */
+  .section-header {
+    font-size: 20px; font-weight: 800; color: #fff; margin: 40px 0 25px 0;
+    display: flex; align-items: center; gap: 15px; scroll-margin-top: 20px;
+  }
+  .section-header::after { content: ""; flex: 1; height: 1px; background: var(--border); opacity: 0.5; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+
+  /* 3D Card */
+  .card {
+    background: var(--card-bg); padding: 25px; border-radius: 18px; 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* 3D Motion */
+    transform-style: preserve-3d; transform: perspective(1000px);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+    cursor: pointer; display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .card:hover {
+    box-shadow: 0 20px 50px -10px var(--blue-glow);
+    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(30, 41, 59, 0.8);
+  }
+  .card-content { transform: translateZ(20px); width: 100%; }
+
+  .card-icon { font-size: 28px; margin-bottom: 15px; display: block; }
+  .card h3 { font-size: 16px; font-weight: 700; color: #fff; }
+
+  /* ================= TOOLS INTERFACE (Glassy Modal) ================= */
+  .tool-box { 
+    display: none; position: fixed; inset: 0; background: rgba(2,6,23,0.95); backdrop-filter: blur(10px); z-index: 200; 
+    flex-direction: column; padding: 40px; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tool-box.active { display: flex; }
+  @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .tb-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+  .tb-header h3 { font-size: 24px; color: #fff; }
+  
+  .tb-content { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--text-muted); }
+  
+  .tb-input-area { display: flex; gap: 15px; max-width: 800px; margin: 0 auto; width: 100%; }
+  .tb-input { 
+    flex: 1; background: #141a2e; border: 1px solid var(--border); padding: 16px; 
+    border-radius: 12px; color: white; font-size: 16px; transition: .3s;
+  }
+  .tb-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(59,130,246,0.1); }
+  
+  .tb-btn { 
+    background: var(--blue); border: none; color: white; padding: 0 30px; 
+    border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; transition: .3s;
+  }
+  .tb-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--blue-glow); }
+
+  /* ================= MODAL & TOAST ================= */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+    z-index: 999; display: none; align-items: center; justify-content: center; animation: fadeIn 0.3s ease;
+  }
+  .modal {
+    background: #141a2e; border: 1px solid var(--blue); padding: 40px; border-radius: 24px;
+    text-align: center; max-width: 420px; width: 90%; box-shadow: 0 0 60px var(--blue-glow);
+    transform: scale(0.9); animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes popIn { to { transform: scale(1); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .modal h2 { color: #fff; margin-bottom: 12px; font-size: 22px; }
+  .modal p { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; line-height: 1.6; }
+  .modal-btn { 
+    background: linear-gradient(135deg, var(--blue), #4f46e5); color: white; 
+    padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-block;
+    box-shadow: 0 10px 25px rgba(59,130,246,0.4); transition: .3s;
+  }
+  .modal-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59,130,246,0.6); }
+  .close-modal { margin-top: 20px; display: block; color: var(--text-muted); font-size: 13px; cursor: pointer; transition: .2s; }
+  .close-modal:hover { color: #fff; }
+
+  .toast {
+    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: #fff; color: #000; padding: 12px 30px; border-radius: 50px;
+    font-weight: 700; font-size: 14px; transition: .4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; z-index: 999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* Mobile */
+  .menu-toggle { display: none; font-size: 26px; background: none; border: none; color: #fff; }
+  @media(max-width:900px){
+    .sidebar{ position: fixed; left: -280px; height: 100%; box-shadow: 20px 0 60px #000; }
+    .sidebar.active{ left: 0; }
+    .main-content{ padding: 20px; }
+    .menu-toggle{ display: block; margin-right: 15px; }
+    .header { grid-template-columns: auto 1fr; gap: 15px; padding: 20px 0; }
+    .header-right { display: none; }
+    .page-title { display: none; }
+    .credit-box { margin-left: auto; }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="brand">Tech<span>Vyro</span></a>
+
+    <ul class="nav-menu">
+      <li class="nav-item active" onclick="scrollToTop()"><span>🏠</span> Dashboard</li>
+      
+      <div class="nav-label">Navigate Tools</div>
+      <a href="#section-ai" class="nav-item"><span>🧠</span> AI Tools</a>
+      <a href="#section-design" class="nav-item"><span>🎨</span> Design</a>
+      <a href="#section-dev" class="nav-item"><span>🔧</span> Dev Tools</a>
+      <a href="#section-seo" class="nav-item"><span>📈</span> SEO & Social</a>
+      <a href="#section-util" class="nav-item"><span>🔐</span> Utility</a>
+      <a href="#section-file" class="nav-item"><span>📂</span> File Tools</a>
+    </ul>
+
+    <div class="sidebar-footer">
+      <a href="pricing.html" class="sidebar-upgrade-btn">
+        🚀 Upgrade to Premium
+      </a>
+
+      <div class="social-icons">
+        <a href="https://instagram.com/techvyro" target="_blank" class="s-icon ig"><svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg></a>
+        <a href="https://t.me/techvyro_x" target="_blank" class="s-icon tg"><svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.8 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/></svg></a>
+        <a href="https://youtube.com/@techvyro" target="_blank" class="s-icon yt"><svg viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"/></svg></a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    
+    <div class="header">
+      <div style="display:flex; align-items:center; gap:15px">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="page-title">
+          <h1>Dashboard</h1>
+          <p>Access all tools.</p>
+        </div>
+      </div>
+
+      <div class="credit-box">
+        <div class="credit-text" id="creditText">⚡ 200 Credits</div>
+        <div class="credit-track"><div class="credit-fill" id="creditBar" style="width: 100%;"></div></div>
+      </div>
+
+      <div class="header-right">
+        <button onclick="logout()" class="logout-btn">Logout</button>
+      </div>
+    </div>
+
+    <div id="section-ai" class="section-header">🧠 AI Tools</div>
+    <div class="grid">
+      <div class="card js-tilt" onclick="checkCreditAndOpen('chat')"> <div class="card-content"><div class="card-icon">🤖</div> <h3>AI Chat</h3></div> </div>
+      <div class="card js-tilt" onclick="checkCreditAndOpen('image')"> <div class="card-content"><div class="card-icon">🎨</div> <h3>Image Gen</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🎙️</div> <h3>Voice AI</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🎥</div> <h3>Video AI</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📝</div> <h3>Content AI</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">💻</div> <h3>Code AI</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📄</div> <h3>Resume AI</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">✉️</div> <h3>Email AI</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📊</div> <h3>Data AI</h3></div> </div>
+    </div>
+
+    <div id="section-design" class="section-header">🎨 Design & Media</div>
+    <div class="grid">
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🎨</div> <h3>Color Gen</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🖼️</div> <h3>Img Compress</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧩</div> <h3>Logo Maker</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">✨</div> <h3>BG Remover</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🖌️</div> <h3>Mockup Gen</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔠</div> <h3>Font Pair</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🌈</div> <h3>Gradient Gen</h3></div> </div>
+    </div>
+
+    <div id="section-dev" class="section-header">🔧 Dev & Tech</div>
+    <div class="grid">
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧩</div> <h3>JSON Format</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">⚡</div> <h3>Code Minify</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔐</div> <h3>JWT Decode</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔗</div> <h3>URL Encode</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧪</div> <h3>API Tester</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧬</div> <h3>Regex Test</h3></div> </div>
+    </div>
+
+    <div id="section-seo" class="section-header">📈 SEO & Social</div>
+    <div class="grid">
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📈</div> <h3>SEO Check</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔎</div> <h3>Keyword Tool</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🏷️</div> <h3>Hashtag Gen</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔗</div> <h3>Link Short</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📍</div> <h3>UTM Gen</h3></div> </div>
+    </div>
+
+    <div id="section-util" class="section-header">🔐 Utility & Security</div>
+    <div class="grid">
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔑</div> <h3>Pass Gen</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🌐</div> <h3>IP Lookup</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🛡️</div> <h3>SSL Check</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📦</div> <h3>QR Gen</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">👤</div> <h3>Fake Data</h3></div> </div>
+    </div>
+
+    <div id="section-file" class="section-header">📂 File & Convert</div>
+    <div class="grid">
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📄</div> <h3>PDF Tools</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🖼️</div> <h3>Img Convert</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔁</div> <h3>File Convert</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔠</div> <h3>Case Convert</h3></div> </div>
+      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📏</div> <h3>Unit Convert</h3></div> </div>
+    </div>
+
+    <div style="height:100px"></div>
+  </main>
+
+  <div id="tool-interface" class="tool-box">
+    <div class="tb-header">
+      <h3 id="tool-title">Tool</h3>
+      <button onclick="closeTool()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <div class="tb-content">
+      <div style="font-size:60px; margin-bottom:20px">🤖</div>
+      <p style="font-size:18px;">Tool is ready to use.</p>
+    </div>
+    <div class="tb-input-area">
+      <input type="text" class="tb-input" placeholder="Enter prompt...">
+      <button class="tb-btn">Go</button>
+    </div>
+  </div>
+
+  <div id="premiumModal" class="modal-overlay">
+    <div class="modal">
+      <div style="font-size:50px; margin-bottom:15px">💎</div>
+      <h2>Out of Credits</h2>
+      <p>You have used all your free credits. Upgrade to Premium to continue using AI tools.</p>
+      <a href="pricing.html" class="modal-btn">Get Premium</a>
+      <span class="close-modal" onclick="closeModal()">Cancel</span>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">🚀 Coming Soon!</div>
+
+  <script type="module">
+    // --- 3D TILT LOGIC ---
+    document.querySelectorAll('.js-tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+      });
+    });
+
+    // --- LOGIC: Credits + Tools ---
+    let credits = 200;
+    const maxCredits = 200;
+
+    window.checkCreditAndOpen = (toolType) => {
+      if(credits < 5) {
+        document.getElementById('premiumModal').style.display = 'flex';
+        return;
+      }
+      credits -= 5;
+      updateCreditUI();
+      
+      const titles = { chat: 'AI Chat Assistant', image: 'AI Image Generator' };
+      document.getElementById('tool-title').innerText = titles[toolType];
+      document.getElementById('tool-interface').classList.add('active');
+    };
+
+    window.showComingSoon = () => {
+      const toast = document.getElementById('toast');
+      toast.innerText = "🚀 Feature Coming Soon!";
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    };
+
+    function updateCreditUI() {
+      document.getElementById('creditText').innerText = `⚡ ${credits} Credits`;
+      const percentage = (credits / maxCredits) * 100;
+      document.getElementById('creditBar').style.width = percentage + "%";
+    }
+
+    // --- UTILS ---
+    window.closeTool = () => document.getElementById('tool-interface').classList.remove('active');
+    window.closeModal = () => document.getElementById('premiumModal').style.display = 'none';
+    window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('active');
+    window.scrollToTop = () => document.querySelector('.main-content').scrollTop = 0;
+
+    // --- LOGOUT ---
+    window.logout = async () => {
+      localStorage.removeItem("techvyro_user_logged_in");
+      try {
+        const { auth } = await import("./js/firebase.js");
+        const { signOut } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js");
+        await signOut(auth);
+      } catch(e) {}
+      window.location.href = "index.html";
+    };
+  </script>
+
+</body>
+</html>

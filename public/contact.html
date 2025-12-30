@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>Partner with TechVyro — Paid Collaboration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND & THEME ================= */
+  :root{
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,0.35);
+    --bg-dark: #020617;
+    --text-main: #e5e7eb;
+    --text-muted: #9aa0b4;
+  }
+
+  /* ================= RESET ================= */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden; /* Horizontal scroll roko */
+    perspective: 1000px;
+  }
+
+  /* ================= BACKGROUND EFFECTS ================= */
+  .hero-glow {
+    position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 100%; height: 800px;
+    background: radial-gradient(circle at center, rgba(59,130,246,0.15) 0%, transparent 70%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= HEADER (FIXED) ================= */
+  .main-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 5%; /* Responsive Padding */
+    position: fixed; top: 0; left: 0; 
+    width: 100%; /* FIX: Full Width */
+    height: 70px; /* Fixed Height */
+    background: rgba(2,6,23,0.9); backdrop-filter: blur(12px);
+    z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .nav-left a { 
+    font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; display: flex; align-items: center;
+  }
+  .nav-left span { color: var(--blue); }
+
+  .nav-right { display: flex; gap: 25px; }
+  .nav-link {
+    color: var(--text-muted); font-weight: 600; text-decoration: none; transition: .3s; font-size: 15px;
+  }
+  .nav-link:hover { color: #fff; }
+
+  /* ================= PAGE LAYOUT ================= */
+  .page {
+    max-width: 1000px; 
+    margin: 0 auto; 
+    padding: 0 24px;
+    padding-top: 140px; /* Header ke neeche space */
+    padding-bottom: 80px;
+  }
+
+  /* ================= HERO ================= */
+  .hero { text-align: center; margin-bottom: 80px; }
+  
+  .hero h1 {
+    font-size: 52px; font-weight: 900; letter-spacing: -1px; margin-bottom: 20px; color: #fff; line-height: 1.2;
+  }
+  .hero span { 
+    background: linear-gradient(135deg, #3b82f6, #a855f7);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    max-width: 700px; margin: 0 auto; font-size: 18px; color: var(--text-muted); line-height: 1.6;
+  }
+
+  /* ================= 3D GRID CARDS ================= */
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
+  }
+
+  .card {
+    background: #141a2e; padding: 35px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    /* 3D Motion */
+    transform-style: preserve-3d; transform: perspective(1000px);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 20px 60px -10px var(--blue-glow);
+    border-color: rgba(59,130,246,0.3);
+    background: #1e293b;
+  }
+
+  /* Inner Content 3D Pop */
+  .card-content { transform: translateZ(30px); }
+
+  .card h3 { font-size: 22px; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+  .card ul { list-style: none; padding: 0; color: var(--text-muted); }
+  .card li { margin-bottom: 12px; font-size: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .card li:last-child { border: none; }
+  .card p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+  /* ================= CONTACT CTA BOX ================= */
+  .contact-box {
+    margin-top: 60px; padding: 50px; 
+    background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    border-radius: 24px; text-align: center;
+    border: 1px solid rgba(59,130,246,0.3);
+    box-shadow: 0 0 50px rgba(59,130,246,0.15);
+    position: relative; overflow: hidden;
+  }
+  
+  .contact-box h2 { font-size: 28px; color: #fff; margin-bottom: 15px; }
+  .contact-box p { color: var(--text-muted); margin-bottom: 30px; font-size: 16px; }
+
+  .cta-btn {
+    display: inline-block; padding: 16px 40px;
+    background: var(--blue); color: #020617;
+    font-weight: 800; font-size: 16px; border-radius: 50px;
+    text-decoration: none; transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+  }
+  .cta-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    background: #60a5fa;
+    box-shadow: 0 20px 50px rgba(59,130,246,0.6);
+  }
+
+  /* ================= FOOTER ================= */
+  .footer {
+    margin-top: 80px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: center; color: var(--text-muted); font-size: 14px;
+  }
+  .footer a { color: var(--text-muted); text-decoration: none; margin-top: 10px; display: inline-block; transition: .2s; }
+  .footer a:hover { color: #fff; }
+
+  /* ================= ANIMATIONS ================= */
+  .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+
+  /* ================= MOBILE ================= */
+  @media(max-width: 768px) {
+    .main-header { padding: 15px 20px; } /* Less padding on mobile */
+    .hero h1 { font-size: 36px; }
+    .page { padding-top: 120px; } /* Ensure text is visible below header */
+    .grid { grid-template-columns: 1fr; }
+  }
+  </style>
+</head>
+
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <header class="main-header">
+    <div class="nav-left">
+      <a href="index.html">Tech<span>Vyro</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <div class="hero reveal">
+      <h1>Partner with <span>TechVyro</span></h1>
+      <p>Showcase your brand through high-impact content and strategic launch campaigns. Request a demo or paid collaboration.</p>
+    </div>
+
+    <div class="grid">
+      
+      <div class="card js-tilt reveal delay-1">
+        <div class="card-content">
+          <h3>🎬 Content Formats</h3>
+          <ul>
+            <li>✨ Instagram Reel (30–45 sec)</li>
+            <li>✨ Reel + Story Bundle</li>
+            <li>✨ Full Launch Campaign</li>
+            <li>✨ Dedicated App Review</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card js-tilt reveal delay-1">
+        <div class="card-content">
+          <h3>💰 Pricing Structure</h3>
+          <ul>
+            <li>💎 <b>Single Reel:</b> On request</li>
+            <li>💎 <b>Reel + 2 Stories:</b> On request</li>
+            <li>💎 <b>Custom Bundle:</b> Tailored pricing</li>
+            <li>💎 <b>Integration:</b> Contact us</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card js-tilt reveal delay-2">
+        <div class="card-content">
+          <h3>📊 Media Kit & Insights</h3>
+          <p>
+            We define success by impact. We are happy to share performance insights, audience analytics, and previous campaign samples upon request.
+          </p>
+        </div>
+      </div>
+
+      <div class="card js-tilt reveal delay-2">
+        <div class="card-content">
+          <h3>🤝 How It Works</h3>
+          <p>
+            1. Share your campaign goals.<br>
+            2. We propose a creative strategy.<br>
+            3. Content creation & approval.<br>
+            4. Live publishing & analytics.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="contact-box reveal delay-2">
+      <h2>Let's Work Together</h2>
+      <p>Please share your preferred format, timeline, and expected deliverables.</p>
+      
+      <a href="mailto:techvyro@gmail.com?subject=Paid%20Collaboration%20Inquiry&body=Hello%20TechVyro%20Team%2C%0A%0AI%20am%20interested%20in%20a%20paid%20collaboration.%0A%0A-%20Brand%20Name%3A%20%0A-%20Preferred%20Format%3A%20%0A-%20Timeline%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you." class="cta-btn">
+        📩 Contact via Gmail
+      </a>
+    </div>
+
+    <div class="footer reveal">
+      <p>© 2025 TechVyro • Premium AI SaaS & Brand Collaborations</p>
+      <a href="index.html">← Back to Home</a>
+    </div>
+
+  </div>
+
+  <script>
+    // 1. REVEAL ANIMATION
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.1});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // 2. 3D TILT EFFECT
+    document.querySelectorAll('.js-tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -8; // Tilt Up/Down
+        const rotateY = ((x - centerX) / centerX) * 8;  // Tilt Left/Right
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+      });
+    });
+  </script>
+
+</body>
+</html>

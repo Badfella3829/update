@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>TechVyro AI Chat</title>
+
+  <!-- 🔒 GLOBAL + AI + PREMIUM UI -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/ai.css">
+  <link rel="stylesheet" href="../css/premium.css">
+
+  <style>
+    /* ===== PAGE LOADER (SAME UI) ===== */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 46px;
+      height: 46px;
+      border: 4px solid #334155;
+      border-top: 4px solid #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== PAGE WRAPPER (NO UI CHANGE) ===== */
+    .chat-wrap{
+      max-width: 640px;
+      margin: 80px auto;
+      text-align: center;
+    }
+
+    h2{
+      margin-bottom: 20px;
+    }
+
+    a.back{
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- PAGE LOADER -->
+<div id="pageLoader">
+  <div class="spinner"></div>
+</div>
+
+<div class="chat-wrap">
+
+  <h2>TechVyro AI Chatbot</h2>
+
+  <!-- 🔥 PREMIUM WRAPPER (UNCHANGED LOGIC) -->
+  <div class="premium-only">
+
+    <textarea id="promptBox" placeholder="Ask anything..." rows="6"></textarea>
+    <br><br>
+
+    <button type="button" class="premium-btn" id="askBtn">
+      Ask AI
+    </button>
+
+    <pre id="aiResponse">AI response will appear here...</pre>
+
+  </div>
+
+  <hr>
+
+  <a href="dashboard.html" class="back">← Back to Dashboard</a>
+
+</div>
+
+<!-- ORIGINAL LOADER LOGIC (UNCHANGED) -->
+<script>
+  window.addEventListener("load", () => {
+    document.getElementById("pageLoader").style.display = "none";
+  });
+</script>
+
+<script>
+  window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+  });
+</script>
+
+<!-- ================= AUTH SECURITY (UNCHANGED) ================= -->
+<script type="module">
+  import { auth } from "../js/firebase.js";
+
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      location.href = "login.html";
+    }
+  });
+</script>
+
+<!-- 🔥 PREMIUM GUARD SCRIPTS (UNCHANGED) -->
+<script src="../js/auth-plan.js"></script>
+<script src="../js/premium-guard.js"></script>
+
+<!-- ================= 🔐 USAGE LIMIT LOGIC (UNCHANGED) ================= -->
+<script>
+  const userSession = JSON.parse(localStorage.getItem("user"));
+  const askBtn = document.getElementById("askBtn");
+  const responseBox = document.getElementById("aiResponse");
+
+  const TODAY = new Date().toDateString();
+  let usage = JSON.parse(localStorage.getItem("ai_usage")) || {};
+
+  if (usage.date !== TODAY) {
+    usage = { date: TODAY, count: 0 };
+  }
+
+  askBtn.addEventListener("click", () => {
+    if (!userSession) {
+      location.href = "login.html";
+      return;
+    }
+
+    // 🔒 Classic limit
+    if (!userSession.isPremium && usage.count >= 5) {
+      responseBox.innerText = "⚠️ Daily limit reached. Upgrade to Premium.";
+      return;
+    }
+
+    usage.count++;
+    localStorage.setItem("ai_usage", JSON.stringify(usage));
+
+    responseBox.innerText =
+      "🤖 AI Response (Demo)\n\nYour message has been processed.\nUsage today: " +
+      usage.count +
+      (userSession.isPremium ? " (Premium Unlimited)" : " / 5");
+  });
+</script>
+
+</body>
+</html>

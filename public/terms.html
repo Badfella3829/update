@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>Terms of Service — TechVyro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND & THEME ================= */
+  :root{
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,0.35);
+    --bg-dark: #020617;
+    --text-main: #e5e7eb;
+    --text-muted: #9aa0b4;
+  }
+
+  /* ================= RESET ================= */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    perspective: 1000px;
+  }
+
+  /* ================= BACKGROUND FX ================= */
+  .hero-glow {
+    position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 90%; height: 700px;
+    background: radial-gradient(circle at center, rgba(59,130,246,0.15) 0%, transparent 60%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= HEADER ================= */
+  .header {
+    padding: 15px 5%; border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(2,6,23,0.85); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px);
+    transform: translateY(-100%); animation: slideDown 0.8s ease forwards;
+  }
+  @keyframes slideDown { to { transform: translateY(0); } }
+
+  .brand { font-size: 22px; font-weight: 900; color: #fff; text-decoration: none; }
+  .brand span { color: var(--blue); }
+  
+  .back-link { 
+    color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; 
+    transition: .3s; 
+  }
+  .back-link:hover { color: #fff; text-shadow: 0 0 10px rgba(59,130,246,0.5); }
+
+  /* ================= CONTENT CONTAINER ================= */
+  .container {
+    max-width: 900px; margin: 80px auto; padding: 0 24px;
+  }
+
+  /* ================= 3D CARD ================= */
+  .legal-card {
+    background: #141a2e; padding: 60px; border-radius: 24px; 
+    border: 1px solid rgba(255,255,255,0.05);
+    /* 3D Motion */
+    transform-style: preserve-3d; transform: perspective(1000px);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,0.2);
+  }
+
+  .legal-card:hover {
+    box-shadow: 0 20px 60px -10px var(--blue-glow);
+    border-color: rgba(59,130,246,0.3);
+  }
+
+  /* Inner Content 3D Pop */
+  .card-content { transform: translateZ(30px); }
+
+  /* ================= TYPOGRAPHY ================= */
+  h1 { font-size: 42px; margin-bottom: 10px; color: #fff; letter-spacing: -1px; }
+  .date { color: var(--text-muted); font-size: 14px; margin-bottom: 40px; display: block; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  
+  h2 { font-size: 24px; color: #fff; margin-top: 40px; margin-bottom: 15px; }
+  p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; line-height: 1.7; }
+  
+  ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
+  li { margin-bottom: 10px; line-height: 1.6; }
+
+  /* ================= ANIMATIONS ================= */
+  .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+
+  /* ================= FOOTER ================= */
+  .footer { 
+    text-align: center; padding: 40px 0; color: #64748b; font-size: 14px; 
+    border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px; 
+  }
+
+  /* MOBILE */
+  @media(max-width:768px) {
+    .legal-card { padding: 40px 24px; }
+    h1 { font-size: 32px; }
+    .container { margin: 60px auto; }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <header class="header">
+    <a href="index.html" class="brand">Tech<span>Vyro</span></a>
+    <a href="index.html" class="back-link">← Back to Home</a>
+  </header>
+
+  <div class="container">
+    <div class="legal-card js-tilt">
+      <div class="card-content">
+        
+        <h1 class="reveal">Terms of Service</h1>
+        <span class="date reveal delay-1">Last Updated: December 2025</span>
+
+        <div class="reveal delay-2">
+          <p>By creating an account or using <strong>TechVyro</strong>, you agree to these Terms of Service. Please read them carefully.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>1. Acceptance of Terms</h2>
+          <p>By accessing TechVyro, you confirm that you are at least 13 years old and have the legal capacity to agree to these terms. If you do not agree, please do not use our services.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>2. AI Credits & Usage</h2>
+          <p>Our platform operates on a credit-based system:</p>
+          <ul>
+            <li><strong>Free Credits:</strong> New users receive 200 free credits upon signup. These have no cash value.</li>
+            <li><strong>Usage:</strong> Each AI tool (Chat, Image Gen, etc.) consumes a specific number of credits (e.g., 5 credits per use).</li>
+            <li><strong>Depletion:</strong> Once credits are exhausted, users must upgrade to a premium plan to continue usage.</li>
+          </ul>
+        </div>
+
+        <div class="reveal">
+          <h2>3. User Responsibilities</h2>
+          <p>You agree NOT to use TechVyro for:</p>
+          <ul>
+            <li>Generating illegal, hateful, or explicit content.</li>
+            <li>Attempting to hack, reverse engineer, or disrupt our servers.</li>
+            <li>Sharing your account credentials with others.</li>
+          </ul>
+          <p>We reserve the right to ban accounts that violate these rules without refund.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>4. Intellectual Property</h2>
+          <p><strong>Your Content:</strong> You own the rights to the images and text you generate using our platform.</p>
+          <p><strong>Our Platform:</strong> The code, design, logos, and algorithms of TechVyro are the intellectual property of TechVyro.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>5. Payments & Refunds</h2>
+          <p>Premium plans are billed monthly. Due to the nature of digital goods (AI compute costs), <strong>we generally do not offer refunds</strong> once credits have been used. However, you may cancel your subscription at any time.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>6. Disclaimer</h2>
+          <p>TechVyro uses artificial intelligence. AI can sometimes produce incorrect or "hallucinated" information. We are not responsible for any actions taken based on the output generated by our AI tools.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>7. Contact</h2>
+          <p>For any legal or support queries, contact us at <strong style="color:#fff">techvyro@gmail.com</strong>.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer reveal">
+    © 2025 TechVyro. All rights reserved.
+  </footer>
+
+  <script>
+    // --- SCROLL REVEAL ---
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // --- 3D TILT LOGIC ---
+    document.querySelector('.js-tilt').addEventListener('mousemove', (e) => {
+      const card = e.currentTarget;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -5; // Gentle Tilt Up/Down
+      const rotateY = ((x - centerX) / centerX) * 5;  // Gentle Tilt Left/Right
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+
+    document.querySelector('.js-tilt').addEventListener('mouseleave', (e) => {
+      e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+    });
+  </script>
+
+</body>
+</html>

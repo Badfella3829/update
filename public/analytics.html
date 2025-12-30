@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <title>Analytics | TechVyro</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #0f172a;
+      color: #020617;
+    }
+
+    /* ===== PAGE LOADER ===== */
+    #pageLoader {
+      position: fixed;
+      inset: 0;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 46px;
+      height: 46px;
+      border: 4px solid #334155;
+      border-top: 4px solid #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== FADE IN PAGE (PART-C) ===== */
+    .page {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: fadeIn .5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ===== SHIMMER (PART-D) ===== */
+    .shimmer {
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(
+        90deg,
+        #e5e7eb 25%,
+        #f1f5f9 37%,
+        #e5e7eb 63%
+      );
+      background-size: 400% 100%;
+      animation: shimmer 1.4s infinite;
+      display: inline-block;
+      width: 120px;
+    }
+
+    @keyframes shimmer {
+      to { background-position: -400% 0; }
+    }
+
+    .container {
+      padding: 30px;
+      background: #f8fafc;
+      min-height: 100vh;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 30px;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    canvas {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.08);
+    }
+
+    /* ================= 🔒 ADDED: CLASSIC READ-ONLY UI ================= */
+    .readonly {
+      filter: blur(2px);
+      pointer-events: none;
+      opacity: .7;
+    }
+
+    .upgrade-box {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 14px;
+      background: linear-gradient(135deg,#6366f1,#4f46e5);
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+    }
+
+    .upgrade-box a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 800;
+    }
+    /* ================= END ADD ================= */
+  </style>
+
+  <!-- 🔥 ADDED: PREMIUM CSS (ONLY ADD) -->
+  <link rel="stylesheet" href="../css/premium.css">
+</head>
+
+<body>
+
+<!-- PAGE LOADER -->
+<div id="pageLoader">
+  <div class="spinner"></div>
+</div>
+
+<!-- 🔥 ADDED: PREMIUM WRAPPER (ANALYTICS LOCK) -->
+<div id="analyticsWrap" class="container page premium-only">
+
+  <h2>📊 Analytics Dashboard</h2>
+
+  <ul>
+    <li>Total Users: <b id="totalUsers"><span class="shimmer"></span></b></li>
+    <li>Free Users: <b id="freeUsers"><span class="shimmer"></span></b></li>
+    <li>Pro Users: <b id="proUsers"><span class="shimmer"></span></b></li>
+    <li>Premium Users: <b id="premiumUsers"><span class="shimmer"></span></b></li>
+    <li>Total Revenue: ₹<b id="revenue"><span class="shimmer"></span></b></li>
+  </ul>
+
+  <h3>User Distribution</h3>
+  <canvas id="chart" width="400" height="200"></canvas>
+
+  <!-- 🔒 ADDED: CLASSIC UPGRADE CTA -->
+  <div id="upgradeBox" class="upgrade-box">
+    🔒 Detailed analytics are available on <b>Premium</b> plan.<br>
+    <a href="pricing.html">Upgrade now</a> to unlock full insights 🚀
+  </div>
+
+</div>
+<!-- 🔥 END PREMIUM WRAPPER -->
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Analytics Logic (ORIGINAL FILE – UNTOUCHED) -->
+<script type="module" src="../js/analytics.js"></script>
+
+<script>
+  window.addEventListener("load", () => {
+    document.getElementById("pageLoader").style.display = "none";
+  });
+</script>
+
+<!-- ================= STEP-5 ADD START (AUTH SECURITY) ================= -->
+<script type="module">
+  import { auth } from "../js/firebase.js";
+
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      location.href = "login.html";
+    }
+  });
+</script>
+<!-- ================= STEP-5 ADD END ================= -->
+
+<!-- 🔥 ADDED: PREMIUM GUARD SCRIPTS (ONLY ADD) -->
+<script src="../js/auth-plan.js"></script>
+<script src="../js/premium-guard.js"></script>
+
+<!-- ================= 🔐 STEP-6 ADD START (CLASSIC READ-ONLY LOGIC) ================= -->
+<script>
+  const sessionUser = JSON.parse(localStorage.getItem("user"));
+  const wrap = document.getElementById("analyticsWrap");
+  const upgradeBox = document.getElementById("upgradeBox");
+
+  if (sessionUser && !sessionUser.isPremium) {
+    wrap.classList.add("readonly");
+    upgradeBox.style.display = "block";
+
+    // Mask numbers for classic users
+    ["totalUsers","freeUsers","proUsers","premiumUsers","revenue"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = "—";
+      });
+  }
+</script>
+<!-- ================= 🔐 STEP-6 ADD END ================= -->
+
+</body>
+</html>

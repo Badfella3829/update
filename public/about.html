@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>About — TechVyro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND & THEME ================= */
+  :root{
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,.35);
+    --bg-dark: #020617;
+    --text-main: #e5e7eb;
+    --text-muted: #9aa0b4;
+  }
+
+  /* ================= RESET ================= */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    perspective: 1000px;
+  }
+
+  /* ================= BACKGROUND FX ================= */
+  .hero-glow {
+    position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 90%; height: 700px;
+    background: radial-gradient(circle at center, rgba(59,130,246,0.15) 0%, transparent 60%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= HEADER ================= */
+  .main-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 5%; position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+    background: rgba(2,6,23,0.85); backdrop-filter: blur(12px);
+    z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-left a { font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; }
+  .nav-left span { color: var(--blue); }
+  .nav-right { display: flex; gap: 25px; }
+  
+  .nav-link { color: var(--text-muted); font-weight: 600; text-decoration: none; transition: .3s; font-size: 15px; }
+  .nav-link:hover, .nav-link.active { color: #fff; text-shadow: 0 0 10px rgba(59,130,246,0.5); }
+
+  /* ================= PAGE LAYOUT ================= */
+  .page {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    padding-top: 140px; padding-bottom: 80px;
+  }
+
+  /* ================= ANIMATIONS ================= */
+  .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+
+  /* ================= HERO ================= */
+  .hero { text-align: center; margin-bottom: 100px; }
+  .hero h1 { font-size: 52px; font-weight: 900; letter-spacing: -1px; margin-bottom: 20px; color: #fff; }
+  .hero span { color: var(--blue); }
+  .hero p { max-width: 800px; margin: 0 auto; font-size: 18px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ================= SECTIONS & CARDS (3D) ================= */
+  .section { margin-bottom: 120px; }
+  .section h2 { font-size: 32px; margin-bottom: 20px; color: #fff; }
+  .section p { max-width: 900px; font-size: 16px; line-height: 1.7; color: var(--text-muted); margin-bottom: 15px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+
+  .card {
+    background: #141a2e; padding: 35px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    /* 3D Motion */
+    transform-style: preserve-3d; transform: perspective(1000px);
+    transition: transform 0.1s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    box-shadow: 0 20px 60px -10px var(--blue-glow);
+    border-color: rgba(59,130,246,0.3);
+    background: #1e293b;
+  }
+  .card-content { transform: translateZ(30px); } /* Pop effect */
+  
+  .card h3 { font-size: 20px; color: #fff; margin-bottom: 10px; }
+  .card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ================= TIMELINE ================= */
+  .timeline { border-left: 2px solid rgba(59,130,246,0.3); padding-left: 30px; margin-top: 40px; }
+  .timeline-item { margin-bottom: 40px; position: relative; }
+  .timeline-item::before {
+    content: ""; position: absolute; left: -36px; top: 5px; width: 10px; height: 10px;
+    border-radius: 50%; background: var(--blue); box-shadow: 0 0 10px var(--blue);
+  }
+  .timeline-item h4 { color: var(--blue); margin-bottom: 5px; font-size: 18px; }
+  .timeline-item p { color: var(--text-muted); font-size: 15px; }
+
+  /* ================= CREATOR BOX (Glassy) ================= */
+  .creator {
+    background: linear-gradient(135deg, rgba(15,23,42,0.8), rgba(2,6,23,0.9));
+    padding: 50px; border-radius: 24px; border: 1px solid rgba(59,130,246,0.2);
+    box-shadow: 0 0 50px rgba(59,130,246,0.1); margin-top: 40px;
+  }
+  .creator h3 { font-size: 28px; margin-bottom: 20px; color: #fff; }
+  .creator span { color: var(--blue); }
+  .creator p { color: var(--text-muted); margin-bottom: 15px; font-size: 16px; }
+
+  /* Links */
+  .creator-links { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
+  .link-btn {
+    padding: 12px 24px; border-radius: 12px; background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3); color: #fff; font-weight: 600; font-size: 14px;
+    text-decoration: none; transition: .3s;
+  }
+  .link-btn:hover {
+    background: var(--blue); color: #000; transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+  }
+
+  /* ================= STATS ================= */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
+  .stat { background: #141a2e; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: .3s; }
+  .stat:hover { border-color: var(--blue); transform: translateY(-5px); }
+  .stat h3 { font-size: 36px; color: var(--blue); margin-bottom: 5px; }
+  .stat p { color: var(--text-muted); font-size: 14px; }
+
+  /* ================= FOOTER ================= */
+  .footer {
+    margin-top: 100px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: center; color: var(--text-muted); font-size: 14px;
+  }
+
+  /* MOBILE */
+  @media(max-width:768px) {
+    .main-header { padding: 15px 20px; }
+    .hero h1 { font-size: 36px; }
+    .page { padding-top: 120px; }
+    .creator { padding: 30px; }
+  }
+  </style>
+</head>
+
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <header class="main-header">
+    <div class="nav-left">
+      <a href="index.html">Tech<span>Vyro</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link active">About</a> <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <section class="hero reveal">
+      <h1>About <span>TechVyro</span></h1>
+      <p>
+        TechVyro is an AI-powered SaaS platform and creator-driven ecosystem
+        built for the modern digital generation — where automation, content,
+        and technology come together.
+      </p>
+    </section>
+
+    <section class="section reveal delay-1">
+      <h2>Our Vision</h2>
+      <p>
+        We envision a future where creators and founders do not depend on complex
+        tools or large teams to scale. TechVyro exists to simplify technology and
+        make powerful AI systems usable for real people.
+      </p>
+      <p>
+        Our goal is not just to provide tools, but to build an ecosystem where
+        learning, experimentation, automation, and long-term growth happen together.
+      </p>
+    </section>
+
+    <section class="section reveal delay-1">
+      <h2>Why TechVyro Exists</h2>
+      <div class="grid">
+        <div class="card js-tilt"><div class="card-content"><h3>AI With Purpose</h3><p>Each AI tool is built to solve a real creator or business workflow problem.</p></div></div>
+        <div class="card js-tilt"><div class="card-content"><h3>Automation First</h3><p>Reduce repetitive and manual work using intelligent automation pipelines.</p></div></div>
+        <div class="card js-tilt"><div class="card-content"><h3>Creator Focused</h3><p>Designed for creators who build, share, publish, and scale online.</p></div></div>
+        <div class="card js-tilt"><div class="card-content"><h3>Blue Tech UI</h3><p>A clean dark interface with a strong premium blue brand identity.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section reveal delay-2">
+      <h2>The Journey</h2>
+      <div class="timeline">
+        <div class="timeline-item"><h4>Idea & Vision</h4><p>Started with a long-term vision to build a complete AI SaaS ecosystem.</p></div>
+        <div class="timeline-item"><h4>Building in Public</h4><p>Development, testing, iteration, and refinement based on real usage.</p></div>
+        <div class="timeline-item"><h4>Creator Expansion</h4><p>Sharing projects, experiments, updates, and learnings with the community.</p></div>
+      </div>
+    </section>
+
+    <section class="section reveal delay-2">
+      <h2>Building & Sharing in Public</h2>
+      <div class="creator">
+        <h3>TechVyro as a <span>Creator Brand</span></h3>
+        <p>Alongside building the TechVyro platform, I actively share new projects, experiments, feature breakdowns, and product updates on social platforms.</p>
+        <p>On YouTube and Instagram, I regularly upload reels and short videos showcasing AI tools, SaaS features, automation ideas, and behind-the-scenes workflows.</p>
+        <p>This open approach allows creators, developers, and founders to learn, grow, and understand how real-world AI products are built from scratch.</p>
+
+        <div class="creator-links">
+          <a href="https://youtube.com/@techvyro" target="_blank" class="link-btn">YouTube – Project Reels</a>
+          <a href="https://instagram.com/techvyro" target="_blank" class="link-btn">Instagram – AI & SaaS</a>
+          <a href="https://t.me/techvyro" target="_blank" class="link-btn">Telegram – Updates & Drops</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal delay-2">
+      <h2>What TechVyro Represents</h2>
+      <div class="stats">
+        <div class="stat"><h3>AI</h3><p>Automation & Intelligence</p></div>
+        <div class="stat"><h3>SaaS</h3><p>Scalable Systems</p></div>
+        <div class="stat"><h3>Creator</h3><p>Content + Technology</p></div>
+      </div>
+    </section>
+
+    <section class="section reveal delay-2">
+      <h2>Founder</h2>
+      <div class="creator">
+        <h3>Badfella <span>Chahal</span></h3>
+        <p>
+          TechVyro is a solo-founded project built end-to-end with a strong focus
+          on scalability, clean architecture, and real-world usability.
+        </p>
+        <p>
+          From UI/UX design and frontend to backend logic, authentication,
+          automation, analytics, payments, and deployment — everything is
+          built hands-on and iterated continuously.
+        </p>
+      </div>
+    </section>
+
+    <div class="footer reveal">
+      © 2025 TechVyro — Building AI, Automation & Creator Systems for the Future
+    </div>
+
+  </div>
+
+  <script>
+    // Reveal Animation
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.1});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // 3D Tilt
+    document.querySelectorAll('.js-tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+      });
+    });
+  </script>
+
+</body>
+</html>

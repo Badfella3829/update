@@ -1,0 +1,25 @@
+/* ================= AUTH PAGE ONLY ================= */
+
+.auth-wrapper{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.auth-box{
+  background:#141a2e;
+  padding:30px;
+  border-radius:14px;
+  width:320px;
+}
+
+.auth-box input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  background:#020617;
+  color:white;
+  border:1px solid #1e293b;
+  border-radius:8px;
+}

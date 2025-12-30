@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+<meta charset="UTF-8" />
+<title>Email OTP Login | TechVyro</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0f172a, #020617);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    flex-direction: column;
+  }
+
+  /* ===== PAGE LOADER ===== */
+  #pageLoader {
+    position: fixed;
+    inset: 0;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .spinner {
+    width: 46px;
+    height: 46px;
+    border: 4px solid #334155;
+    border-top: 4px solid #38bdf8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== FADE IN ===== */
+  .page {
+    opacity: 0;
+    transform: translateY(6px);
+    animation: fadeIn .5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: none; }
+  }
+
+  .card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 36px;
+    border-radius: 18px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  }
+
+  .logo {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 30px;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5f5;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #6366f1;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg,#6366f1,#4f46e5);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+  }
+
+  .footer {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .footer a {
+    color: #4f46e5;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .toast {
+    display: none;
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .success { background:#ecfeff; color:#065f46; }
+  .error { background:#fee2e2; color:#7f1d1d; }
+  .info { background:#eef2ff; color:#1e3a8a; }
+
+  .confirm-box {
+    display: none;
+    margin-top: 22px;
+  }
+
+  /* ===== SOCIAL FOOTER (ADDED SAFE) ===== */
+  .social-footer {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  .social-footer a {
+    color: #38bdf8;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0 6px;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- PAGE LOADER -->
+<div id="pageLoader">
+  <div class="spinner"></div>
+</div>
+
+<div class="page">
+  <div class="card">
+
+    <div class="logo">TechVyro</div>
+    <div class="subtitle">Secure passwordless login via email</div>
+
+    <label>Email address</label>
+    <input id="email" type="email" placeholder="you@example.com" />
+
+    <button id="sendBtn">Send Secure Login Link</button>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Fallback confirm -->
+    <div class="confirm-box" id="confirmBox">
+      <label>Confirm email to complete login</label>
+      <input id="confirmEmail" type="email" placeholder="Enter email again" />
+      <button id="confirmBtn">Complete Login</button>
+    </div>
+
+    <div class="footer">
+      <a href="login.html">← Back to Login</a>
+    </div>
+
+    <!-- 🔥 ADDED SOCIAL FOOTER (NO JS TOUCHED) -->
+    <div class="social-footer">
+      <p><b>Stay Connected</b></p>
+      <a href="https://instagram.com/techvyro" target="_blank">Instagram</a> |
+      <a href="https://t.me/techvyro" target="_blank">Telegram</a> |
+      <a href="https://youtube.com/@techvyro" target="_blank">YouTube</a>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getAuth,
+    sendSignInLinkToEmail,
+    isSignInWithEmailLink,
+    signInWithEmailLink
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAaLJsNcgxRa_lGMOxJnwrcttt_m5MtwBM",
+    authDomain: "techvyro-saas.firebaseapp.com",
+    projectId: "techvyro-saas",
+    appId: "1:684333859256:web:ae0852528ac177a7c08f4d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const actionCodeSettings = {
+    url: "https://techvyro-saas.web.app/otp-email.html",
+    handleCodeInApp: true
+  };
+
+  const toast = document.getElementById("toast");
+  const showToast = (msg, type) => {
+    toast.className = "toast " + type;
+    toast.innerText = msg;
+    toast.style.display = "block";
+  };
+
+  document.getElementById("sendBtn").onclick = async () => {
+    const btn = document.getElementById("sendBtn");
+    const email = document.getElementById("email").value.trim();
+    if (!email) return showToast("PLEASE ENTER YOUR REGISTERED EMAIL", "error");
+
+    btn.disabled = true;
+    const oldText = btn.innerText;
+    btn.innerText = "Sending link…";
+
+    try {
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+      localStorage.setItem("emailForSignIn", email);
+      showToast("SECURE LOGIN LINK SENT. CHECK YOUR EMAIL.", "success");
+    } catch {
+      showToast("ACCOUNT NOT FOUND. PLEASE SIGN UP.", "error");
+      setTimeout(() => location.href="signup.html", 2000);
+    }
+
+    btn.innerText = oldText;
+    btn.disabled = false;
+  };
+
+  if (isSignInWithEmailLink(auth, window.location.href)) {
+    let email = localStorage.getItem("emailForSignIn");
+    if (!email) {
+      document.getElementById("confirmBox").style.display = "block";
+    } else {
+      signInWithEmailLink(auth, email, window.location.href)
+        .then(() => location.href = "dashboard.html")
+        .catch(() => {
+          document.getElementById("confirmBox").style.display = "block";
+        });
+    }
+  }
+
+  document.getElementById("confirmBtn").onclick = async () => {
+    const btn = document.getElementById("confirmBtn");
+    const email = document.getElementById("confirmEmail").value.trim();
+    if (!email) return showToast("PLEASE ENTER EMAIL", "error");
+
+    btn.disabled = true;
+    const oldText = btn.innerText;
+    btn.innerText = "Completing…";
+
+    try {
+      await signInWithEmailLink(auth, email, window.location.href);
+      location.href = "dashboard.html";
+    } catch {
+      showToast("LOGIN FAILED. TRY AGAIN.", "error");
+    }
+
+    btn.innerText = oldText;
+    btn.disabled = false;
+  };
+
+  window.addEventListener("load", () => {
+    document.getElementById("pageLoader").style.display = "none";
+  });
+</script>
+
+</body>
+</html>

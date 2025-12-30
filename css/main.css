@@ -1,0 +1,78 @@
+/* ================= GLOBAL MASTER UI ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  background:#0b0f1a;
+  color:white;
+}
+
+/* TEXT */
+h1{
+  font-size:48px;
+  margin-top:80px;
+}
+
+p{
+  color:#9aa0b4;
+  font-size:18px;
+}
+
+/* PRIMARY BUTTON / LINK */
+a,
+button{
+  display:inline-block;
+  padding:12px 26px;
+  background:#6c5ce7;
+  color:white;
+  text-decoration:none;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* CARD */
+.card{
+  background:#141a2e;
+  padding:16px;
+  border-radius:12px;
+}
+
+/* ================= PREMIUM SOCIAL ICONS ================= */
+
+.social-icons{
+  margin-top:40px;
+  display:flex;
+  justify-content:center;
+  gap:16px;
+}
+
+.social-icons a{
+  width:46px;
+  height:46px;
+  padding:0;
+  margin:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#020617,#0f172a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 12px 30px rgba(108,92,231,.35);
+  transition:all .25s ease;
+}
+
+.social-icons a:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 45px rgba(108,92,231,.55);
+}
+
+.social-icons svg{
+  width:20px;
+  height:20px;
+  fill:#6c5ce7;
+}

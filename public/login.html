@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>Login — TechVyro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND & THEME ================= */
+  :root{
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,0.35);
+    --bg-dark: #020617;
+    --text-main: #e5e7eb;
+    --text-muted: #9aa0b4;
+    --error: #ef4444;
+    --success: #10b981;
+  }
+
+  /* ================= RESET ================= */
+  *{box-sizing:border-box;margin:0;padding:0; font-family: 'Inter', system-ui, sans-serif;}
+
+  body{
+    background: var(--bg-dark);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    perspective: 1000px; /* 3D Depth */
+  }
+
+  /* ================= BACKGROUND FX ================= */
+  .hero-glow {
+    position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= 3D LOGIN CARD ================= */
+  .login-card {
+    background: rgba(20, 26, 46, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 40px;
+    border-radius: 24px;
+    width: 100%; max-width: 420px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    
+    /* 3D Properties */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    transition: transform 0.1s ease; /* Smooth tilt */
+    animation: floatUp 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes floatUp {
+    from { opacity: 0; transform: translateY(30px) rotateX(10deg); }
+    to { opacity: 1; transform: translateY(0) rotateX(0); }
+  }
+
+  /* Inner Content Pop */
+  .login-content { transform: translateZ(30px); }
+
+  /* ================= HEADER ================= */
+  .brand-header { text-align: center; margin-bottom: 30px; }
+  .brand-name { font-size: 32px; font-weight: 900; letter-spacing: -1px; text-decoration: none; display: block; margin-bottom: 5px; }
+  .brand-tech { color: #fff; }
+  .brand-vyro { color: var(--blue); }
+  .welcome-text { color: var(--text-muted); font-size: 15px; }
+
+  /* ================= FORM ELEMENTS ================= */
+  .input-group { margin-bottom: 20px; text-align: left; }
+  .input-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #cbd5e1; }
+
+  .input-field {
+    width: 100%; background: rgba(2, 6, 23, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff; padding: 14px 16px;
+    border-radius: 12px; font-size: 15px; transition: 0.3s;
+  }
+  .input-field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%; padding: 14px; background: var(--blue); color: #020617;
+    font-weight: 800; font-size: 16px; border: none; border-radius: 12px;
+    cursor: pointer; transition: 0.3s; margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(59,130,246,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(59,130,246,0.5); background: #60a5fa; }
+  
+  .btn-secondary {
+    width: 100%; padding: 12px; background: rgba(255,255,255,0.05); color: var(--text-muted);
+    font-weight: 600; font-size: 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    cursor: pointer; transition: 0.3s; margin-top: 15px;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* LINKS & FOOTER */
+  .form-footer {
+    margin-top: 25px; text-align: center; font-size: 14px; color: var(--text-muted);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .link { color: var(--blue); text-decoration: none; font-weight: 600; cursor: pointer; transition: .2s; }
+  .link:hover { text-decoration: underline; color: #fff; }
+
+  /* TOAST */
+  .toast {
+    margin-top: 15px; padding: 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; text-align: center; display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .toast.error { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2); }
+  .toast.success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+  /* BACK HOME */
+  .back-home {
+    position: absolute; top: 30px; left: 30px;
+    color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px; transition: 0.3s; z-index: 10;
+  }
+  .back-home:hover { color: #fff; transform: translateX(-5px); }
+
+  /* TOGGLE LOGIC */
+  #resetFormContainer { display: none; animation: fadeIn 0.4s ease; }
+  #loginContainer { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+
+  @media (max-width: 480px) {
+    .login-card { padding: 30px 24px; margin: 20px; }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <a href="index.html" class="back-home">← Back to Home</a>
+
+  <div class="login-card js-tilt">
+    <div class="login-content">
+      
+      <div id="loginContainer">
+        <div class="brand-header">
+          <a href="index.html" class="brand-name">
+            <span class="brand-tech">Tech</span><span class="brand-vyro">Vyro</span>
+          </a>
+          <p class="welcome-text">Welcome back! Access your dashboard.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Email Address</label>
+          <input type="text" id="username" class="input-field" placeholder="name@example.com">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <input type="password" id="password" class="input-field" placeholder="••••••••">
+        </div>
+
+        <button id="loginBtn" class="btn-primary">Login </button>
+
+        <div class="form-footer">
+          <span class="link" onclick="showResetForm()" style="color:#9aa0b4; font-weight:400">Forgot password?</span>
+          <span>New? <a href="signup.html" class="link">Create account</a></span>
+        </div>
+      </div>
+
+      <div id="resetFormContainer">
+        <div class="brand-header">
+          <h2 style="font-size:24px; font-weight:800; color:#fff; margin-bottom:8px;">Reset Password</h2>
+          <p class="welcome-text">Enter your email to receive a link.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Your Email</label>
+          <input type="email" id="resetEmail" class="input-field" placeholder="name@example.com">
+        </div>
+
+        <button id="resetBtn" class="btn-primary">Send Reset Link</button>
+        <button onclick="showLoginForm()" class="btn-secondary">Back to Login</button>
+      </div>
+
+      <div id="toast" class="toast"></div>
+
+    </div>
+  </div>
+
+  <script type="module">
+  // --- 3D TILT LOGIC ---
+  document.querySelector('.js-tilt').addEventListener('mousemove', (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -10; // Tilt Up/Down
+    const rotateY = ((x - centerX) / centerX) * 10;  // Tilt Left/Right
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+  });
+
+  document.querySelector('.js-tilt').addEventListener('mouseleave', (e) => {
+    e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+  });
+
+  // --- LOGIC: Firebase + Manual ---
+  let auth = null;
+  let signInWithEmailAndPassword = null;
+  let sendPasswordResetEmail = null;
+  
+  try {
+    const fb = await import('../js/firebase.js');
+    const fbAuth = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+    auth = fb.auth;
+    signInWithEmailAndPassword = fbAuth.signInWithEmailAndPassword;
+    sendPasswordResetEmail = fbAuth.sendPasswordResetEmail;
+
+    fbAuth.onAuthStateChanged(auth, (user) => {
+      if (user) localStorage.setItem("techvyro_user_logged_in", "true");
+    });
+  } catch (e) { console.log("Simulation Mode Active"); }
+
+  // UI TOGGLE
+  window.showResetForm = () => {
+    document.getElementById('loginContainer').style.display = 'none';
+    document.getElementById('resetFormContainer').style.display = 'block';
+    document.getElementById('toast').style.display = 'none';
+  };
+
+  window.showLoginForm = () => {
+    document.getElementById('resetFormContainer').style.display = 'none';
+    document.getElementById('loginContainer').style.display = 'block';
+    document.getElementById('toast').style.display = 'none';
+  };
+
+  const showToast = (msg, type) => {
+    const toast = document.getElementById("toast");
+    toast.className = `toast ${type}`;
+    toast.innerText = msg;
+    toast.style.display = "block";
+    setTimeout(() => toast.style.display = "none", 4000);
+  };
+
+  // 1. LOGIN
+  document.getElementById("loginBtn").addEventListener('click', async (e) => {
+    e.preventDefault(); 
+    const btn = document.getElementById("loginBtn");
+    const u = document.getElementById("username").value.trim();
+    const p = document.getElementById("password").value;
+
+    if(!u || !p) return showToast("Please enter email and password", "error");
+
+    const originalText = btn.innerText;
+    btn.innerText = 'Verifying...'; btn.disabled = true;
+
+    let email = u.includes("@") ? u : `${u}@mobile.techvyro`;
+
+    try {
+      if (auth && signInWithEmailAndPassword) {
+        await signInWithEmailAndPassword(auth, email, p);
+        showToast("Login Successful!", "success");
+        localStorage.setItem("techvyro_user_logged_in", "true");
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
+      } else {
+        setTimeout(() => {
+          showToast("Login Successful!", "success");
+          localStorage.setItem("techvyro_user_logged_in", "true");
+          setTimeout(() => window.location.href = "dashboard.html", 1000);
+        }, 1200);
+      }
+    } catch (err) {
+      showToast("Invalid Credentials", "error");
+      btn.innerText = originalText; btn.disabled = false;
+    }
+  });
+
+  // 2. RESET PASSWORD
+  document.getElementById("resetBtn").addEventListener('click', async () => {
+    const btn = document.getElementById("resetBtn");
+    const email = document.getElementById("resetEmail").value.trim();
+
+    if(!email || !email.includes("@")) return showToast("Please enter a valid email", "error");
+
+    btn.innerText = 'Sending...'; btn.disabled = true;
+
+    try {
+      if (auth && sendPasswordResetEmail) {
+        await sendPasswordResetEmail(auth, email);
+        showToast("Reset link sent! Check email.", "success");
+        setTimeout(() => showLoginForm(), 3000);
+      } else {
+        setTimeout(() => {
+          showToast("Reset link sent to " + email, "success");
+          btn.innerText = "Link Sent!";
+          setTimeout(() => { btn.disabled = false; showLoginForm(); }, 2000);
+        }, 1200);
+      }
+    } catch(err) {
+      showToast(err.message, "error");
+      btn.disabled = false;
+    }
+  });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>Create Account — TechVyro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND & THEME ================= */
+  :root{
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,0.35);
+    --bg-dark: #020617;
+    --text-main: #e5e7eb;
+    --text-muted: #9aa0b4;
+    --error: #ef4444;
+    --success: #10b981;
+  }
+
+  /* ================= RESET ================= */
+  *{box-sizing:border-box;margin:0;padding:0; font-family: 'Inter', system-ui, sans-serif;}
+
+  body{
+    background: var(--bg-dark);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    perspective: 1000px; /* 3D Depth */
+  }
+
+  /* ================= BACKGROUND FX ================= */
+  .hero-glow {
+    position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= 3D CARD ================= */
+  .auth-card {
+    background: rgba(20, 26, 46, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 40px;
+    border-radius: 24px;
+    width: 100%; max-width: 440px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    
+    /* 3D Properties */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    transition: transform 0.1s ease;
+    animation: floatUp 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes floatUp {
+    from { opacity: 0; transform: translateY(30px) rotateX(10deg); }
+    to { opacity: 1; transform: translateY(0) rotateX(0); }
+  }
+
+  /* Inner Content Pop */
+  .card-content { transform: translateZ(30px); }
+
+  /* ================= HEADER ================= */
+  .header { text-align: center; margin-bottom: 30px; }
+  .logo { font-size: 32px; font-weight: 900; letter-spacing: -1px; text-decoration: none; display: block; margin-bottom: 5px; }
+  .logo span { color: #fff; }
+  .logo .blue { color: var(--blue); }
+  .subtitle { color: var(--text-muted); font-size: 15px; }
+
+  /* ================= FORM ELEMENTS ================= */
+  .input-group { margin-bottom: 20px; }
+  .label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #cbd5e1; }
+
+  .input-field {
+    width: 100%; background: rgba(2, 6, 23, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff; padding: 14px 16px;
+    border-radius: 12px; font-size: 15px; transition: 0.3s;
+  }
+  .input-field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); outline: none; }
+
+  /* BUTTON */
+  .btn {
+    width: 100%; padding: 14px; background: var(--blue); color: #020617;
+    font-weight: 800; font-size: 16px; border: none; border-radius: 12px;
+    cursor: pointer; transition: 0.3s; margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(59,130,246,0.3);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(59,130,246,0.5); background: #60a5fa; }
+  .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+  /* FOOTER & TOAST */
+  .footer { margin-top: 25px; text-align: center; font-size: 14px; color: var(--text-muted); }
+  .link { color: var(--blue); text-decoration: none; font-weight: 600; transition: .2s; }
+  .link:hover { text-decoration: underline; color: #fff; }
+
+  .toast {
+    margin-top: 15px; padding: 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; text-align: center; display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .toast.error { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2); }
+  .toast.success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+  /* BACK HOME */
+  .back-home {
+    position: absolute; top: 30px; left: 30px;
+    color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px; transition: 0.3s; z-index: 10;
+  }
+  .back-home:hover { color: #fff; transform: translateX(-5px); }
+
+  @media (max-width: 480px) {
+    .auth-card { padding: 30px 24px; margin: 20px; }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <a href="index.html" class="back-home">← Back</a>
+
+  <div class="auth-card js-tilt">
+    <div class="card-content">
+      
+      <div class="header">
+        <a href="index.html" class="logo">
+          <span>Tech</span><span class="blue">Vyro</span>
+        </a>
+        <p class="subtitle">Join the premium AI revolution.</p>
+      </div>
+
+      <div class="input-group">
+        <label class="label">Email or Mobile Number</label>
+        <input type="text" id="username" class="input-field" placeholder="e.g. 9876543210 or name@email.com">
+      </div>
+
+      <div class="input-group">
+        <label class="label">Create Password</label>
+        <input type="password" id="password" class="input-field" placeholder="At least 6 characters">
+      </div>
+
+      <button id="signupBtn" class="btn">Create Account</button>
+
+      <div id="toast" class="toast"></div>
+
+      <div class="footer">
+        Already have an account? <a href="login.html" class="link">Login</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    // --- 3D TILT LOGIC ---
+    document.querySelector('.js-tilt').addEventListener('mousemove', (e) => {
+      const card = e.currentTarget;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+
+    document.querySelector('.js-tilt').addEventListener('mouseleave', (e) => {
+      e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+    });
+
+    // --- FIREBASE / SIMULATION LOGIC ---
+    let auth = null;
+    let createUserWithEmailAndPassword = null;
+
+    try {
+      const fb = await import('../js/firebase.js');
+      const fbAuth = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+      auth = fb.auth;
+      createUserWithEmailAndPassword = fbAuth.createUserWithEmailAndPassword;
+    } catch (e) {
+      console.log("Firebase not connected yet - running in Simulation Mode");
+    }
+
+    const btn = document.getElementById("signupBtn");
+    const toast = document.getElementById("toast");
+
+    const showToast = (msg, type) => {
+      toast.className = `toast ${type}`;
+      toast.innerText = msg;
+      toast.style.display = "block";
+      setTimeout(() => toast.style.display = "none", 4000);
+    };
+
+    btn.addEventListener("click", async () => {
+      const u = document.getElementById("username").value.trim();
+      const p = document.getElementById("password").value;
+
+      if (!u || !p) return showToast("Please fill in all fields", "error");
+      if (p.length < 6) return showToast("Password must be 6+ chars", "error");
+
+      const originalText = btn.innerText;
+      btn.innerText = "Creating Account...";
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
+
+      let email = u.includes("@") ? u : `${u}@mobile.techvyro`;
+
+      try {
+        if (auth && createUserWithEmailAndPassword) {
+          await createUserWithEmailAndPassword(auth, email, p);
+          showToast("Account Created! Redirecting...", "success");
+          setTimeout(() => location.href = "dashboard.html", 1500);
+        } else {
+          setTimeout(() => {
+            console.log(`Simulated Signup: ${email} / ${p}`);
+            showToast("Account Created (Simulation)!", "success");
+            setTimeout(() => location.href = "dashboard.html", 1500);
+          }, 1500);
+        }
+      } catch (err) {
+        let msg = err.message;
+        if(msg.includes("email-already-in-use")) msg = "User already exists!";
+        showToast(msg, "error");
+        btn.innerText = originalText;
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
+    });
+  </script>
+
+</body>
+</html>

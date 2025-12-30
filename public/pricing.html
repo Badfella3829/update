@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing | TechVyro</title>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<style>
+/* ================= BRAND & THEME ================= */
+:root{
+  --blue: #3b82f6;
+  --blue-glow: rgba(59,130,246,.35);
+  --bg-dark: #020617;
+  --text-main: #e5e7eb;
+  --text-muted: #9aa0b4;
+}
+
+/* ================= RESET ================= */
+*{box-sizing:border-box;margin:0;padding:0; font-family: 'Inter', system-ui, sans-serif;}
+
+body{
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow-x: hidden;
+  /* FIX: Removed perspective from body to fix Razorpay blur issue */
+}
+
+/* 🔥 RAZORPAY FIX (CRITICAL) 🔥 */
+.razorpay-container {
+  z-index: 2147483647 !important; /* Topmost layer */
+  position: fixed !important;
+  transform: none !important;     /* Stop 3D interference */
+  perspective: none !important;
+  filter: none !important;
+}
+iframe.razorpay-checkout-frame {
+  z-index: 2147483647 !important;
+  border-radius: 12px !important;
+}
+
+/* ================= BACKGROUND FX ================= */
+.hero-glow {
+  position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+  width: 90%; height: 700px;
+  background: radial-gradient(circle at center, rgba(59,130,246,0.15) 0%, transparent 60%);
+  z-index: -2; pointer-events: none;
+}
+
+.grid-pattern {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+  z-index: -1; pointer-events: none;
+}
+
+/* ================= LOADER ================= */
+#pageLoader{
+  position:fixed; inset:0; background:var(--bg-dark);
+  display:flex; align-items:center; justify-content:center; z-index:9999;
+  transition: opacity 0.5s ease;
+}
+.spinner{
+  width:46px; height:46px; border:4px solid #334155;
+  border-top:4px solid var(--blue); border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ================= HEADER ================= */
+.main-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:15px 5%; position:fixed; top:0; left:0; width: 100%; height: 70px;
+  background:rgba(2,6,23,0.85); backdrop-filter:blur(12px);
+  z-index:100; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-left a { font-size:22px; font-weight:800; color:#fff; text-decoration:none; }
+.nav-left span { color:var(--blue); }
+.nav-right{ display:flex; gap:25px; }
+.nav-link{ color:var(--text-muted); font-weight:600; text-decoration:none; transition:.3s; }
+.nav-link:hover{ color:#fff; }
+
+/* ================= PAGE LAYOUT ================= */
+.page{
+  max-width:1150px; margin:0 auto; padding:0 24px;
+  padding-top: 140px; padding-bottom: 80px;
+}
+
+/* ================= HERO ================= */
+.hero{ text-align:center; margin-bottom:80px; }
+.hero h1{ font-size:52px; font-weight:900; letter-spacing:-1px; margin-bottom:15px; color:#fff; }
+.hero span{ background: linear-gradient(135deg, #3b82f6, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero p{ max-width:700px; margin:0 auto; font-size:18px; color:var(--text-muted); line-height:1.6; }
+
+/* ================= PRICING GRID ================= */
+.pricing{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-bottom:100px;
+  /* FIX: Perspective only applied to the grid container now */
+  perspective: 1000px; 
+}
+
+.plan{
+  background: #141a2e; padding:40px; border-radius:24px; text-align:left;
+  border:1px solid rgba(255,255,255,0.05);
+  position:relative;
+  /* 3D Motion kept intact here */
+  transform-style: preserve-3d; 
+  transition: transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+.plan:hover{
+  transform:translateY(-10px);
+  box-shadow:0 30px 90px -20px var(--blue-glow);
+  border-color: rgba(59,130,246,0.3);
+}
+
+/* Inner 3D Pop */
+.plan-content { transform: translateZ(30px); }
+
+.plan h3{ font-size:26px; margin-bottom:5px; color:#fff; }
+.plan .tagline{ font-size:14px; color:var(--text-muted); margin-bottom:15px; }
+.plan .price{ font-size:38px; font-weight:900; color:var(--blue); margin-bottom:20px; }
+
+.plan ul{ list-style:none; padding:0; margin-bottom:30px; }
+.plan li{ margin-bottom:12px; color:#cbd5f5; font-size:15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+.plan li:last-child { border:none; }
+
+/* Premium Highlight */
+.plan.premium{
+  background:linear-gradient(135deg,#020617,#0f172a);
+  border:1px solid var(--blue);
+  box-shadow:0 0 40px rgba(59,130,246,0.15);
+}
+.badge{
+  position:absolute; top:-14px; right:24px; padding:6px 14px;
+  font-size:11px; font-weight:900; border-radius:999px;
+  background:var(--blue); color:#020617; transform: translateZ(40px);
+}
+
+/* BUTTONS */
+.btn{
+  display:inline-block; padding:14px 28px; width:100%; text-align:center;
+  border-radius:12px; background:var(--blue); color:#020617;
+  text-decoration:none; font-weight:800; border:none; cursor:pointer; transition:.3s;
+}
+.btn:hover{ transform:translateY(-3px); box-shadow:0 10px 30px var(--blue-glow); background: #60a5fa; }
+
+/* ================= EXPLAIN & FAQ ================= */
+.explain{ margin-bottom:80px; text-align:center; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+.explain h2{ font-size:32px; margin-bottom:15px; color:#fff; }
+.explain p{ max-width:800px; margin:0 auto; font-size:16px; line-height:1.7; color:var(--text-muted); }
+
+.faq h2{ font-size:32px; margin-bottom:30px; color:#fff; text-align: center; }
+.faq-item{ background:#141a2e; padding:25px; border-radius:16px; margin-bottom:15px; border: 1px solid rgba(255,255,255,0.05); transition: .3s; }
+.faq-item:hover { border-color: rgba(59,130,246,0.3); }
+.faq-item h4{ margin-bottom:10px; color:#fff; font-size: 18px; }
+.faq-item p{ color:var(--text-muted); line-height:1.6; font-size: 15px; }
+
+/* ================= FOOTER ================= */
+.note{ margin-top:80px; text-align:center; color:var(--text-muted); margin-bottom: 60px; }
+.note p { margin-bottom: 20px; }
+
+.back{
+  display:inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12px 30px; border-radius: 50px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted); text-decoration:none; font-weight: 600; font-size: 15px;
+  transition: .3s;
+}
+.back:hover{ background: rgba(59,130,246,0.1); border-color: var(--blue); color: #fff; transform: translateY(-3px); }
+
+/* ================= ANIMATIONS ================= */
+.reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+
+/* MOBILE */
+@media(max-width:768px){
+  .main-header{padding:15px 20px}
+  .hero h1{font-size:36px}
+  .page{padding-top:120px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero-glow"></div>
+<div class="grid-pattern"></div>
+
+<div id="pageLoader"><div class="spinner"></div></div>
+
+<header class="main-header">
+  <div class="nav-left">
+    <a href="index.html">Tech<span>Vyro</span></a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="hero reveal">
+    <h1><span>Premium</span> Pricing</h1>
+    <p>Choose a plan that fits your growth stage. Start free, upgrade anytime, and unlock the full power of AI automation.</p>
+  </div>
+
+  <div class="pricing">
+    <div class="plan js-tilt reveal delay-1">
+      <div class="plan-content">
+        <h3>Free</h3>
+        <div class="tagline">For beginners & exploration</div>
+        <div class="price">₹0</div>
+        <ul>
+          <li>200 AI credits</li>
+          <li>Basic AI chat access</li>
+          <li>Limited tool usage</li>
+          <li>Community-level support</li>
+        </ul>
+        <a href="signup.html" class="btn">Start Free</a>
+      </div>
+    </div>
+
+    <div class="plan js-tilt reveal delay-1">
+      <div class="plan-content">
+        <h3>Pro</h3>
+        <div class="tagline">For creators & solo builders</div>
+        <div class="price">₹299 / month</div>
+        <ul>
+          <li>2000 AI credits</li>
+          <li>Advanced AI tools</li>
+          <li>Automation workflows</li>
+          <li>Faster feature access</li>
+        </ul>
+        <button class="btn" onclick="buyPlan('pro')">Upgrade to Pro</button>
+      </div>
+    </div>
+
+    <div class="plan premium js-tilt reveal delay-2">
+      <div class="plan-content">
+        <div class="badge">MOST POPULAR</div>
+        <h3>Premium</h3>
+        <div class="tagline">For serious growth & scaling</div>
+        <div class="price">₹499 / month</div>
+        <ul>
+          <li>Unlimited AI credits</li>
+          <li>All premium AI tools</li>
+          <li>Priority feature unlocks</li>
+          <li>Advanced automation systems</li>
+          <li>Future updates included</li>
+        </ul>
+        <button class="btn" onclick="buyPlan('premium')">Go Premium</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="explain reveal delay-2">
+    <h2>Why Premium is Worth It</h2>
+    <p>Premium is designed for users who want more than just access — it is for those who want speed, power, and flexibility. With Premium, you remove daily limits, unlock exclusive AI tools, and gain early access to new features before public release. Whether you are building products, managing clients, or scaling your personal brand, Premium gives you the freedom to operate without restrictions.</p>
+  </div>
+
+  <div class="faq reveal delay-3">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h4>Can I upgrade or downgrade anytime?</h4>
+      <p>Yes. You can change your plan anytime from your dashboard.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Is Premium really unlimited?</h4>
+      <p>Premium removes daily limits and offers maximum flexibility.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Are payments secure?</h4>
+      <p>Yes. All payments are processed securely via Razorpay.</p>
+    </div>
+  </div>
+
+  <div class="note reveal">
+    <p>Payments are handled securely inside your dashboard.</p>
+    <a href="index.html" class="back"><span>←</span> Back to Home</a>
+  </div>
+
+</div>
+
+<script>
+// 1. LOADER & ANIMATION
+window.addEventListener("load",()=>{
+  const loader = document.getElementById("pageLoader");
+  if(loader) {
+    loader.style.opacity = '0';
+    setTimeout(() => loader.style.display="none", 500);
+  }
+});
+
+// 2. SCROLL REVEAL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('active');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold: 0.1});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// 3. 3D TILT EFFECT (Fixed for Razorpay Compatibility)
+document.querySelectorAll('.js-tilt').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+  });
+});
+
+// 4. PAYMENT LOGIC
+window.buyPlan = function(planType) {
+    let amount = 0;
+    if (planType === "pro") amount = 29900; 
+    if (planType === "premium") amount = 49900; 
+
+    if (amount === 0) { alert("Invalid Plan"); return; }
+
+    if (typeof Razorpay === "undefined") { alert("Error: Razorpay SDK load nahi hua."); return; }
+
+    var options = {
+        "key": "rzp_test_RxnWrcXyHF6JMR", // YOUR KEY
+        "amount": amount, 
+        "currency": "INR",
+        "name": "TechVyro",
+        "description": "Upgrade to " + planType.toUpperCase(),
+        "image": "https://cdn-icons-png.flaticon.com/512/281/281769.png", 
+        "handler": function (response){
+            alert("Payment Successful! \nPayment ID: " + response.razorpay_payment_id);
+            localStorage.setItem("paidPlan", planType);
+            window.location.href = "dashboard.html";
+        },
+        "prefill": { "name": "TechVyro User", "email": "user@techvyro.com", "contact": "9999999999" },
+        "theme": { "color": "#3b82f6" },
+        "modal": { "backdropclose": false, "escape": false }
+    };
+
+    try {
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        rzp1.on('payment.failed', function (response){ alert("Payment Failed: " + response.error.description); });
+    } catch (err) { console.error(err); alert("Something went wrong."); }
+};
+</script>
+
+</body>
+</html>
