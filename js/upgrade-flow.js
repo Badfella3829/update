@@ -18,26 +18,15 @@
       button.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        // Button loading state
-        button.disabled = true;
-        const oldText = button.innerText;
-        button.innerText = "Processing…";
+        // Check if user is logged in
+        if (!auth.currentUser) {
+          alert("Please login first to upgrade.");
+          window.location.href = "login.html";
+          return;
+        }
 
-        // Fake delay (API / payment simulation)
-        await new Promise(res => setTimeout(res, 1500));
-
-        // Set plan to premium
-        setUserPlan("premium");
-
-        // Restore button
-        button.innerText = "Upgraded ✓";
-        button.disabled = true;
-
-        // Success message
-        alert("🎉 Upgrade Successful! You are now a Premium user.");
-
-        // Optional redirect (commented for safety)
-        // window.location.href = "dashboard.html";
+        // Initiate payment instead of fake upgrade
+        buyPlan("premium");
       });
     });
   });

@@ -112,38 +112,57 @@
 <script src="js/auth-plan.js"></script>
 <script src="js/premium-guard.js"></script>
 
-<!-- ================= 🔐 USAGE LIMIT LOGIC (UNCHANGED) ================= -->
-<script>
-  const userSession = JSON.parse(localStorage.getItem("user"));
+<!-- ================= 🔐 USAGE LIMIT LOGIC (UPDATED) ================= -->
+<script type="module">
+  import { auth } from "js/firebase.js";
+  import { checkUsageLimit, checkRateLimit, logUsage } from "js/credits.js";
+  import { showError, withErrorHandling } from "js/error-handler.js";
+
+  let currentUser = null;
+
+  auth.onAuthStateChanged(async (user) => {
+    currentUser = user;
+  });
+
   const askBtn = document.getElementById("askBtn");
   const responseBox = document.getElementById("aiResponse");
 
-  const TODAY = new Date().toDateString();
-  let usage = JSON.parse(localStorage.getItem("ai_usage")) || {};
-
-  if (usage.date !== TODAY) {
-    usage = { date: TODAY, count: 0 };
-  }
-
-  askBtn.addEventListener("click", () => {
-    if (!userSession) {
+  askBtn.addEventListener("click", async () => {
+    if (!currentUser) {
       location.href = "login.html";
       return;
     }
 
-    // 🔒 Classic limit
-    if (!userSession.isPremium && usage.count >= 5) {
-      responseBox.innerText = "⚠️ Daily limit reached. Upgrade to Premium.";
-      return;
-    }
+    await withErrorHandling(async () => {
+      // Check daily usage limit
+      const limitExceeded = await checkUsageLimit(currentUser.uid, "ai_chat");
+      if (limitExceeded) {
+        showError("You've reached your daily limit of 5 AI chats. Upgrade to Premium for unlimited access.", {
+          showRetry: false,
+          title: "Daily Limit Reached"
+        });
+        return;
+      }
 
-    usage.count++;
-    localStorage.setItem("ai_usage", JSON.stringify(usage));
+      // Check rate limit (30 seconds between actions)
+      const rateLimited = await checkRateLimit(currentUser.uid, "ai_chat");
+      if (rateLimited) {
+        showError("Please wait 30 seconds before sending another message.", {
+          showRetry: false,
+          title: "Too Many Requests"
+        });
+        return;
+      }
 
-    responseBox.innerText =
-      "🤖 AI Response (Demo)\n\nYour message has been processed.\nUsage today: " +
-      usage.count +
-      (userSession.isPremium ? " (Premium Unlimited)" : " / 5");
+      // Log the usage
+      await logUsage(currentUser.uid, "ai_chat");
+
+      responseBox.innerText =
+        "🤖 AI Response (Demo)\n\nYour message has been processed.\n\nNote: Limits are now enforced server-side for better security.";
+    }, {
+      showRetry: true,
+      customMessage: "Failed to process your AI request. Please try again."
+    });
   });
 </script>
 

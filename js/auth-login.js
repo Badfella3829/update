@@ -1,11 +1,13 @@
 import { auth, db } from "./firebase.js";
 import { signInWithEmailAndPassword, signOut } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { doc, getDoc } from
+import { doc, getDoc, updateDoc } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import { canLogin, recordFail, resetAttempts } from "./auth-attempt.js";
 import { saveDevice } from "./remember-device.js";
+import { logAuthEvent, logError } from "./logger.js";
+import { withErrorHandling, showError } from "./error-handler.js";
 
 window.login = async function () {
   // 🔐 Login attempt limit
@@ -16,14 +18,15 @@ window.login = async function () {
 
   // Basic validation
   if (!u || !p) {
-    alert("Please enter username and password");
+    showError("Please enter both username and password");
     return;
   }
 
   // Mobile → email conversion
   const email = u.includes("@") ? u : u + "@mobile.techvyro";
 
-  try {
+  await withErrorHandling(async () => {
+    logAuthEvent('login_attempt', { email });
     // 🔑 Firebase Auth login
     const res = await signInWithEmailAndPassword(auth, email, p);
 
@@ -32,25 +35,46 @@ window.login = async function () {
 
     // 🚫 BLOCKED USER CHECK
     if (snap.exists() && snap.data().blocked === true) {
-      alert("Your account has been blocked by admin.");
+      showError("Your account has been blocked by admin. Please contact support.");
       await signOut(auth);
       return;
     }
 
+    // 🚫 EMAIL VERIFICATION CHECK
+    if (!res.user.emailVerified) {
+      showError("Please verify your email before logging in. Check your inbox for the verification link.", {
+        showRetry: false,
+        title: "Email Verification Required"
+      });
+      await signOut(auth);
+      return;
+    }
+
+    // Update emailVerified in Firestore
+    if (snap.exists() && !snap.data().emailVerified) {
+      await updateDoc(doc(db, "users", res.user.uid), { emailVerified: true });
+    }
+
     // ✅ Login success
+    logAuthEvent('login_success', { userId: res.user.uid, email });
     resetAttempts();
     saveDevice();
 
-    alert("Login successful 🎉");
+    showError("Login successful! Redirecting...", {
+      type: 'info',
+      showRetry: false,
+      title: "Success!"
+    });
 
     // Redirect
     setTimeout(() => {
       location.href = "profile.html";
     }, 800);
-
-  } catch (err) {
-    // ❌ Login failed
-    recordFail();
-    alert("Invalid credentials");
-  }
+  }, {
+    showRetry: true,
+    onError: (error) => {
+      logError(error, { context: 'login', email });
+      recordFail();
+    }
+  });
 };

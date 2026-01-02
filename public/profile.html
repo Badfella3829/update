@@ -170,8 +170,11 @@
 
     <br><br>
 
-    <!-- ORIGINAL BUTTON (UNCHANGED UI) -->
-    <button id="logoutBtn" onclick="logout()">Logout</button>
+    <!-- ACCOUNT CONTROL BUTTONS -->
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <button id="logoutBtn" onclick="logout()" style="background: linear-gradient(135deg,#6366f1,#4f46e5);">Logout</button>
+      <button onclick="deleteAccount()" style="background: linear-gradient(135deg,#dc3545,#c82333); margin-top: 18px;">Delete Account</button>
+    </div>
 
     <!-- 🔥 ADDED PREMIUM SOCIAL ICONS -->
     <div class="profile-social">
@@ -231,10 +234,12 @@
 </script>
 <!-- ================= STEP-6 ADD END ================= -->
 
-<!-- ================= STEP-5 ADD START (SECURITY HARDENING) ================= -->
+<!-- ================= ACCOUNT CONTROL (ENHANCED) ================= -->
 <script type="module">
   import { auth } from "js/firebase.js";
   import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { logout, deleteAccount, confirmAccountDeletion } from "js/account.js";
+  import { showError, withErrorHandling } from "js/error-handler.js";
 
   auth.onAuthStateChanged(user => {
     if (!user) {
@@ -242,16 +247,45 @@
     }
   });
 
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.onclick = async () => {
-      await signOut(auth);
-      localStorage.removeItem("user"); // 🔥 added safe cleanup
-      location.href = "login.html";
-    };
-  }
+  // Enhanced logout with complete data cleanup
+  window.logout = async function() {
+    await withErrorHandling(async () => {
+      await logout();
+      showError("Logged out successfully. All local data cleared.", {
+        type: 'info',
+        showRetry: false,
+        title: "Logged Out"
+      });
+      setTimeout(() => {
+        location.href = "login.html";
+      }, 1500);
+    }, {
+      showRetry: false,
+      customMessage: "Logout failed. Please try again."
+    });
+  };
+
+  // Account deletion with confirmation
+  window.deleteAccount = async function() {
+    const password = await confirmAccountDeletion();
+    if (!password) return;
+
+    await withErrorHandling(async () => {
+      await deleteAccount(password);
+      showError("Account deleted successfully. We're sorry to see you go.", {
+        type: 'info',
+        showRetry: false,
+        title: "Account Deleted"
+      });
+      setTimeout(() => {
+        location.href = "index.html";
+      }, 2000);
+    }, {
+      showRetry: false,
+      customMessage: "Account deletion failed. Please check your password and try again."
+    });
+  };
 </script>
-<!-- ================= STEP-5 ADD END ================= -->
 
 </body>
 </html>
