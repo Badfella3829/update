@@ -7,6 +7,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyAaLJsNcgxRa_lGMOxJnwrcttt_m5MtwBM",
   authDomain: "techvyro-saas.firebaseapp.com",
   projectId: "techvyro-saas",
+  storageBucket: "techvyro-saas.appspot.com",
+  messagingSenderId: "684333859256",
   appId: "1:684333859256:web:ae0852528ac177a7c08f4d"
 };
 

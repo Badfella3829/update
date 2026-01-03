@@ -290,7 +290,11 @@ iframe.razorpay-checkout-frame {
 
 </div>
 
-<script>
+<script type="module">
+// Import required modules
+import { auth } from "../js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 // 1. LOADER & ANIMATION
 window.addEventListener("load",()=>{
   const loader = document.getElementById("pageLoader");
@@ -319,7 +323,7 @@ document.querySelectorAll('.js-tilt').forEach(card => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     const rotateX = ((y - centerY) / centerY) * -5;
     const rotateY = ((x - centerX) / centerX) * 5;
 
@@ -331,38 +335,54 @@ document.querySelectorAll('.js-tilt').forEach(card => {
   });
 });
 
-// 4. PAYMENT LOGIC
-window.buyPlan = function(planType) {
-    let amount = 0;
-    if (planType === "pro") amount = 29900; 
-    if (planType === "premium") amount = 49900; 
+// 4. PAYMENT LOGIC - Using the proper payment system
+// Load the payment module dynamically
+let paymentModuleLoaded = false;
 
-    if (amount === 0) { alert("Invalid Plan"); return; }
+async function loadPaymentSystem() {
+  if (paymentModuleLoaded) return;
 
-    if (typeof Razorpay === "undefined") { alert("Error: Razorpay SDK load nahi hua."); return; }
+  try {
+    // Dynamically import the payment system
+    await import('../js/payments.js');
+    paymentModuleLoaded = true;
+    console.log("Payment system loaded successfully");
+  } catch (error) {
+    console.error("Failed to load payment system:", error);
+    // Fallback: redirect to login if payment system fails to load
+    alert("Payment system is not available. Please try logging in first.");
+    window.location.href = "login.html";
+  }
+}
 
-    var options = {
-        "key": "rzp_test_RxnWrcXyHF6JMR", // YOUR KEY
-        "amount": amount, 
-        "currency": "INR",
-        "name": "TechVyro",
-        "description": "Upgrade to " + planType.toUpperCase(),
-        "image": "https://cdn-icons-png.flaticon.com/512/281/281769.png", 
-        "handler": function (response){
-            alert("Payment Successful! \nPayment ID: " + response.razorpay_payment_id);
-            localStorage.setItem("paidPlan", planType);
-            window.location.href = "dashboard.html";
-        },
-        "prefill": { "name": "TechVyro User", "email": "user@techvyro.com", "contact": "9999999999" },
-        "theme": { "color": "#3b82f6" },
-        "modal": { "backdropclose": false, "escape": false }
-    };
+// Initialize payment system when user is authenticated
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    await loadPaymentSystem();
+  }
+});
 
-    try {
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
-        rzp1.on('payment.failed', function (response){ alert("Payment Failed: " + response.error.description); });
-    } catch (err) { console.error(err); alert("Something went wrong."); }
+// Override buyPlan to ensure payment system is loaded
+window.buyPlan = async function(planType) {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Please login first to purchase a plan.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Ensure payment system is loaded
+  if (!paymentModuleLoaded) {
+    await loadPaymentSystem();
+  }
+
+  // Call the proper buyPlan function from payments.js
+  if (window.buyPlan && window.buyPlan !== arguments.callee) {
+    // The payments.js buyPlan function should be loaded now
+    return window.buyPlan(planType);
+  } else {
+    alert("Payment system failed to load. Please refresh the page and try again.");
+  }
 };
 </script>
 
