@@ -12,27 +12,32 @@ import { showError, withErrorHandling } from "./error-handler.js";
 
 // Delete user account and all associated data
 export async function deleteAccount(password) {
-  const user = auth.currentUser;
-  if (!user) {
-    throw new Error("No user logged in");
-  }
+  return await withErrorHandling(async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error("No user logged in");
+    }
 
-  // Re-authenticate user before deletion (required by Firebase)
-  const credential = EmailAuthProvider.credential(user.email, password);
-  await reauthenticateWithCredential(user, credential);
+    // Re-authenticate user before deletion (required by Firebase)
+    const credential = EmailAuthProvider.credential(user.email, password);
+    await reauthenticateWithCredential(user, credential);
 
-  const uid = user.uid;
+    const uid = user.uid;
 
-  // Delete all user data from Firestore
-  await deleteUserData(uid);
+    // Delete all user data from Firestore
+    await deleteUserData(uid);
 
-  // Delete the user account
-  await deleteUser(user);
+    // Delete the user account
+    await deleteUser(user);
 
-  // Clear local storage
-  localStorage.clear();
+    // Clear local storage
+    localStorage.clear();
 
-  return true;
+    return true;
+  }, {
+    customMessage: 'Failed to delete account. Please try again or contact support.',
+    showRetry: false
+  });
 }
 
 // Delete all user-related data from Firestore
@@ -63,7 +68,7 @@ async function deleteUserData(uid) {
 
   } catch (error) {
     console.error("Error deleting user data:", error);
-    throw new Error("Failed to delete user data. Please contact support.");
+    showError("Failed to delete some account data. Please contact support if issues persist.", { showRetry: false });
   }
 }
 
@@ -90,7 +95,7 @@ export async function logout() {
     return true;
   } catch (error) {
     console.error("Logout error:", error);
-    throw error;
+    showError("Logout completed but some data may not have been cleared. Please refresh the page.", { showRetry: false });
   }
 }
 

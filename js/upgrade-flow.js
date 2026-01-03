@@ -20,8 +20,8 @@
 
         // Check if user is logged in
         if (!auth.currentUser) {
-          alert("Please login first to upgrade.");
-          window.location.href = "login.html";
+          showError("Please login first to upgrade your plan.", { showRetry: false });
+          setTimeout(() => window.location.href = "login.html", 2000);
           return;
         }
 

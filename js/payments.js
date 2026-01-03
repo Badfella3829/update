@@ -1,5 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { showError } from "./error-handler.js";
 
 console.log("payments.js loaded");
 
@@ -17,13 +18,13 @@ window.buyPlan = async function (plan) {
         amount = 49900; // ₹499
         planTitle = "Premium Plan";
     } else {
-        alert("Invalid plan selected");
+        showError("Invalid plan selected. Please choose a valid plan.");
         return;
     }
 
     // 2. Razorpay SDK check
     if (typeof Razorpay === "undefined") {
-        alert("Razorpay SDK load nahi hua. Internet check karein ya page refresh karein.");
+        showError("Payment system is not loaded. Please check your internet connection and refresh the page.", { showRetry: true });
         return;
     }
 
@@ -45,7 +46,7 @@ window.buyPlan = async function (plan) {
                         context: 'payment_handler',
                         paymentId: response.razorpay_payment_id
                     });
-                    alert("Please login first to complete payment.");
+                    showError("Please login first to complete the payment process.");
                     return;
                 }
 
@@ -77,8 +78,8 @@ window.buyPlan = async function (plan) {
                             userId: user.uid,
                             attemptedPlan: plan
                         });
-                        alert("You are already a premium user!");
-                        window.location.href = "dashboard.html";
+                        showError("You are already a premium user!", { type: 'info', showRetry: false });
+                        setTimeout(() => window.location.href = "dashboard.html", 2000);
                         return;
                     }
 
@@ -93,10 +94,10 @@ window.buyPlan = async function (plan) {
                     });
 
                     // Success Action
-                    alert("Payment Successful! ID: " + response.razorpay_payment_id + ". Plan upgraded to " + planTitle);
+                    showError("Payment Successful! ID: " + response.razorpay_payment_id + ". Plan upgraded to " + planTitle, { type: 'info', showRetry: false });
 
                     // Redirect
-                    window.location.href = "dashboard.html";
+                    setTimeout(() => window.location.href = "dashboard.html", 2000);
                 } catch (error) {
                     logError(error, {
                         context: 'payment_processing',
@@ -135,10 +136,10 @@ window.buyPlan = async function (plan) {
                 errorCode: response.error.code,
                 errorSource: response.error.source
             });
-            alert("Payment Failed: " + response.error.description);
+            showError("Payment Failed: " + response.error.description, { showRetry: true });
         });
     } catch (err) {
         console.error("Razorpay Error:", err);
-        alert("Something went wrong with the payment gateway.");
+        showError("Payment system encountered an error. Please try again or contact support.", { showRetry: true });
     }
 };

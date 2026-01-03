@@ -3,19 +3,26 @@
  * Loads public/config.json and provides global access to feature flags and AI settings
  */
 
+import { showError, withErrorHandling } from "./error-handler.js";
+
 let appConfig = null;
 
 export async function loadConfig() {
   if (appConfig) return appConfig;
 
   try {
-    const response = await fetch('/config.json');
-    if (!response.ok) throw new Error(`Failed to load config: ${response.statusText}`);
-    appConfig = await response.json();
-    console.log('[Config] Loaded successfully:', appConfig);
-    return appConfig;
+    return await withErrorHandling(async () => {
+      const response = await fetch('/config.json');
+      if (!response.ok) throw new Error(`Failed to load config: ${response.statusText}`);
+      appConfig = await response.json();
+      console.log('[Config] Loaded successfully:', appConfig);
+      return appConfig;
+    }, {
+      customMessage: 'Unable to load app settings. Please check your internet connection.',
+      showRetry: true
+    });
   } catch (err) {
-    console.error('[Config] Error loading config:', err);
+    console.error('[Config] Error loading config after retries:', err);
     // Return sensible defaults
     appConfig = {
       features: {

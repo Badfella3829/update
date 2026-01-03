@@ -17,9 +17,9 @@
     if (plan === "admin") return;
 
     // Block access for non-admin users
-    alert("⛔ Access Denied: Admin only area.");
+    showError("Access Denied: This area is for administrators only.", { showRetry: false });
 
     // Safe redirect (change if needed)
-    window.location.href = "index.html";
+    setTimeout(() => window.location.href = "index.html", 2000);
   });
 })();

@@ -122,40 +122,59 @@
 <script src="js/auth-plan.js"></script>
 <script src="js/premium-guard.js"></script>
 
-<!-- ================= DEMO LIMIT LOGIC (UNCHANGED) ================= -->
-<script>
-  const sessionUser = JSON.parse(localStorage.getItem("user"));
+<!-- ================= 🔐 USAGE LIMIT LOGIC (UPDATED) ================= -->
+<script type="module">
+  import { auth } from "js/firebase.js";
+  import { checkUsageLimit, checkRateLimit, logUsage } from "js/credits.js";
+  import { showError, withErrorHandling } from "js/error-handler.js";
+
+  let currentUser = null;
+
+  auth.onAuthStateChanged(async (user) => {
+    currentUser = user;
+  });
+
   const buildBtn = document.getElementById("buildBtn");
   const output = document.getElementById("buildResult");
 
-  const TODAY = new Date().toDateString();
-  let builderUsage = JSON.parse(localStorage.getItem("builder_usage")) || {};
-
-  if (builderUsage.date !== TODAY) {
-    builderUsage = { date: TODAY, count: 0 };
-  }
-
-  buildBtn.addEventListener("click", () => {
-    if (!sessionUser) {
+  buildBtn.addEventListener("click", async () => {
+    if (!currentUser) {
       location.href = "login.html";
       return;
     }
 
-    if (!sessionUser.isPremium && builderUsage.count >= 1) {
+    await withErrorHandling(async () => {
+      // Check daily usage limit
+      const limitExceeded = await checkUsageLimit(currentUser.uid, "ai_builder");
+      if (limitExceeded) {
+        showError("You've reached your daily limit of 5 AI tool builds. Upgrade to Premium for unlimited access.", {
+          showRetry: false,
+          title: "Daily Limit Reached"
+        });
+        return;
+      }
+
+      // Check rate limit (30 seconds between actions)
+      const rateLimited = await checkRateLimit(currentUser.uid, "ai_builder");
+      if (rateLimited) {
+        showError("Please wait 30 seconds before building another tool.", {
+          showRetry: false,
+          title: "Too Many Requests"
+        });
+        return;
+      }
+
+      // Log the usage
+      await logUsage(currentUser.uid, "ai_builder");
+
       output.innerText =
-        "⚠️ Demo limit reached. Upgrade to Premium to build unlimited tools.";
-      return;
-    }
-
-    builderUsage.count++;
-    localStorage.setItem("builder_usage", JSON.stringify(builderUsage));
-
-    output.innerText =
-      "🛠 Tool Builder (Demo)\n\n" +
-      "Tool created successfully.\n" +
-      "Builds today: " +
-      builderUsage.count +
-      (sessionUser.isPremium ? " (Unlimited Premium)" : " / 1");
+        "🛠 Tool Builder (Demo)\n\n" +
+        "Tool created successfully.\n\n" +
+        "Note: Limits are now enforced server-side for better security.";
+    }, {
+      showRetry: true,
+      customMessage: "Failed to build your AI tool. Please try again."
+    });
   });
 </script>
 
