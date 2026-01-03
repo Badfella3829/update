@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email - TechVyro AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            margin: 20px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .verification-box {
+            background-color: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .verify-button {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .code-display {
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+        .warning {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">TechVyro AI</div>
+            <h1 class="title">Verify Your Email Address</h1>
+        </div>
+
+        <div class="content">
+            <p>Hello {{userName}},</p>
+
+            <p>Thank you for signing up for TechVyro AI! To complete your registration and start using our AI tools, please verify your email address.</p>
+
+            <div class="verification-box">
+                <p><strong>Click the button below to verify your email:</strong></p>
+                <a href="{{verificationUrl}}" class="verify-button">Verify Email Address</a>
+            </div>
+
+            <p><strong>Or copy and paste this verification code:</strong></p>
+            <div class="code-display">{{verificationCode}}</div>
+
+            <div class="warning">
+                <strong>⚠️ Important:</strong> This verification link will expire in 24 hours. If you didn't create this account, please ignore this email.
+            </div>
+
+            <p>Once verified, you'll have full access to:</p>
+            <ul>
+                <li>AI Chat with advanced language models</li>
+                <li>AI Builder for creating custom applications</li>
+                <li>Analytics dashboard</li>
+                <li>Premium features and upgrades</li>
+            </ul>
+
+            <p>If you have any questions or need help, don't hesitate to contact our support team at <a href="mailto:support@techvyro.com">support@techvyro.com</a>.</p>
+
+            <p>Welcome to TechVyro AI!</p>
+            <p>Best regards,<br>The TechVyro AI Team</p>
+        </div>
+
+        <div class="footer">
+            <p>
+                © 2024 TechVyro AI. All rights reserved.<br>
+                <a href="{{privacyUrl}}">Privacy Policy</a> | <a href="{{termsUrl}}">Terms of Service</a>
+            </p>
+            <p style="font-size: 12px; color: #9ca3af;">
+                You're receiving this email because you signed up for TechVyro AI.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

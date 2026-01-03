@@ -23,5 +23,16 @@
       }
     ]
   },
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "email": {
+    "service": "sendgrid",
+    "fromEmail": "noreply@techvyro.com",
+    "fromName": "TechVyro AI",
+    "templates": {
+      "welcome": "welcome-email.html",
+      "verification": "verification-email.html",
+      "upgrade": "upgrade-email.html",
+      "passwordReset": "password-reset-email.html"
+    }
+  }
 }

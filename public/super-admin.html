@@ -309,7 +309,7 @@
       <h3>Quick Controls</h3>
       <div class="actions">
         <button class="action">Create Announcement</button>
-        <button class="action">Manage Plans</button>
+        <button class="action" onclick="openManagePlansModal()">Manage Plans</button>
         <button class="action">Credits Adjustment</button>
         <button class="action">System Settings</button>
       </div>
@@ -337,6 +337,11 @@
   </main>
 </div>
 
+<!-- ================= AUTH SECURITY ================= -->
+<script type="module">
+  import './js/auth-check.js';
+</script>
+
 <script type="module">
   import { auth } from "js/firebase.js";
   import {
@@ -349,7 +354,7 @@
   const usersTable = document.getElementById("usersTable");
   const loader = document.getElementById("pageLoader");
 
-  // ================= STEP-5 ADD START (SUPER ADMIN SECURITY) =================
+  // ================= SUPER ADMIN SECURITY =================
   auth.onAuthStateChanged(async user => {
     if (!user) {
       location.href = "login.html";

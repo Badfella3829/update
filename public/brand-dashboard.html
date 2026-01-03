@@ -78,15 +78,9 @@
   });
 </script>
 
-<!-- ================= STEP-5 ADD START (AUTH SECURITY) ================= -->
+<!-- ================= AUTH SECURITY ================= -->
 <script type="module">
-  import { auth } from "js/firebase.js";
-
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      location.href = "login.html";
-    }
-  });
+  import './js/auth-check.js';
 </script>
 <!-- ================= STEP-5 ADD END ================= -->
 

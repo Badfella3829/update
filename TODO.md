@@ -1,17 +1,37 @@
-# Feature Kill Switch
+# Dashboard Header Improvements - TODO
 
-## Task: Add feature on/off flags from Firestore for emergency disable
+## Current Status
+- [x] Analyze codebase and create plan
+- [x] Get user approval for plan
 
-### Files to Update:
-- [ ] js/feature-flags.js: Create feature flag loader from Firestore
-- [ ] js/auth-login.js: Check login feature flag
-- [ ] js/auth-signup.js: Check signup feature flag
-- [ ] js/auth-forgot.js: Check password reset feature flag
-- [ ] js/payments.js: Check payment feature flag
+## Implementation Steps
+- [x] Enhance dashboard.js to fetch user profile data (plan, createdAt) from Firestore
+- [x] Add loading states while fetching user data
+- [x] Update HTML elements dynamically (userName, userPlan, memberSince)
+- [x] Implement proper settings actions (profile navigation, help, logout)
+- [x] Dynamic premium awareness (upgrade button logic)
+- [x] Format and display member since date
+- [x] Add button disabled states during processing
+- [x] Ensure notifications are user-specific (verify implementation)
+- [x] Header auto-scroll behavior
+- [x] Auto-rotation and auto-hiding for Alerts and Smart Tips
+- [x] Dynamic, user-specific data for notifications and tips
+- [x] Correct handling of Profile, Help, and Logout in settings dropdown
+- [x] Full session clearing and back navigation blocking on logout
+- [x] Header visibility based on authentication state
 
-### Changes Needed:
-1. Create feature-flags.js to load flags from Firestore "feature_flags" collection
-2. Add flag checks in auth and payment functions
-3. Show appropriate error messages when features are disabled
+## Testing & Verification
+- [x] Test user data fetching and UI updates
+- [x] Verify Firestore security rules
+- [x] Confirm logout prevents back-button access
+- [x] Test loading states and button disabling
+- [x] Verify premium awareness logic
+- [x] Test header auto-scroll
+- [x] Test alerts and tips auto-rotation and auto-hiding
+- [x] Verify dynamic data loading for notifications and tips
+- [x] Test settings dropdown functionality
+- [x] Verify session clearing on logout
 
-### Status: In Progress
+## Files to Edit
+- js/dashboard.js (main changes)
+- public/dashboard.html (minor updates for loading indicators, dynamic alerts/tips)

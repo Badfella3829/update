@@ -50,6 +50,9 @@ onAuthStateChanged(auth, async (user) => {
   revenueEl.innerText = revenue;
 
   drawChart(free, pro, premium);
+
+  // Load usage analytics
+  await loadUsageAnalytics();
 });
 
 function drawChart(free, pro, premium) {
@@ -65,4 +68,55 @@ function drawChart(free, pro, premium) {
       }]
     }
   });
+}
+
+async function loadUsageAnalytics() {
+  try {
+    // Get tool usage data
+    const usageSnap = await getDocs(collection(db, "usage_logs"));
+    const toolUsage = {};
+    const dropOffReasons = {};
+    const upgradeActions = {};
+
+    usageSnap.forEach(doc => {
+      const data = doc.data();
+      if (data.event === 'tool_usage') {
+        const tool = data.data.tool;
+        toolUsage[tool] = (toolUsage[tool] || 0) + 1;
+      } else if (data.event === 'user_drop_off') {
+        const reason = data.data.reason;
+        dropOffReasons[reason] = (dropOffReasons[reason] || 0) + 1;
+      } else if (data.event === 'upgrade_behavior') {
+        const action = data.data.action;
+        upgradeActions[action] = (upgradeActions[action] || 0) + 1;
+      }
+    });
+
+    // Display most used tools
+    const mostUsedToolsEl = document.getElementById("mostUsedTools");
+    if (mostUsedToolsEl) {
+      const sortedTools = Object.entries(toolUsage).sort((a, b) => b[1] - a[1]);
+      mostUsedToolsEl.innerHTML = sortedTools.slice(0, 5).map(([tool, count]) =>
+        `<li>${tool}: ${count} uses</li>`).join('');
+    }
+
+    // Display drop-off reasons
+    const dropOffEl = document.getElementById("dropOffReasons");
+    if (dropOffEl) {
+      const sortedDropOff = Object.entries(dropOffReasons).sort((a, b) => b[1] - a[1]);
+      dropOffEl.innerHTML = sortedDropOff.map(([reason, count]) =>
+        `<li>${reason}: ${count} instances</li>`).join('');
+    }
+
+    // Display upgrade behavior
+    const upgradeBehaviorEl = document.getElementById("upgradeBehavior");
+    if (upgradeBehaviorEl) {
+      const sortedUpgrade = Object.entries(upgradeActions).sort((a, b) => b[1] - a[1]);
+      upgradeBehaviorEl.innerHTML = sortedUpgrade.map(([action, count]) =>
+        `<li>${action}: ${count} instances</li>`).join('');
+    }
+
+  } catch (error) {
+    console.error('Error loading usage analytics:', error);
+  }
 }

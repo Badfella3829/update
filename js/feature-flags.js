@@ -54,11 +54,24 @@ export async function loadFeatureFlags() {
 /**
  * Check if a specific feature is enabled
  * @param {string} feature - Feature name
+ * @param {string} [userId] - Optional user ID for beta user checks
  * @returns {Promise<boolean>} Whether the feature is enabled
  */
-export async function isFeatureEnabled(feature) {
+export async function isFeatureEnabled(feature, userId = null) {
   const flags = await loadFeatureFlags();
-  return flags[feature] !== false; // Default to true if not set
+
+  // If globally enabled, return true
+  if (flags[feature] === true) {
+    return true;
+  }
+
+  // If globally disabled, check if user is in beta list
+  if (flags[feature] === false && userId && flags[`${feature}_beta_users`] && Array.isArray(flags[`${feature}_beta_users`])) {
+    return flags[`${feature}_beta_users`].includes(userId);
+  }
+
+  // Default to true if not set
+  return flags[feature] !== false;
 }
 
 /**

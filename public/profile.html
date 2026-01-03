@@ -164,6 +164,52 @@
     <!-- 🔥 ADDED: ROLE INFO -->
     <p><strong>Role:</strong> <span id="role">user</span></p>
 
+    <!-- 🔐 LAST LOGIN INFO -->
+    <p><strong>Last Login:</strong> <span id="lastLogin">Loading...</span></p>
+    <p><strong>Device:</strong> <span id="lastLoginDevice">Loading...</span></p>
+
+    <!-- 🔐 SUSPICIOUS ACTIVITY WARNINGS -->
+    <div id="suspiciousActivitySection" style="display: none;">
+      <h3 style="color: #dc2626; margin-top: 30px;">⚠️ Security Alerts</h3>
+      <div id="suspiciousActivityList" style="background: #fef2f2; border: 1px solid #fecaca; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <!-- Suspicious activities will be populated here -->
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 🧾 BILLING & HISTORY SECTION -->
+    <h3 style="margin-top: 30px; margin-bottom: 15px;">🧾 Billing & History</h3>
+
+    <!-- Last Transaction Status -->
+    <div id="lastTransaction" style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none;">
+      <h4 style="margin: 0 0 10px 0; color: #1e293b;">Last Transaction</h4>
+      <p id="lastTransactionDetails" style="margin: 0; font-size: 14px;"></p>
+    </div>
+
+    <!-- Payment History Table -->
+    <div id="paymentHistory" style="margin-bottom: 20px;">
+      <h4 style="margin-bottom: 10px; color: #1e293b;">Payment History</h4>
+      <div id="historyTableContainer" style="overflow-x: auto;">
+        <table id="paymentTable" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr style="background: #f1f5f9;">
+              <th style="padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0;">Date</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0;">Plan</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0;">Amount</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0;">Status</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0;">Invoice</th>
+            </tr>
+          </thead>
+          <tbody id="paymentTableBody">
+            <tr>
+              <td colspan="5" style="padding: 20px; text-align: center; color: #64748b;">Loading payment history...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <hr>
 
     <a href="dashboard.html">← Go to Dashboard</a>
@@ -234,18 +280,17 @@
 </script>
 <!-- ================= STEP-6 ADD END ================= -->
 
+<!-- ================= AUTH SECURITY ================= -->
+<script type="module">
+  import './js/auth-check.js';
+</script>
+
 <!-- ================= ACCOUNT CONTROL (ENHANCED) ================= -->
 <script type="module">
   import { auth } from "js/firebase.js";
   import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
   import { logout, deleteAccount, confirmAccountDeletion } from "js/account.js";
   import { showError, withErrorHandling } from "js/error-handler.js";
-
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      location.href = "login.html";
-    }
-  });
 
   // Enhanced logout with complete data cleanup
   window.logout = async function() {

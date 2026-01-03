@@ -4,6 +4,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <title>Dashboard — TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
@@ -17,6 +18,33 @@
     --text-muted: #9aa0b4;
     --border: rgba(255,255,255,0.08);
     --sidebar-width: 260px;
+    --sidebar-bg: rgba(2, 6, 23, 0.85);
+    --grid-pattern: rgba(255,255,255,0.03);
+    --card-hover-bg: rgba(30, 41, 59, 0.8);
+    --tool-box-bg: rgba(2,6,23,0.95);
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.15);
+    --shadow-hover: 0 8px 30px rgba(59,130,246,0.25);
+    --shadow-sidebar: 0 0 40px rgba(0,0,0,0.3);
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+  }
+
+  body.light-mode {
+    --bg-dark: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --blue: #2563eb;
+    --blue-glow: rgba(37,99,235,.35);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: rgba(0,0,0,0.1);
+    --sidebar-width: 260px;
+    --sidebar-bg: rgba(248, 250, 252, 0.9);
+    --grid-pattern: rgba(0,0,0,0.03);
+    --tool-box-bg: rgba(248, 250, 252, 0.95);
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 30px rgba(37,99,235,0.15);
+    --shadow-sidebar: 0 0 40px rgba(0,0,0,0.1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, sans-serif; outline: none; scroll-behavior: smooth; }
@@ -59,9 +87,18 @@
 
   .brand {
     font-size: 24px; font-weight: 900; letter-spacing: -1px; color: #fff; text-decoration: none;
-    margin-bottom: 30px; display: block; padding-left: 5px;
+    margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px;
   }
   .brand span { color: var(--blue); }
+  .brand-name { font-size: 18px; font-weight: 700; color: var(--text-main); }
+
+  .brand-logo {
+    width: 40px; height: 40px; border-radius: 8px; margin-bottom: 30px; display: block;
+  }
+
+  .header-logo {
+    width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
+  }
 
   /* Navigation List */
   .nav-menu {
@@ -122,19 +159,42 @@
     flex: 1; overflow-y: auto; padding: 0 40px 40px 40px; position: relative;
   }
 
-  /* HEADER */
-  .header {
-    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-    margin-bottom: 40px; padding: 30px 0; border-bottom: 1px solid var(--border);
-    position: relative; 
+  /* ================= DASHBOARD CONTAINER ================= */
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 40px;
+    margin-bottom: 40px;
   }
 
-  .page-title h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .dashboard-main {
+    /* Main content column */
+  }
+
+  .dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* HEADER */
+  .header {
+    display: grid; grid-template-columns: 1fr auto auto auto; align-items: center;
+    margin-bottom: 40px; padding: 30px 0; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg-dark); backdrop-filter: blur(10px);
+    z-index: 100; transition: transform 0.3s ease;
+  }
+
+  .header.hidden {
+    transform: translateY(-100%);
+  }
+
+  .page-title h1 { font-size: 28px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
   .page-title p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
 
   /* Credits Graph */
   .credit-box {
-    text-align: center; background: rgba(20, 26, 46, 0.8); border: 1px solid var(--border);
+    text-align: center; background: var(--card-bg); border: 1px solid var(--border);
     padding: 10px 24px; border-radius: 50px; min-width: 240px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
   }
@@ -142,17 +202,111 @@
   .credit-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
   .credit-fill { height: 100%; width: 100%; background: var(--blue); box-shadow: 0 0 10px var(--blue); transition: width 0.4s ease; }
 
-  /* Logout */
-  .header-right { justify-self: end; }
-  .logout-btn {
-    background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.3s;
+  /* Notifications */
+  .notification-container { position: relative; }
+  .notification-icon {
+    background: rgba(59, 130, 246, 0.1); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 10px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s;
+    position: relative;
   }
-  .logout-btn:hover { background: #ef4444; color: #fff; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+  .notification-icon:hover { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+  .notification-badge {
+    position: absolute; top: -5px; right: -5px; background: #ef4444; color: white;
+    border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; display: none;
+  }
+  .notification-dropdown {
+    position: absolute; top: 50px; right: 0; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0; min-width: 300px; max-height: 400px; overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; z-index: 1000;
+  }
+  .notification-dropdown.show { display: block; }
+  .notification-header {
+    padding: 15px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--text-main);
+  }
+  .notification-item {
+    padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;
+  }
+  .notification-item:hover { background: rgba(59, 130, 246, 0.05); }
+  .notification-item.unread { background: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--blue); }
+  .notification-title { font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
+  .notification-message { color: var(--text-muted); font-size: 14px; line-height: 1.4; }
+  .notification-time { color: var(--text-muted); font-size: 12px; margin-top: 5px; }
+  .notification-empty { padding: 30px; text-align: center; color: var(--text-muted); }
+
+  /* In-app notification overlay */
+  .in-app-notification {
+    position: fixed; top: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; min-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1001; animation: slideInRight 0.3s ease; border-left: 4px solid var(--blue);
+  }
+  .in-app-notification.high { border-left-color: #f59e0b; }
+  .in-app-notification.urgent { border-left-color: #ef4444; }
+  .in-app-notification.low { border-left-color: #6b7280; }
+  @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  .notification-content h4 { color: var(--text-main); margin-bottom: 8px; }
+  .notification-content p { color: var(--text-muted); line-height: 1.4; }
+  .notification-close {
+    position: absolute; top: 10px; right: 10px; background: none; border: none;
+    color: var(--text-muted); font-size: 18px; cursor: pointer; padding: 5px;
+  }
+  .notification-close:hover { color: #fff; }
+
+  /* Theme Toggle */
+  .theme-toggle-container { display: flex; align-items: center; justify-content: center; }
+  .theme-toggle-btn {
+    background: rgba(59, 130, 246, 0.1); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 10px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s;
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  }
+  .theme-toggle-btn:hover { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+
+  /* Settings Dropdown */
+  .settings-container { position: relative; }
+  .settings-btn {
+    background: rgba(59, 130, 246, 0.1); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 10px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s;
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  }
+  .settings-btn:hover { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+  .settings-dropdown {
+    position: absolute; top: 50px; right: 0; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 8px 0; min-width: 160px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    display: none; z-index: 1000;
+  }
+  .settings-dropdown.show { display: block; }
+  .settings-item {
+    padding: 12px 16px; color: var(--text-main); font-size: 14px; cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .settings-item:hover { background: rgba(59, 130, 246, 0.05); }
+  .settings-item.logout { color: #ef4444; }
+  .settings-item.logout:hover { background: rgba(239, 68, 68, 0.05); }
+
+  /* Quick Actions Panel */
+  .header-right { justify-self: end; }
+  .quick-actions-panel {
+    display: flex; gap: 8px; align-items: center;
+  }
+
+  /* Search Container */
+  .search-container {
+    display: flex; align-items: center; margin-right: 15px;
+  }
+  .search-input {
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 8px 12px; border-radius: 8px; color: var(--text-main);
+    font-size: 14px; width: 200px; transition: 0.3s;
+  }
+  .search-input:focus {
+    border-color: var(--blue); box-shadow: 0 0 0 2px rgba(59,130,246,0.1);
+    outline: none;
+  }
 
   /* ================= 3D GRIDS ================= */
   .section-header {
-    font-size: 20px; font-weight: 800; color: #fff; margin: 40px 0 25px 0;
+    font-size: 20px; font-weight: 800; color: var(--text-main); margin: 40px 0 25px 0;
     display: flex; align-items: center; gap: 15px; scroll-margin-top: 20px;
   }
   .section-header::after { content: ""; flex: 1; height: 1px; background: var(--border); opacity: 0.5; }
@@ -161,7 +315,7 @@
 
   /* 3D Card */
   .card {
-    background: var(--card-bg); padding: 25px; border-radius: 18px; 
+    background: var(--card-bg); padding: 25px; border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     /* 3D Motion */
     transform-style: preserve-3d; transform: perspective(1000px);
@@ -171,30 +325,52 @@
   .card:hover {
     box-shadow: 0 20px 50px -10px var(--blue-glow);
     border-color: rgba(59, 130, 246, 0.3);
-    background: rgba(30, 41, 59, 0.8);
+    background: var(--card-hover-bg);
   }
   .card-content { transform: translateZ(20px); width: 100%; }
 
   .card-icon { font-size: 28px; margin-bottom: 15px; display: block; }
-  .card h3 { font-size: 16px; font-weight: 700; color: #fff; }
+  .card h3 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+  .card-description { font-size: 14px; color: var(--text-muted); line-height: 1.4; margin-bottom: 15px; }
+
+  .card-footer {
+    display: flex; justify-content: space-between; align-items: center; width: 100%;
+    margin-top: auto;
+  }
+
+  .card-status {
+    font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 12px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .card-status.free { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+  .card-status.premium { background: rgba(168, 85, 247, 0.1); color: #a855f7; }
+
+  .card-btn {
+    background: var(--blue); color: white; border: none; padding: 8px 16px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: 0.3s; text-decoration: none; display: inline-block;
+  }
+  .card-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59,130,246,0.3); }
+  .card-btn.upgrade { background: linear-gradient(135deg, #a855f7, #ec4899); }
+  .card-btn.upgrade:hover { box-shadow: 0 5px 15px rgba(168,85,247,0.3); }
 
   /* ================= TOOLS INTERFACE (Glassy Modal) ================= */
-  .tool-box { 
-    display: none; position: fixed; inset: 0; background: rgba(2,6,23,0.95); backdrop-filter: blur(10px); z-index: 200; 
+  .tool-box {
+    display: none; position: fixed; inset: 0; background: var(--tool-box-bg); backdrop-filter: blur(10px); z-index: 200;
     flex-direction: column; padding: 40px; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .tool-box.active { display: flex; }
   @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
   .tb-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-  .tb-header h3 { font-size: 24px; color: #fff; }
+  .tb-header h3 { font-size: 24px; color: var(--text-main); }
   
   .tb-content { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--text-muted); }
   
   .tb-input-area { display: flex; gap: 15px; max-width: 800px; margin: 0 auto; width: 100%; }
-  .tb-input { 
-    flex: 1; background: #141a2e; border: 1px solid var(--border); padding: 16px; 
-    border-radius: 12px; color: white; font-size: 16px; transition: .3s;
+  .tb-input {
+    flex: 1; background: var(--card-bg); border: 1px solid var(--border); padding: 16px;
+    border-radius: 12px; color: var(--text-main); font-size: 16px; transition: .3s;
   }
   .tb-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(59,130,246,0.1); }
   
@@ -210,14 +386,14 @@
     z-index: 999; display: none; align-items: center; justify-content: center; animation: fadeIn 0.3s ease;
   }
   .modal {
-    background: #141a2e; border: 1px solid var(--blue); padding: 40px; border-radius: 24px;
+    background: var(--card-bg); border: 1px solid var(--blue); padding: 40px; border-radius: 24px;
     text-align: center; max-width: 420px; width: 90%; box-shadow: 0 0 60px var(--blue-glow);
     transform: scale(0.9); animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   @keyframes popIn { to { transform: scale(1); } }
   @keyframes fadeIn { to { opacity: 1; } }
 
-  .modal h2 { color: #fff; margin-bottom: 12px; font-size: 22px; }
+  .modal h2 { color: var(--text-main); margin-bottom: 12px; font-size: 22px; }
   .modal p { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; line-height: 1.6; }
   .modal-btn { 
     background: linear-gradient(135deg, var(--blue), #4f46e5); color: white; 
@@ -230,14 +406,222 @@
 
   .toast {
     position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
-    background: #fff; color: #000; padding: 12px 30px; border-radius: 50px;
+    background: var(--card-bg); color: var(--text-main); padding: 12px 30px; border-radius: 50px;
     font-weight: 700; font-size: 14px; transition: .4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; z-index: 999;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+  /* WELCOME SECTION (First Impression Area) */
+  .welcome-section {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  .welcome-content {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 20px;
+  }
+
+  .welcome-left { flex: 1; min-width: 200px; }
+  .welcome-right { display: flex; align-items: center; }
+
+  .welcome-message {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+  }
+
+  .welcome-emoji { font-size: 24px; }
+  .welcome-text {
+    font-size: 20px; font-weight: 700; color: var(--text-main);
+  }
+
+  .user-details {
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  }
+
+  .plan-badge {
+    background: linear-gradient(135deg, var(--blue), #4f46e5);
+    color: white; padding: 6px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+  }
+
+  .plan-badge.free {
+    background: linear-gradient(135deg, #64748b, #475569);
+    box-shadow: 0 2px 8px rgba(100,116,139,0.3);
+  }
+
+  .plan-badge.premium {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    box-shadow: 0 2px 8px rgba(168,85,247,0.3);
+  }
+
+  .member-since {
+    color: var(--text-muted); font-size: 14px; font-weight: 500;
+  }
+
+  .notification-icon-small {
+    background: rgba(59, 130, 246, 0.1); color: var(--blue);
+    border: 1px solid rgba(59, 130, 246, 0.2); padding: 8px;
+    border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  }
+  .notification-icon-small:hover {
+    background: var(--blue); color: #fff;
+    box-shadow: 0 3px 12px rgba(59,130,246,0.3);
+  }
+
+  /* PREMIUM HIGHLIGHT SECTION (Conversion Booster) */
+  .premium-highlight-section {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+    border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 18px;
+    padding: 30px; margin-bottom: 40px; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);
+    position: relative; overflow: hidden;
+  }
+  .premium-highlight-section::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .premium-highlight-content {
+    display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center;
+    position: relative; z-index: 1;
+  }
+
+  .premium-benefits h3 {
+    font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .premium-benefits ul {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .premium-benefits li {
+    color: var(--text-muted); font-size: 15px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .premium-benefits li::before {
+    content: "✨"; font-size: 14px;
+  }
+
+  .unlock-message {
+    text-align: center; padding: 20px; background: rgba(255,255,255,0.05);
+    border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+  }
+  .unlock-message p {
+    font-size: 16px; font-weight: 600; color: var(--text-main); margin: 0;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  .upgrade-cta {
+    text-align: center;
+  }
+  .upgrade-btn {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: white; border: none; padding: 16px 32px; border-radius: 50px;
+    font-weight: 800; font-size: 16px; cursor: pointer; text-decoration: none;
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4); transition: 0.3s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .upgrade-btn:hover {
+    transform: translateY(-3px); box-shadow: 0 12px 35px rgba(168, 85, 247, 0.6);
+  }
+
+  /* USAGE / ACTIVITY OVERVIEW SECTION */
+  .usage-overview-section {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  .usage-overview-content {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;
+    align-items: center;
+  }
+
+  .usage-metric {
+    display: flex; align-items: center; gap: 12px; padding: 16px;
+    background: rgba(59, 130, 246, 0.05); border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.1); transition: 0.3s;
+  }
+
+  .usage-metric:hover {
+    background: rgba(59, 130, 246, 0.1); transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+  }
+
+  .metric-icon {
+    font-size: 24px; flex-shrink: 0;
+  }
+
+  .metric-info {
+    flex: 1;
+  }
+
+  .metric-value {
+    font-size: 18px; font-weight: 800; color: var(--text-main);
+    margin-bottom: 2px;
+  }
+
+  .metric-label {
+    font-size: 12px; color: var(--text-muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* ALERTS & MESSAGES BOX */
+  .alerts-box {
+    position: fixed; top: 120px; right: 40px; width: 280px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    z-index: 100; animation: fadeIn 0.3s ease;
+  }
+  .alerts-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--border); padding-bottom: 8px;
+  }
+  .alerts-icon { font-size: 18px; }
+  .alerts-title { font-size: 14px; font-weight: 700; color: var(--text-main); }
+  .alerts-content { max-height: 200px; overflow-y: auto; }
+  .alert-item {
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px; color: var(--text-muted); line-height: 1.4;
+  }
+  .alert-item:last-child { border-bottom: none; }
+  .alert-item.urgent { color: #ef4444; font-weight: 600; }
+  .alert-item.warning { color: #f59e0b; font-weight: 600; }
+
+  /* TIPS / SUGGESTIONS BOX */
+  .tips-box {
+    position: fixed; top: 420px; right: 40px; width: 280px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    z-index: 100; animation: fadeIn 0.3s ease;
+  }
+  .tips-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--border); padding-bottom: 8px;
+  }
+  .tips-icon { font-size: 18px; }
+  .tips-title { font-size: 14px; font-weight: 700; color: var(--text-main); }
+  .tips-content { max-height: 150px; overflow-y: auto; }
+  .tips-item {
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px; color: var(--text-muted); line-height: 1.4;
+  }
+  .tips-item:last-child { border-bottom: none; }
+
+  /* Mobile adjustments for premium section */
+  @media(max-width:900px){
+    .premium-highlight-content {
+      grid-template-columns: 1fr; gap: 20px; text-align: center;
+    }
+    .unlock-message { padding: 16px; }
+    .alerts-box { position: static; width: 100%; margin-bottom: 20px; }
+  }
+
   /* Mobile */
-  .menu-toggle { display: none; font-size: 26px; background: none; border: none; color: #fff; }
+  .menu-toggle { display: none; font-size: 26px; background: none; border: none; color: var(--text-main); }
   @media(max-width:900px){
     .sidebar{ position: fixed; left: -280px; height: 100%; box-shadow: 20px 0 60px #000; }
     .sidebar.active{ left: 0; }
@@ -247,7 +631,105 @@
     .header-right { display: none; }
     .page-title { display: none; }
     .credit-box { margin-left: auto; }
+
+    .welcome-section { padding: 20px; }
+    .welcome-content { flex-direction: column; align-items: flex-start; }
+    .welcome-left { width: 100%; }
+    .user-details { margin-top: 8px; }
   }
+
+  /* RECENT ACTIVITY / HISTORY SECTION */
+  .recent-activity-section {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  .recent-activity-content {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+    align-items: center;
+  }
+
+  .activity-item {
+    display: flex; align-items: center; gap: 12px; padding: 16px;
+    background: rgba(59, 130, 246, 0.05); border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.1); transition: 0.3s;
+  }
+
+  .activity-item:hover {
+    background: rgba(59, 130, 246, 0.1); transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+  }
+
+  .activity-icon {
+    font-size: 24px; flex-shrink: 0;
+  }
+
+  .activity-info {
+    flex: 1;
+  }
+
+  .activity-value {
+    font-size: 16px; font-weight: 700; color: var(--text-main);
+    margin-bottom: 2px;
+  }
+
+.activity-label {
+  font-size: 12px; color: var(--text-muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* FOOTER STYLES */
+.footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  background: var(--card-bg);
+  position: relative;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-left, .footer-center, .footer-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: 0.2s;
+}
+.footer a:hover {
+  color: var(--blue);
+}
+.feedback-btn {
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.feedback-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59,130,246,0.3);
+}
+@media(max-width:900px){
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
   </style>
 </head>
 <body>
@@ -256,22 +738,25 @@
   <div class="grid-pattern"></div>
 
   <aside class="sidebar" id="sidebar">
-    <a href="index.html" class="brand">Tech<span>Vyro</span></a>
+    <a href="index.html" class="brand">
+      <img src="./logo-192.png" alt="TechVyro" class="brand-logo">
+      <div class="brand-name">TechVyro</div>
+    </a>
 
     <ul class="nav-menu">
-      <li class="nav-item active" onclick="scrollToTop()"><span>🏠</span> Dashboard</li>
-      
+      <li class="nav-item active" onclick="scrollToTop()" data-tooltip="Return to top of dashboard"><span>🏠</span> Dashboard</li>
+
       <div class="nav-label">Navigate Tools</div>
-      <a href="#section-ai" class="nav-item"><span>🧠</span> AI Tools</a>
-      <a href="#section-design" class="nav-item"><span>🎨</span> Design</a>
-      <a href="#section-dev" class="nav-item"><span>🔧</span> Dev Tools</a>
-      <a href="#section-seo" class="nav-item"><span>📈</span> SEO & Social</a>
-      <a href="#section-util" class="nav-item"><span>🔐</span> Utility</a>
-      <a href="#section-file" class="nav-item"><span>📂</span> File Tools</a>
+      <a href="#section-ai" class="nav-item" data-tooltip="Explore AI-powered tools for chat, image generation, and more"><span>🧠</span> AI Tools</a>
+      <a href="#section-design" class="nav-item" data-tooltip="Design tools for colors, images, logos, and creative work"><span>🎨</span> Design</a>
+      <a href="#section-dev" class="nav-item" data-tooltip="Developer utilities for code formatting, testing, and debugging"><span>🔧</span> Dev Tools</a>
+      <a href="#section-seo" class="nav-item" data-tooltip="SEO analysis, keyword research, and social media tools"><span>📈</span> SEO & Social</a>
+      <a href="#section-util" class="nav-item" data-tooltip="Security, conversion, and utility tools"><span>🔐</span> Utility</a>
+      <a href="#section-file" class="nav-item" data-tooltip="File processing, conversion, and management tools"><span>📂</span> File Tools</a>
     </ul>
 
     <div class="sidebar-footer">
-      <a href="pricing.html" class="sidebar-upgrade-btn">
+      <a href="pricing.html" class="sidebar-upgrade-btn" data-tooltip="Unlock unlimited credits and access to all premium tools!">
         🚀 Upgrade to Premium
       </a>
 
@@ -284,85 +769,749 @@
   </aside>
 
   <main class="main-content">
-    
+
+    <!-- HEADER - Moved to top as first element -->
     <div class="header">
       <div style="display:flex; align-items:center; gap:15px">
         <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <img src="./logo-192.png" alt="TechVyro" class="header-logo">
         <div class="page-title">
           <h1>Dashboard</h1>
           <p>Access all tools.</p>
         </div>
+
+        <div class="search-container">
+          <input type="text" id="globalSearch" class="search-input" placeholder="Search tools...">
+        </div>
       </div>
 
-      <div class="credit-box">
+      <div class="credit-box" data-tooltip="Your remaining credits for using AI tools. Upgrade for unlimited access!">
         <div class="credit-text" id="creditText">⚡ 200 Credits</div>
         <div class="credit-track"><div class="credit-fill" id="creditBar" style="width: 100%;"></div></div>
       </div>
 
-      <div class="header-right">
-        <button onclick="logout()" class="logout-btn">Logout</button>
+      <div class="settings-container">
+        <button class="settings-btn" onclick="toggleSettings()" data-tooltip="Access account settings and options">⚙️</button>
+        <div class="settings-dropdown" id="settingsDropdown">
+          <div class="settings-item" onclick="openProfile()">
+            <span>👤</span> Profile
+          </div>
+          <div class="settings-item" onclick="openHelp()">
+            <span>❓</span> Help
+          </div>
+          <div class="settings-item logout" onclick="logout()">
+            <span>🚪</span> Logout
+          </div>
+        </div>
+      </div>
+
+      <div class="theme-toggle-container">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" data-tooltip="Toggle between light and dark theme">🌙</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD CONTAINER - Two Column Layout -->
+    <div class="dashboard-container">
+      <!-- LEFT COLUMN - Main Content (70%) -->
+      <div class="dashboard-main">
+
+        <!-- WELCOME SECTION (First Impression Area) -->
+        <div class="welcome-section">
+          <div class="welcome-content">
+            <div class="welcome-left">
+              <div class="welcome-message">
+                <span class="welcome-emoji">👋</span>
+                <span class="welcome-text">Welcome back, <span id="userName">User</span>!</span>
+              </div>
+              <div class="user-details">
+                <span class="plan-badge" id="userPlan">Free Plan</span>
+                <span class="member-since" id="memberSince">Member since...</span>
+              </div>
+            </div>
+            <div class="welcome-right">
+              <button class="notification-icon-small" onclick="toggleNotifications()" data-tooltip="View your notifications">
+                🔔
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PREMIUM HIGHLIGHT SECTION (Conversion Booster) -->
+        <div class="premium-highlight-section">
+          <div class="premium-highlight-content">
+            <div class="premium-benefits">
+              <h3>⭐ Premium Benefits</h3>
+              <ul>
+                <li>Unlimited AI tool usage</li>
+                <li>Advanced features access</li>
+                <li>Priority support</li>
+                <li>Exclusive tools</li>
+              </ul>
+            </div>
+            <div class="unlock-message">
+              <p>🔓 Unlock Premium Now</p>
+              <div class="upgrade-cta">
+                <a href="pricing.html" class="upgrade-btn">Upgrade Now ✨</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USAGE / ACTIVITY OVERVIEW SECTION -->
+        <div class="usage-overview-section">
+          <div class="usage-overview-content">
+            <div class="usage-metric">
+              <div class="metric-icon">📊</div>
+              <div class="metric-info">
+                <div class="metric-value" id="todayUsage">0</div>
+                <div class="metric-label">Today's Usage</div>
+              </div>
+            </div>
+            <div class="usage-metric">
+              <div class="metric-icon">🎯</div>
+              <div class="metric-info">
+                <div class="metric-value" id="remainingLimit">--</div>
+                <div class="metric-label">Remaining Limit</div>
+              </div>
+            </div>
+            <div class="usage-metric">
+              <div class="metric-icon">🕒</div>
+              <div class="metric-info">
+                <div class="metric-value" id="lastActivity">--</div>
+                <div class="metric-label">Last Activity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT ACTIVITY / HISTORY SECTION -->
+        <div class="recent-activity-section">
+          <div class="section-header">
+            📜 Recent Activity
+            <div class="section-header-line"></div>
+          </div>
+          <div class="recent-activity-content">
+            <div class="activity-item">
+              <div class="activity-icon">🔧</div>
+              <div class="activity-info">
+                <div class="activity-value" id="lastUsedTool">--</div>
+                <div class="activity-label">Last Used Tool</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">🔐</div>
+              <div class="activity-info">
+                <div class="activity-value" id="lastLoginTime">--</div>
+                <div class="activity-label">Last Login Time</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">🚀</div>
+              <div class="activity-info">
+                <div class="activity-value" id="lastUpgradeAttempt">--</div>
+                <div class="activity-label">Last Upgrade Attempt</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN - Sidebar Content (30%) -->
+      <div class="dashboard-sidebar">
+
+        <!-- ALERTS & MESSAGES BOX - Removed fixed positioning -->
+        <div class="alerts-box" id="alertsBox">
+          <div class="alerts-header">
+            <span class="alerts-icon">🔔</span>
+            <span class="alerts-title">Alerts</span>
+          </div>
+          <div class="alerts-content" id="alertsContent">
+            <!-- Dynamic alerts will be inserted here -->
+          </div>
+        </div>
+
+        <!-- TIPS / SUGGESTIONS SECTION - Removed fixed positioning -->
+        <div class="tips-box" id="tipsBox">
+          <div class="tips-header">
+            <span class="tips-icon">💡</span>
+            <span class="tips-title">Smart Tips</span>
+          </div>
+          <div class="tips-content" id="tipsContent">
+            <!-- Dynamic tips will be inserted here -->
+          </div>
+        </div>
+
       </div>
     </div>
 
     <div id="section-ai" class="section-header">🧠 AI Tools</div>
-    <div class="grid">
-      <div class="card js-tilt" onclick="checkCreditAndOpen('chat')"> <div class="card-content"><div class="card-icon">🤖</div> <h3>AI Chat</h3></div> </div>
-      <div class="card js-tilt" onclick="checkCreditAndOpen('image')"> <div class="card-content"><div class="card-icon">🎨</div> <h3>Image Gen</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🎙️</div> <h3>Voice AI</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🎥</div> <h3>Video AI</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📝</div> <h3>Content AI</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">💻</div> <h3>Code AI</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📄</div> <h3>Resume AI</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">✉️</div> <h3>Email AI</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📊</div> <h3>Data AI</h3></div> </div>
+    <div class="grid" id="ai-tools-content" style="display: grid;">
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🤖</div>
+          <h3>AI Chat</h3>
+          <p class="card-description">Chat with AI assistant for help with various tasks</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('chat')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🎨</div>
+          <h3>Image Gen</h3>
+          <p class="card-description">Generate images from text prompts using AI</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('image')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🎙️</div>
+          <h3>Voice AI</h3>
+          <p class="card-description">Convert text to speech and speech to text</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🎥</div>
+          <h3>Video AI</h3>
+          <p class="card-description">Create and edit videos with AI assistance</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📝</div>
+          <h3>Content AI</h3>
+          <p class="card-description">Generate articles, blogs, and marketing content</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">💻</div>
+          <h3>Code AI</h3>
+          <p class="card-description">AI-powered code generation and debugging</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📄</div>
+          <h3>Resume AI</h3>
+          <p class="card-description">Create professional resumes with AI help</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">✉️</div>
+          <h3>Email AI</h3>
+          <p class="card-description">Generate professional emails and responses</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📊</div>
+          <h3>Data AI</h3>
+          <p class="card-description">Analyze and visualize data with AI insights</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="section-design" class="section-header">🎨 Design & Media</div>
-    <div class="grid">
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🎨</div> <h3>Color Gen</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🖼️</div> <h3>Img Compress</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧩</div> <h3>Logo Maker</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">✨</div> <h3>BG Remover</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🖌️</div> <h3>Mockup Gen</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔠</div> <h3>Font Pair</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🌈</div> <h3>Gradient Gen</h3></div> </div>
+    <div class="grid" id="design-tools-grid" style="display: none;">
+      <!-- Loading skeletons will be inserted here -->
+      <div class="skeleton-card" style="display: none;">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid" id="design-tools-content" style="display: grid;">
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🎨</div>
+          <h3>Color Gen</h3>
+          <p class="card-description">Generate color palettes and schemes</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🖼️</div>
+          <h3>Img Compress</h3>
+          <p class="card-description">Compress images without losing quality</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🧩</div>
+          <h3>Logo Maker</h3>
+          <p class="card-description">Create custom logos with AI</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">✨</div>
+          <h3>BG Remover</h3>
+          <p class="card-description">Remove backgrounds from images</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🖌️</div>
+          <h3>Mockup Gen</h3>
+          <p class="card-description">Generate product mockups</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔠</div>
+          <h3>Font Pair</h3>
+          <p class="card-description">Find perfect font combinations</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🌈</div>
+          <h3>Gradient Gen</h3>
+          <p class="card-description">Create beautiful gradients</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="section-dev" class="section-header">🔧 Dev & Tech</div>
-    <div class="grid">
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧩</div> <h3>JSON Format</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">⚡</div> <h3>Code Minify</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔐</div> <h3>JWT Decode</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔗</div> <h3>URL Encode</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧪</div> <h3>API Tester</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🧬</div> <h3>Regex Test</h3></div> </div>
+    <div class="grid" id="dev-tools-grid" style="display: none;">
+      <!-- Loading skeletons will be inserted here -->
+      <div class="skeleton-card" style="display: none;">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid" id="dev-tools-content" style="display: grid;">
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🧩</div>
+          <h3>JSON Format</h3>
+          <p class="card-description">Format and validate JSON data</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">⚡</div>
+          <h3>Code Minify</h3>
+          <p class="card-description">Minify and compress code files</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔐</div>
+          <h3>JWT Decode</h3>
+          <p class="card-description">Decode and inspect JWT tokens</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔗</div>
+          <h3>URL Encode</h3>
+          <p class="card-description">Encode and decode URLs</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🧪</div>
+          <h3>API Tester</h3>
+          <p class="card-description">Test and debug API endpoints</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🧬</div>
+          <h3>Regex Test</h3>
+          <p class="card-description">Test and validate regular expressions</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="section-seo" class="section-header">📈 SEO & Social</div>
     <div class="grid">
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📈</div> <h3>SEO Check</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔎</div> <h3>Keyword Tool</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🏷️</div> <h3>Hashtag Gen</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔗</div> <h3>Link Short</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📍</div> <h3>UTM Gen</h3></div> </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📈</div>
+          <h3>SEO Check</h3>
+          <p class="card-description">Analyze website SEO performance</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔎</div>
+          <h3>Keyword Tool</h3>
+          <p class="card-description">Research keywords for content</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🏷️</div>
+          <h3>Hashtag Gen</h3>
+          <p class="card-description">Generate social media hashtags</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔗</div>
+          <h3>Link Short</h3>
+          <p class="card-description">Shorten URLs for sharing</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('urlshort')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📍</div>
+          <h3>UTM Gen</h3>
+          <p class="card-description">Create UTM tracking links</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="section-util" class="section-header">🔐 Utility & Security</div>
     <div class="grid">
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔑</div> <h3>Pass Gen</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🌐</div> <h3>IP Lookup</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🛡️</div> <h3>SSL Check</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📦</div> <h3>QR Gen</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">👤</div> <h3>Fake Data</h3></div> </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔑</div>
+          <h3>Pass Gen</h3>
+          <p class="card-description">Generate secure passwords</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🌐</div>
+          <h3>IP Lookup</h3>
+          <p class="card-description">Find IP address details</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🛡️</div>
+          <h3>SSL Check</h3>
+          <p class="card-description">Verify SSL certificate status</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📦</div>
+          <h3>QR Gen</h3>
+          <p class="card-description">Create QR codes</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">👤</div>
+          <h3>Fake Data</h3>
+          <p class="card-description">Generate fake data for testing</p>
+          <div class="card-footer">
+            <span class="card-status premium">🔒 Premium</span>
+            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="section-file" class="section-header">📂 File & Convert</div>
     <div class="grid">
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📄</div> <h3>PDF Tools</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🖼️</div> <h3>Img Convert</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔁</div> <h3>File Convert</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">🔠</div> <h3>Case Convert</h3></div> </div>
-      <div class="card js-tilt" onclick="showComingSoon()"> <div class="card-content"><div class="card-icon">📏</div> <h3>Unit Convert</h3></div> </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📄</div>
+          <h3>PDF Tools</h3>
+          <p class="card-description">Manage and manipulate PDF files</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🖼️</div>
+          <h3>Img Convert</h3>
+          <p class="card-description">Convert images between formats</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔁</div>
+          <h3>File Convert</h3>
+          <p class="card-description">Convert files between different formats</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔠</div>
+          <h3>Case Convert</h3>
+          <p class="card-description">Change text case (upper/lower)</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📏</div>
+          <h3>Unit Convert</h3>
+          <p class="card-description">Convert between measurement units</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="showComingSoon()">Open</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <span>Version 1.0.0</span>
+        </div>
+        <div class="footer-center">
+          <a href="terms.html">Terms of Service</a> | <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-right">
+          <span>Support: <a href="mailto:techvyro@gmail.com">techvyro@gmail.com</a></span>
+          <button class="feedback-btn" onclick="showComingSoon()">Feedback</button>
+        </div>
+      </div>
     </div>
 
     <div style="height:100px"></div>
@@ -396,6 +1545,11 @@
   <div id="toast" class="toast">🚀 Coming Soon!</div>
 
   <script type="module">
+    import './js/auth-check.js';
+    import './js/dashboard.js';
+    import './js/ux-enhancements.js';
+    import './js/notifications.js';
+
     // --- 3D TILT LOGIC ---
     document.querySelectorAll('.js-tilt').forEach(card => {
       card.addEventListener('mousemove', (e) => {
@@ -452,16 +1606,312 @@
     window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('active');
     window.scrollToTop = () => document.querySelector('.main-content').scrollTop = 0;
 
+    // --- THEME TOGGLE ---
+    window.toggleTheme = () => {
+      const body = document.body;
+      const isLight = body.classList.contains('light-mode');
+      const newTheme = isLight ? 'dark' : 'light';
+      if (newTheme === 'light') {
+        body.classList.add('light-mode');
+      } else {
+        body.classList.remove('light-mode');
+      }
+      const button = document.querySelector('.theme-toggle-btn');
+      button.textContent = newTheme === 'light' ? '☀️' : '🌙';
+      localStorage.setItem('theme', newTheme);
+    };
+
+    // --- NOTIFICATIONS ---
+    // Initialize notifications system
+    window.notifications.initNotifications();
+    window.notifications.initNotificationUI();
+
+    // Load notifications from Firebase
+    async function loadNotifications() {
+      const notifications = await window.notifications.getNotifications();
+      const dropdown = document.getElementById('notificationDropdown');
+      const badge = document.getElementById('notificationBadge');
+      const unreadCount = notifications.filter(n => !n.isRead).length;
+
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      const header = dropdown.querySelector('.notification-header');
+      header.innerHTML = `Notifications ${unreadCount > 0 ? `<span style="color: var(--blue); font-size: 14px;">(${unreadCount} new)</span>` : ''}`;
+
+      // Clear existing items
+      const existingItems = dropdown.querySelectorAll('.notification-item');
+      existingItems.forEach(item => item.remove());
+
+      const emptyDiv = dropdown.querySelector('.notification-empty');
+      if (notifications.length === 0) {
+        emptyDiv.style.display = 'block';
+        return;
+      }
+      emptyDiv.style.display = 'none';
+
+      notifications.forEach(notification => {
+        const item = document.createElement('div');
+        item.className = `notification-item ${!notification.isRead ? 'unread' : ''}`;
+        item.onclick = () => markAsRead(notification.id);
+
+        const timeAgo = getTimeAgo(notification.createdAt?.toDate?.() || new Date(notification.createdAt));
+
+        item.innerHTML = `
+          <div class="notification-title">${notification.title}</div>
+          <div class="notification-message">${notification.message}</div>
+          <div class="notification-time">${timeAgo}</div>
+        `;
+
+        dropdown.appendChild(item);
+      });
+    }
+
+    async function markAsRead(id) {
+      await window.notifications.markAsRead(id);
+      await loadNotifications(); // Refresh the list
+    }
+
+    function getTimeAgo(date) {
+      const now = new Date();
+      const diff = now - date;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes} minutes ago`;
+      if (hours < 24) return `${hours} hours ago`;
+      return `${days} days ago`;
+    }
+
+    // Initialize notifications on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Theme initialization
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+      }
+      const button = document.querySelector('.theme-toggle-btn');
+      button.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+
+      await loadNotifications();
+
+      // Initialize alerts and tips systems
+      initAlerts();
+      initTips();
+
+      // Example: Show a welcome notification after 2 seconds
+      setTimeout(() => {
+        window.notifications.showInAppNotification(
+          "Welcome Back!",
+          "You have new updates in your dashboard. Check out the latest AI tools!",
+          "high"
+        );
+      }, 2000);
+    });
+
+    // --- ALERTS SYSTEM ---
+    async function getAlerts() {
+      const user = auth.currentUser;
+      if (!user) return [];
+
+      try {
+        const alertsRef = collection(db, 'alerts');
+        const q = query(alertsRef, where('userId', '==', user.uid), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        const alerts = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          alerts.push({
+            message: data.message,
+            type: data.type || 'info',
+            time: getTimeAgo(data.createdAt?.toDate?.() || new Date(data.createdAt))
+          });
+        });
+        return alerts;
+      } catch (error) {
+        console.error('Error fetching alerts:', error);
+        return [];
+      }
+    }
+
+    async function initAlerts() {
+      const alertsContent = document.getElementById('alertsContent');
+      alertsContent.innerHTML = '<div class="alert-item">Loading...</div>';
+
+      const alertsData = await getAlerts();
+      let currentAlertIndex = 0;
+
+      if (alertsData.length === 0) {
+        alertsContent.innerHTML = '<div class="alert-item">No new alerts.</div>';
+        return;
+      }
+
+      function showAlert(index) {
+        const alert = alertsData[index];
+        const alertElement = document.createElement('div');
+        alertElement.className = `alert-item ${alert.type}`;
+        alertElement.innerHTML = `
+          <div>${alert.message}</div>
+          <small style="color: var(--text-muted); font-size: 11px; margin-top: 4px; display: block;">${alert.time}</small>
+        `;
+        alertsContent.innerHTML = '';
+        alertsContent.appendChild(alertElement);
+        alertElement.style.opacity = '0';
+        setTimeout(() => {
+          alertElement.style.transition = 'opacity 0.3s ease';
+          alertElement.style.opacity = '1';
+        }, 50);
+      }
+
+      showAlert(currentAlertIndex);
+
+      setInterval(() => {
+        currentAlertIndex = (currentAlertIndex + 1) % alertsData.length;
+        showAlert(currentAlertIndex);
+      }, 5000);
+    }
+
+
+    // --- TIPS / SUGGESTIONS SYSTEM ---
+    async function getTips() {
+      // Simulate fetching data from an API
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve([
+            { message: "Try the AI Chat tool for instant help with coding questions", time: "Tip" },
+            { message: "Use the Image Generator to create custom graphics for your projects", time: "Tip" },
+            { message: "Upgrade to Premium for unlimited access to all tools", time: "Suggestion" },
+          ]);
+        }, 1500);
+      });
+    }
+
+    async function initTips() {
+      const tipsContent = document.getElementById('tipsContent');
+      tipsContent.innerHTML = '<div class="tips-item">Loading...</div>';
+
+      const tipsData = await getTips();
+      let currentTipIndex = 0;
+
+      if (tipsData.length === 0) {
+        tipsContent.innerHTML = '<div class="tips-item">No new tips.</div>';
+        return;
+      }
+
+      function showTip(index) {
+        const tip = tipsData[index];
+        const tipElement = document.createElement('div');
+        tipElement.className = 'tips-item';
+        tipElement.innerHTML = `
+          <div>${tip.message}</div>
+          <small style="color: var(--text-muted); font-size: 11px; margin-top: 4px; display: block;">${tip.time}</small>
+        `;
+        tipsContent.innerHTML = '';
+        tipsContent.appendChild(tipElement);
+        tipElement.style.opacity = '0';
+        setTimeout(() => {
+          tipElement.style.transition = 'opacity 0.3s ease';
+          tipElement.style.opacity = '1';
+        }, 50);
+      }
+
+      showTip(currentTipIndex);
+
+      setInterval(() => {
+        currentTipIndex = (currentTipIndex + 1) % tipsData.length;
+        showTip(currentTipIndex);
+      }, 7000);
+    }
+
+    // --- QUICK ACTIONS ---
+    window.toggleSettings = () => {
+      const settingsDropdown = document.getElementById('settingsDropdown');
+      settingsDropdown.classList.toggle('show');
+    };
+
+    window.openProfile = () => {
+      window.location.href = "profile.html";
+    };
+
+    window.openHelp = () => {
+      window.location.href = "help.html";
+    };
+
     // --- LOGOUT ---
     window.logout = async () => {
-      localStorage.removeItem("techvyro_user_logged_in");
       try {
+        // Sign out from Firebase
         const { auth } = await import("./js/firebase.js");
         const { signOut } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js");
         await signOut(auth);
-      } catch(e) {}
-      window.location.href = "index.html";
+
+        // Clear all local storage data
+        localStorage.clear();
+
+        // Clear session storage if used
+        sessionStorage.clear();
+
+        // Clear any cached data
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(
+            cacheNames.map(cacheName => caches.delete(cacheName))
+          );
+        }
+
+        // Force redirect to login page
+        window.location.replace("login.html");
+      } catch (error) {
+        console.error("Logout error:", error);
+        // Force redirect even if logout fails
+        window.location.replace("login.html");
+      }
     };
+
+    // --- GLOBAL SEARCH FUNCTIONALITY ---
+    document.getElementById('globalSearch').addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.card');
+      let visibleSections = new Set();
+
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('.card-description').textContent.toLowerCase();
+
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+          card.style.display = 'block';
+          // Find the section header for this card
+          let section = card.closest('.grid').previousElementSibling;
+          if (section && section.classList.contains('section-header')) {
+            visibleSections.add(section.id);
+          }
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show/hide section headers based on visible cards
+      document.querySelectorAll('.section-header').forEach(header => {
+        const sectionId = header.id;
+        const grid = header.nextElementSibling;
+        if (grid && grid.classList.contains('grid')) {
+          const visibleCards = grid.querySelectorAll('.card[style*="block"]');
+          if (visibleCards.length > 0 || !searchTerm) {
+            header.style.display = 'block';
+            grid.style.display = 'grid';
+          } else {
+            header.style.display = 'none';
+            grid.style.display = 'none';
+          }
+        }
+      });
+    });
   </script>
 
 </body>

@@ -160,7 +160,19 @@
         <input type="password" id="password" class="input-field" placeholder="At least 6 characters">
       </div>
 
-      <button id="signupBtn" class="btn">Create Account</button>
+      <div class="input-group">
+        <label class="label">Referral Code (Optional)</label>
+        <input type="text" id="referralCode" class="input-field" placeholder="Enter referral code to get rewards">
+      </div>
+
+      <div class="input-group" style="text-align: left; margin-bottom: 15px;">
+        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #cbd5e1; cursor: pointer;">
+          <input type="checkbox" id="termsCheckbox" style="margin-top: 2px;">
+          <span>I agree to the <a href="terms.html" target="_blank" style="color: var(--blue); text-decoration: none;">Terms of Service</a>, <a href="privacy.html" target="_blank" style="color: var(--blue); text-decoration: none;">Privacy Policy</a>, and <a href="refund.html" target="_blank" style="color: var(--blue); text-decoration: none;">Refund Policy</a>.</span>
+        </label>
+      </div>
+
+      <button id="signupBtn" class="btn" disabled>Create Account</button>
 
       <div id="toast" class="toast"></div>
 
@@ -206,6 +218,7 @@
 
     const btn = document.getElementById("signupBtn");
     const toast = document.getElementById("toast");
+    const termsCheckbox = document.getElementById("termsCheckbox");
 
     const showToast = (msg, type) => {
       toast.className = `toast ${type}`;
@@ -213,6 +226,11 @@
       toast.style.display = "block";
       setTimeout(() => toast.style.display = "none", 4000);
     };
+
+    // Enable/disable button based on checkbox
+    termsCheckbox.addEventListener("change", () => {
+      btn.disabled = !termsCheckbox.checked;
+    });
 
     btn.addEventListener("click", async () => {
       const u = document.getElementById("username").value.trim();

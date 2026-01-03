@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Upgrade Confirmation - TechVyro AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            margin: 20px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        .upgrade-icon {
+            font-size: 48px;
+            margin: 20px 0;
+        }
+        .title {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .upgrade-summary {
+            background-color: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .plan-badge {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .features-list {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .feature-item {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .feature-item:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .support-info {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">TechVyro AI</div>
+            <div class="upgrade-icon">🚀</div>
+            <h1 class="title">Congratulations on Your Upgrade!</h1>
+        </div>
+
+        <div class="content">
+            <p>Hello {{userName}},</p>
+
+            <p>Thank you for upgrading your TechVyro AI account! Your payment has been processed successfully, and your account has been upgraded to the <strong>{{planTitle}}</strong>.</p>
+
+            <div class="upgrade-summary">
+                <h3>Upgrade Summary</h3>
+                <p><strong>Previous Plan:</strong> {{fromPlan}}</p>
+                <p><strong>New Plan:</strong> {{toPlan}}</p>
+                <div class="plan-badge">{{planTitle}}</div>
+                <p><strong>Upgrade Date:</strong> {{upgradeDate}}</p>
+            </div>
+
+            <p>You now have access to premium features including:</p>
+
+            <div class="features-list">
+                <div class="feature-item">Advanced AI models (Claude Opus 4)</div>
+                <div class="feature-item">Higher usage limits and priority processing</div>
+                <div class="feature-item">Advanced analytics and insights</div>
+                <div class="feature-item">Priority customer support</div>
+                <div class="feature-item">Early access to new features</div>
+                <div class="feature-item">Custom AI model fine-tuning</div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{dashboardUrl}}" class="cta-button">Explore Premium Features</a>
+            </div>
+
+            <div class="support-info">
+                <strong>Need help getting started?</strong><br>
+                Check out our <a href="{{helpUrl}}">premium user guide</a> or contact our support team at <a href="mailto:support@techvyro.com">support@techvyro.com</a>.
+            </div>
+
+            <p>Thank you for choosing TechVyro AI. We're excited to see what you'll create with your upgraded account!</p>
+
+            <p>Best regards,<br>The TechVyro AI Team</p>
+        </div>
+
+        <div class="footer">
+            <p>
+                © 2024 TechVyro AI. All rights reserved.<br>
+                <a href="{{privacyUrl}}">Privacy Policy</a> | <a href="{{termsUrl}}">Terms of Service</a>
+            </p>
+            <p style="font-size: 12px; color: #9ca3af;">
+                You're receiving this email because you upgraded your TechVyro AI account.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

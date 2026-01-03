@@ -16,6 +16,15 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
+  // Check admin plan (more secure than email check)
+  const userPlan = await getUserPlan();
+  if (userPlan !== "admin") {
+    alert("Access denied. Admin plan required.");
+    location.href = "dashboard.html";
+    return;
+  }
+
+  // Fallback email check for additional security
   if (user.email !== ADMIN_EMAIL) {
     alert("Access denied. Admins only.");
     location.href = "dashboard.html";

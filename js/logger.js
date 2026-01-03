@@ -5,6 +5,7 @@
 
 import { db } from "./firebase.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { showError } from "./error-handler.js";
 
 // Log levels
 const LOG_LEVELS = {
@@ -63,6 +64,8 @@ async function storeLog(logEntry) {
       collectionName = 'payment_logs';
     } else if (logEntry.event.includes('error') || logEntry.level === 'ERROR') {
       collectionName = 'error_logs';
+    } else if (logEntry.data.category === 'usage_analytics') {
+      collectionName = 'usage_logs';
     }
 
     await addDoc(collection(collectionName), logEntry);
@@ -126,6 +129,31 @@ export function logUserAction(action, data = {}) {
   logger.info(`user_${action}`, {
     ...data,
     category: 'user_action'
+  });
+}
+
+// Usage Analytics Functions
+export function logToolUsage(toolName, data = {}) {
+  logger.info('tool_usage', {
+    ...data,
+    tool: toolName,
+    category: 'usage_analytics'
+  });
+}
+
+export function logDropOff(reason, data = {}) {
+  logger.warn('user_drop_off', {
+    ...data,
+    reason, // e.g., 'credit_exhausted', 'premium_feature_attempted'
+    category: 'usage_analytics'
+  });
+}
+
+export function logUpgradeBehavior(action, data = {}) {
+  logger.info('upgrade_behavior', {
+    ...data,
+    action, // e.g., 'usage_increased', 'tool_preference_changed'
+    category: 'usage_analytics'
   });
 }
 

@@ -1,19 +1,285 @@
 import { auth } from "./firebase.js";
-import { onAuthStateChanged } from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getCreditsByUid } from "./credits.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+const db = getFirestore();
+
+// --- LOADING STATES ---
+function showUserDataLoading() {
+  const userNameEl = document.getElementById("userName");
+  const userPlanEl = document.getElementById("userPlan");
+  const memberSinceEl = document.getElementById("memberSince");
+
+  if (userNameEl) userNameEl.innerText = "Loading...";
+  if (userPlanEl) userPlanEl.innerText = "Loading...";
+  if (memberSinceEl) memberSinceEl.innerText = "Loading...";
+
+  // Disable buttons during loading
+  disableButtonsDuringProcessing(true);
+}
+
+function hideUserDataLoading() {
+  // Loading is hidden by updating the elements with actual data
+  // Re-enable buttons after loading
+  disableButtonsDuringProcessing(false);
+}
+
+// --- BUTTON DISABLED STATES ---
+function disableButtonsDuringProcessing(disable) {
+  const buttonsToDisable = [
+    'settings-btn',
+    'theme-toggle-btn',
+    'notification-icon',
+    'sidebar-upgrade-btn'
+  ];
+
+  buttonsToDisable.forEach(btnId => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.disabled = disable;
+      btn.style.opacity = disable ? '0.6' : '1';
+      btn.style.cursor = disable ? 'not-allowed' : 'pointer';
+    }
+  });
+
+  // Also handle upgrade buttons in cards
+  const upgradeBtns = document.querySelectorAll('.upgrade-btn');
+  upgradeBtns.forEach(btn => {
+    btn.disabled = disable;
+    btn.style.opacity = disable ? '0.6' : '1';
+    btn.style.cursor = disable ? 'not-allowed' : 'pointer';
+  });
+}
+
+// --- PREMIUM AWARENESS ---
+function updatePremiumAwareness(userPlan) {
+  const upgradeButtons = document.querySelectorAll('.sidebar-upgrade-btn, .upgrade-btn');
+  const premiumSections = document.querySelectorAll('.premium-highlight-section');
+
+  if (userPlan === 'premium') {
+    // Hide upgrade buttons and premium highlight sections for premium users
+    upgradeButtons.forEach(btn => btn.style.display = 'none');
+    premiumSections.forEach(section => section.style.display = 'none');
+  } else {
+    // Show upgrade buttons and premium highlight sections for free users
+    upgradeButtons.forEach(btn => btn.style.display = 'block');
+    premiumSections.forEach(section => section.style.display = 'block');
+  }
+}
+
+// --- SETTINGS ACTIONS ---
+window.openProfile = () => {
+  // Navigate to profile page or open profile modal
+  window.location.href = "profile.html";
+};
+
+window.openHelp = () => {
+  // Navigate to help page
+  window.location.href = "help.html";
+};
+
+// --- AUTHENTICATION CHECK ---
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     location.href = "login.html";
     return;
   }
 
-  // Now user is guaranteed
-  const credits = await getCreditsByUid(user.uid);
+  // Show loading state for user data
+  showUserDataLoading();
 
-  const el = document.getElementById("credits");
-  if (el) {
-    el.innerText = credits;
+  try {
+    // Fetch user profile data from Firestore
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const userData = userDoc.data();
+
+    // Update Credits in Navbar
+    const credits = await getCreditsByUid(user.uid);
+    const el = document.getElementById("creditText");
+    if (el) el.innerText = `⚡ ${credits} Credits`;
+
+    // Update Progress Bar
+    const bar = document.getElementById("creditBar");
+    if(bar) bar.style.width = `${(credits/200)*100}%`;
+
+    // Update User Name
+    const nameEl = document.getElementById("userName");
+    if(nameEl) {
+      if (user.displayName) {
+        nameEl.innerText = user.displayName;
+      } else if (user.email) {
+        // Fallback to email username if no display name
+        nameEl.innerText = user.email.split('@')[0];
+      } else {
+        nameEl.innerText = "User";
+      }
+    }
+
+    // Update User Plan
+    const planEl = document.getElementById("userPlan");
+    const userPlan = userData?.plan || "free";
+    if (planEl) {
+      const planText = userPlan.charAt(0).toUpperCase() + userPlan.slice(1) + " Plan";
+      planEl.innerText = planText;
+      planEl.className = `plan-badge ${userPlan}`;
+    }
+
+    // Update Member Since Date
+    const memberSinceEl = document.getElementById("memberSince");
+    if (memberSinceEl && userData?.createdAt) {
+      const createdDate = userData.createdAt.toDate ? userData.createdAt.toDate() : new Date(userData.createdAt);
+      const formattedDate = createdDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      memberSinceEl.innerText = `Member since ${formattedDate}`;
+    }
+
+    // Dynamic Premium Awareness - Show/Hide upgrade elements based on plan
+    updatePremiumAwareness(userPlan);
+
+    // Hide loading state
+    hideUserDataLoading();
+
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    hideUserDataLoading();
+    // Fallback: show basic user info
+    const nameEl = document.getElementById("userName");
+    if(nameEl) {
+      if (user.displayName) {
+        nameEl.innerText = user.displayName;
+      } else if (user.email) {
+        nameEl.innerText = user.email.split('@')[0];
+      } else {
+        nameEl.innerText = "User";
+      }
+    }
   }
 });
+
+// --- DASHBOARD LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Ghost Loading Sequence: Show skeletons first, then content
+    const sectionsWithContent = ['ai-tools', 'design-tools', 'dev-tools'];
+    const sectionsWithoutContent = ['seo', 'util', 'file'];
+
+    // Show skeletons initially for sections with content
+    sectionsWithContent.forEach(id => {
+        const grid = document.getElementById(`${id}-grid`);
+        if (grid) grid.style.display = 'grid';
+        const content = document.getElementById(`${id}-content`);
+        if (content) content.style.display = 'none';
+    });
+
+    // Swap to content after 1.5 seconds
+    setTimeout(() => {
+        sectionsWithContent.forEach(id => {
+            const grid = document.getElementById(`${id}-grid`);
+            if (grid) grid.style.display = 'none';
+            const content = document.getElementById(`${id}-content`);
+            if (content) {
+                content.style.display = 'grid';
+                animateEntry(content);
+            }
+        });
+    }, 1500);
+
+    // Ensure grids are visible for sections without content
+    sectionsWithoutContent.forEach(id => {
+        const grid = document.getElementById(`${id}-grid`);
+        if (grid) grid.style.display = 'grid';
+    });
+
+
+    // 2. REAL-TIME SEARCH LOGIC
+    const searchInput = document.getElementById('globalSearch');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            let totalVisible = 0;
+            const allCards = document.querySelectorAll('.card');
+
+            allCards.forEach(card => {
+                const title = card.querySelector('h3')?.innerText.toLowerCase() || "";
+                const desc = card.querySelector('.card-description')?.innerText.toLowerCase() || "";
+
+                if (title.includes(term) || desc.includes(term)) {
+                    card.style.display = 'flex';
+                    card.parentElement.style.display = 'grid';
+                    totalVisible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Handle "No Results"
+            let noResultDiv = document.getElementById('search-no-results');
+            if (totalVisible === 0 && term.length > 0) {
+                if (!noResultDiv && window.emptyStateManager) {
+                    const tempContainer = document.querySelector('.main-content'); // Fallback container
+                    // You might need a specific container for search results in HTML
+                }
+            }
+        });
+    }
+
+    // 3. MOBILE SIDEBAR & OVERLAY
+    window.toggleSidebar = () => {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+
+        if (sidebar) sidebar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+    };
+
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            window.toggleSidebar();
+        });
+    }
+
+    // 4. SCROLL EFFECT FOR HEADER (Auth-Aware)
+    let lastScrollTop = 0;
+    const header = document.querySelector('.header');
+    const mainContent = document.querySelector('.main-content');
+
+    if (mainContent) {
+        mainContent.addEventListener('scroll', () => {
+            // Only apply scroll effect if user is authenticated
+            if (!auth.currentUser) return;
+
+            const scrollTop = mainContent.scrollTop;
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down - hide header
+                header.classList.add('hidden');
+            } else {
+                // Scrolling up - show header
+                header.classList.remove('hidden');
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, { passive: true });
+    }
+});
+
+// Helper: Staggered Animation for Cards
+function animateEntry(container) {
+    const cards = Array.from(container.children);
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+            card.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+}

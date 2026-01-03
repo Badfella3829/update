@@ -11,6 +11,32 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
+    // Allow authenticated users to write to usage_logs if uid matches
+    match /usage_logs/{logId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.uid ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin');
+    }
+
+    // Allow authenticated users to write to auth_logs if uid matches
+    match /auth_logs/{logId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.uid ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin');
+    }
+
+    // Allow authenticated users to read feature_flags
+    match /system/feature_flags {
+      allow read: if request.auth != null;
+    }
+
+    // Allow users to read/write their own notifications
+    match /notifications/{notificationId} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == resource.data.userId ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin');
+    }
+
     // Admin users can read/write all data (assuming plan == 'admin')
     match /{document=**} {
       allow read, write: if request.auth != null &&

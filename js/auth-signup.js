@@ -1,11 +1,66 @@
 import { auth, app } from "./firebase.js";
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc } from
+import { getFirestore, doc, setDoc, collection, addDoc, query, where, getDocs, updateDoc } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 import { showError, withErrorHandling } from "./error-handler.js";
 import { logAuthEvent, logError } from "./logger.js";
 const db = getFirestore(app);
+
+// Generate unique referral code
+function generateReferralCode() {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+// Process referral during signup
+async function processReferral(referralCode, newUserId) {
+  if (!referralCode) return;
+
+  try {
+    // Find referrer by referral code
+    const referrerQuery = query(
+      collection(db, "users"),
+      where("referralCode", "==", referralCode)
+    );
+    const referrerSnap = await getDocs(referrerQuery);
+
+    if (!referrerSnap.empty) {
+      const referrerDoc = referrerSnap.docs[0];
+      const referrerId = referrerDoc.id;
+
+      // Log referral
+      await addDoc(collection(db, "referrals"), {
+        referrerId: referrerId,
+        referredId: newUserId,
+        referralCode: referralCode,
+        timestamp: new Date(),
+        rewarded: false
+      });
+
+      // Reward referrer with 50 credits (miles)
+      const currentCredits = referrerDoc.data().credits || 0;
+      await updateDoc(doc(db, "users", referrerId), {
+        credits: currentCredits + 50
+      });
+
+      // Mark referral as rewarded
+      const referralQuery = query(
+        collection(db, "referrals"),
+        where("referrerId", "==", referrerId),
+        where("referredId", "==", newUserId)
+      );
+      const referralSnap = await getDocs(referralQuery);
+      if (!referralSnap.empty) {
+        await updateDoc(referralSnap.docs[0].ref, { rewarded: true });
+      }
+
+      logAuthEvent('referral_processed', { referrerId, referredId: newUserId, creditsRewarded: 50 });
+    }
+  } catch (error) {
+    logError(error, { context: 'referral_processing', referralCode, newUserId });
+  }
+}
 
 window.signup = async function () {
   const emailInput = document.getElementById("username");
@@ -39,13 +94,38 @@ window.signup = async function () {
     // Send email verification
     await sendEmailVerification(res.user);
     logAuthEvent('signup_success', { userId: res.user.uid, email });
+    // Generate referral code for new user
+    const referralCode = generateReferralCode();
+
     // Firestore user doc
     await setDoc(doc(db, "users", res.user.uid), {
       credits: 200,
       plan: "free",
       createdAt: new Date(),
-      emailVerified: false
+      emailVerified: false,
+      referralCode: referralCode
     });
+
+    // Send welcome email (non-blocking)
+    try {
+      const sendWelcomeEmail = httpsCallable('sendWelcomeEmail');
+      await sendWelcomeEmail({
+        email: email,
+        userName: email.split('@')[0], // Use email prefix as name for now
+        userId: res.user.uid
+      });
+      logAuthEvent('welcome_email_sent', { userId: res.user.uid, email });
+    } catch (emailError) {
+      // Log but don't fail signup if email fails
+      logError(emailError, { context: 'welcome_email', userId: res.user.uid, email });
+    }
+
+    // Process referral code if provided
+    const inputReferralCode = document.getElementById("referralCode").value.trim().toUpperCase() ||
+                              new URLSearchParams(window.location.search).get('ref')?.toUpperCase();
+    if (inputReferralCode) {
+      await processReferral(inputReferralCode, res.user.uid);
+    }
 
     // ✅ SUCCESS MESSAGE (GUARANTEED VISIBLE)
     msg.style.color = "green";

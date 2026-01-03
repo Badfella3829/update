@@ -75,6 +75,9 @@
   }
 
   /* Brand Logo Style */
+  .brand-logo {
+    height: 40px; width: auto; display: block;
+  }
   .brand-text {
     font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: 0.5px;
   }
@@ -415,7 +418,9 @@
     .footer-links { flex-direction: column; gap: 10px; }
   }
   </style>
-  <link rel="icon" href="./favicon.ico"
+  <link rel="icon" href="./logo-192.png">
+  <link rel="apple-touch-icon" href="./logo-192.png">
+  <link rel="manifest" href="./manifest.json">
 </head>
 
 <body>
@@ -425,8 +430,8 @@
 
   <header class="main-header">
     <div class="nav-left">
-      <a href="index.html" class="brand-text">
-        Tech<span>Vyro</span>
+      <a href="index.html">
+        <img src="./logo-192.png" alt="TechVyro" class="brand-logo">
       </a>
     </div>
     <div class="nav-right">
@@ -713,6 +718,19 @@
       });
     }
   });
+
+  /* SERVICE WORKER REGISTRATION */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
   </script>
 
 </body>

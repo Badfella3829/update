@@ -97,15 +97,9 @@
   });
 </script>
 
-<!-- ================= AUTH SECURITY (UNCHANGED) ================= -->
+<!-- ================= AUTH SECURITY ================= -->
 <script type="module">
-  import { auth } from "js/firebase.js";
-
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      location.href = "login.html";
-    }
-  });
+  import './js/auth-check.js';
 </script>
 
 <!-- 🔥 PREMIUM GUARD SCRIPTS (UNCHANGED) -->
@@ -155,7 +149,7 @@
       }
 
       // Log the usage
-      await logUsage(currentUser.uid, "ai_chat");
+      await logToolUsage("AI Chat", { credits_used: 5 });
 
       responseBox.innerText =
         "🤖 AI Response (Demo)\n\nYour message has been processed.\n\nNote: Limits are now enforced server-side for better security.";
