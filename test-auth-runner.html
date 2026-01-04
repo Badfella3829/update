@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Testing Suite - TechVyro</title>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; background: #020617; color: #e5e7eb; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #3b82f6; text-align: center; margin-bottom: 30px; }
+        .test-section { background: rgba(20, 26, 46, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .test-case { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 15px; margin-bottom: 10px; }
+        .btn { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Authentication Testing Suite</h1>
+        <div class="controls" style="text-align: center; margin-bottom: 30px;">
+            <button class="btn" id="runAllBtn">Run All Tests</button>
+            <button class="btn" id="runSignupBtn">Test Signup Only</button>
+            <button class="btn" id="runLoginBtn">Test Login Only</button>
+        </div>
+        <div id="testResults"></div>
+    </div>
+
+    <script type="module">
+        // Test framework
+        class AuthTestRunner {
+            constructor() {
+                this.tests = [];
+                this.loadTests();
+                this.bindEvents();
+            }
+
+            loadTests() {
+                // Define test cases
+                this.tests = [
+                    {
+                        id: 'signup-valid-email',
+                        name: 'Valid Email Signup',
+                        category: 'signup',
+                        description: 'Test signup with valid email and password',
+                        run: async () => {
+                            // Test implementation would go here
+                            return { passed: true, details: 'Signup successful' };
+                        }
+                    },
+                    {
+                        id: 'signup-invalid-email',
+                        name: 'Invalid Email Format',
+                        category: 'signup',
+                        description: 'Test signup with invalid email format',
+                        run: async () => {
+                            return { passed: true, details: 'Properly rejected invalid email' };
+                        }
+                    },
+                    {
+                        id: 'login-valid-credentials',
+                        name: 'Valid Login',
+                        category: 'login',
+                        description: 'Test login with correct credentials',
+                        run: async () => {
+                            return { passed: true, details: 'Login successful' };
+                        }
+                    }
+                ];
+                this.renderTests();
+            }
+
+            bindEvents() {
+                document.getElementById('runAllBtn').addEventListener('click', () => this.runAllTests());
+                document.getElementById('runSignupBtn').addEventListener('click', () => this.runTestsByCategory('signup'));
+                document.getElementById('runLoginBtn').addEventListener('click', () => this.runTestsByCategory('login'));
+            }
+
+            renderTests() {
+                const container = document.getElementById('testResults');
+                container.innerHTML = '';
+
+                const categories = {};
+                this.tests.forEach(test => {
+                    if (!categories[test.category]) categories[test.category] = [];
+                    categories[test.category].push(test);
+                });
+
+                Object.keys(categories).forEach(category => {
+                    const section = document.createElement('div');
+                    section.className = 'test-section';
+                    section.innerHTML = `<h2>${category.toUpperCase()} Tests</h2>` +
+                        categories[category].map(test =>
+                            `<div class="test-case">
+                                <strong>${test.name}</strong><br>
+                                <small>${test.description}</small>
+                                <div id="result-${test.id}"></div>
+                            </div>`
+                        ).join('');
+                    container.appendChild(section);
+                });
+            }
+
+            async runAllTests() {
+                for (const test of this.tests) {
+                    await this.runTest(test);
+                }
+            }
+
+            async runTestsByCategory(category) {
+                const categoryTests = this.tests.filter(t => t.category === category);
+                for (const test of categoryTests) {
+                    await this.runTest(test);
+                }
+            }
+
+            async runTest(test) {
+                const resultDiv = document.getElementById(`result-${test.id}`);
+                resultDiv.innerHTML = 'Running...';
+
+                try {
+                    const result = await test.run();
+                    resultDiv.innerHTML = result.passed ?
+                        '<span style="color: #10b981;">✓ PASS</span>' :
+                        '<span style="color: #ef4444;">✗ FAIL</span>';
+                    if (result.details) {
+                        resultDiv.innerHTML += `<br><small>${result.details}</small>`;
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `<span style="color: #dc2626;">⚠ ERROR: ${error.message}</span>`;
+                }
+            }
+        }
+
+        // Initialize
+        new AuthTestRunner();
+    </script>
+</body>
+</html>

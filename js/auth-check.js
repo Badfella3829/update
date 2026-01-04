@@ -1,66 +1,49 @@
 import { auth } from "./firebase.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { showError } from "./error-handler.js";
-
-// Global loading state
-let authCheckComplete = false;
 
 /**
  * Universal Auth Check for Protected Pages
- * Shows loading state, handles auth verification, redirects if not authenticated
+ * STRICT SECURITY: Only Firebase authenticated users allowed
+ * No localStorage bypass or simulation mode
  */
 (function () {
-  // Show loading overlay immediately
+  // Show loading overlay immediately - prevents flash of protected content
   showLoadingState();
 
   onAuthStateChanged(auth, async (user) => {
-    authCheckComplete = true;
-
     if (user) {
-      // User is authenticated
-      try {
-        // 🚫 EMAIL VERIFICATION CHECK - Limited access until email is verified
-        if (!user.emailVerified) {
-          hideLoadingState();
-          showError("Please verify your email to access all features. Check your inbox for the verification link. You can still use basic features.", {
-            showRetry: false,
-            title: "Email Verification Required for Full Access"
-          });
-          // Allow limited access - don't redirect, just show warning
-          return;
-        }
-
-        // Additional checks can be added here (e.g., plan verification, blocked status)
+      // ✅ Firebase user authenticated - allow access
+      // 🚫 EMAIL VERIFICATION CHECK - Strict enforcement: No access until email is verified
+      if (!user.emailVerified) {
         hideLoadingState();
-        // Allow page to load normally
-      } catch (error) {
-        console.error("Auth check error:", error);
-        showError("Authentication error. Please login again.", { showRetry: false });
-        redirectToLogin();
+        // Sign out immediately to prevent session persistence
+        await signOut(auth);
+        showError("Session invalid or Email not verified.", {
+          showRetry: false,
+          title: "Access Denied"
+        });
+        // Use replace to prevent Back button re-entry
+        window.location.replace('login.html');
+        return;
       }
+
+      // Additional checks can be added here (e.g., plan verification, blocked status)
+      hideLoadingState();
+      // Allow page to load normally
     } else {
-      // User not authenticated
+      // ❌ NO Firebase user - strict redirect to login
+      // 🚨 CRITICAL: Do not trust localStorage or any client-side data
       hideLoadingState();
       redirectToLogin();
     }
   });
 
-  // Prevent back button navigation to protected pages
+  // Handle Browser Back Cache (BFCache): Force reload if page was loaded from cache
   window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
-      // Page was loaded from cache (back button)
-      if (!authCheckComplete) {
-        showLoadingState();
-      } else if (!auth.currentUser) {
-        redirectToLogin();
-      }
-    }
-  });
-
-  // Handle browser back/forward navigation
-  window.addEventListener('popstate', function() {
-    if (!auth.currentUser) {
-      redirectToLogin();
+      // Page was loaded from cache (back button) - force reload/auth check
+      window.location.reload();
     }
   });
 })();
@@ -154,7 +137,7 @@ function redirectToLogin() {
     sessionStorage.setItem('redirectAfterLogin', currentPath);
   }
 
-  window.location.href = "login.html";
+  window.location.replace("login.html");
 }
 
 /**

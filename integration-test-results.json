@@ -1,0 +1,166 @@
+{
+  "timestamp": "2026-01-03T16:47:35.194Z",
+  "summary": {
+    "total": 31,
+    "passed": 25,
+    "failed": 6,
+    "successRate": 80.6
+  },
+  "results": [
+    {
+      "name": "File exists: signup.html",
+      "passed": true,
+      "details": "File found"
+    },
+    {
+      "name": "File exists: login.html",
+      "passed": true,
+      "details": "File found"
+    },
+    {
+      "name": "File exists: dashboard.html",
+      "passed": true,
+      "details": "File found"
+    },
+    {
+      "name": "File exists: forgot-password.html",
+      "passed": true,
+      "details": "File found"
+    },
+    {
+      "name": "File exists: js/auth-signup.js",
+      "passed": false,
+      "details": "File missing"
+    },
+    {
+      "name": "File exists: js/auth-login.js",
+      "passed": false,
+      "details": "File missing"
+    },
+    {
+      "name": "File exists: js/auth-check.js",
+      "passed": true,
+      "details": "File found"
+    },
+    {
+      "name": "File exists: js/firebase.js",
+      "passed": true,
+      "details": "File found"
+    },
+    {
+      "name": "Signup form structure",
+      "passed": true,
+      "details": "Form elements present"
+    },
+    {
+      "name": "Email input field",
+      "passed": true,
+      "details": "Email input found"
+    },
+    {
+      "name": "Password input field",
+      "passed": true,
+      "details": "Password input found"
+    },
+    {
+      "name": "Full name input field",
+      "passed": true,
+      "details": "Full name input found"
+    },
+    {
+      "name": "Terms checkbox",
+      "passed": true,
+      "details": "Terms checkbox found"
+    },
+    {
+      "name": "Signup button",
+      "passed": true,
+      "details": "Signup button found"
+    },
+    {
+      "name": "Firebase import",
+      "passed": true,
+      "details": "Firebase properly imported"
+    },
+    {
+      "name": "Auth signup import",
+      "passed": false,
+      "details": "Auth signup script missing"
+    },
+    {
+      "name": "Form validation messages",
+      "passed": true,
+      "details": "Validation messages present"
+    },
+    {
+      "name": "Login email input",
+      "passed": true,
+      "details": "Email input found"
+    },
+    {
+      "name": "Login password input",
+      "passed": true,
+      "details": "Password input found"
+    },
+    {
+      "name": "Login button",
+      "passed": true,
+      "details": "Login button found"
+    },
+    {
+      "name": "Forgot password link",
+      "passed": true,
+      "details": "Forgot password link found"
+    },
+    {
+      "name": "Signup link",
+      "passed": true,
+      "details": "Signup link found"
+    },
+    {
+      "name": "Firebase import",
+      "passed": true,
+      "details": "Firebase properly imported"
+    },
+    {
+      "name": "Auth login import",
+      "passed": false,
+      "details": "Auth login script missing"
+    },
+    {
+      "name": "Error handling",
+      "passed": true,
+      "details": "Error messages present"
+    },
+    {
+      "name": "Auth check script",
+      "passed": true,
+      "details": "Auth check implemented"
+    },
+    {
+      "name": "Login redirect",
+      "passed": true,
+      "details": "Login redirect implemented"
+    },
+    {
+      "name": "Firebase configuration",
+      "passed": true,
+      "details": "Firebase config found"
+    },
+    {
+      "name": "js/auth-signup.js exists",
+      "passed": false,
+      "details": "js/auth-signup.js not found"
+    },
+    {
+      "name": "js/auth-login.js exists",
+      "passed": false,
+      "details": "js/auth-login.js not found"
+    },
+    {
+      "name": "Auth check logic",
+      "passed": true,
+      "details": "Auth check implemented"
+    }
+  ]
+}

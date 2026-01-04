@@ -1,45 +1,45 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can read and write their own data
+    // Users can read and write their own data ONLY if email is verified
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if request.auth != null && request.auth.uid == userId && request.auth.token.email_verified == true;
     }
 
-    // Users can read and write their own subcollections (e.g., payments)
+    // Users can read and write their own subcollections (e.g., payments) ONLY if email is verified
     match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if request.auth != null && request.auth.uid == userId && request.auth.token.email_verified == true;
     }
 
-    // Allow authenticated users to write to usage_logs if uid matches
+    // Allow authenticated users to write to usage_logs if uid matches AND email verified
     match /usage_logs/{logId} {
-      allow read, write: if request.auth != null &&
+      allow read, write: if request.auth != null && request.auth.token.email_verified == true &&
         (request.auth.uid == resource.data.uid ||
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin');
     }
 
-    // Allow authenticated users to write to auth_logs if uid matches
+    // Allow authenticated users to write to auth_logs if uid matches AND email verified
     match /auth_logs/{logId} {
-      allow read, write: if request.auth != null &&
+      allow read, write: if request.auth != null && request.auth.token.email_verified == true &&
         (request.auth.uid == resource.data.uid ||
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin');
     }
 
-    // Allow authenticated users to read feature_flags
+    // Allow authenticated users to read feature_flags ONLY if email verified
     match /system/feature_flags {
-      allow read: if request.auth != null;
+      allow read: if request.auth != null && request.auth.token.email_verified == true;
     }
 
-    // Allow users to read/write their own notifications
+    // Allow users to read/write their own notifications ONLY if email verified
     match /notifications/{notificationId} {
-      allow read, write: if request.auth != null &&
+      allow read, write: if request.auth != null && request.auth.token.email_verified == true &&
         (request.auth.uid == resource.data.userId ||
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin');
     }
 
-    // Admin users can read/write all data (assuming plan == 'admin')
+    // Admin users can read/write all data (assuming plan == 'admin') ONLY if email verified
     match /{document=**} {
-      allow read, write: if request.auth != null &&
+      allow read, write: if request.auth != null && request.auth.token.email_verified == true &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.plan == 'admin';
     }
 

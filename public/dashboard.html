@@ -6,6 +6,11 @@
   <title>Dashboard — TechVyro</title>
   <link rel="icon" href="logo-192.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com; connect-src 'self' https://apis.google.com https://www.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com;">
+  <!-- 🚨 SECURITY: Prevent caching to avoid BFCache issues -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
   <style>
   /* ================= BRAND THEME ================= */
@@ -733,6 +738,8 @@
   </style>
 </head>
 <body>
+  <!-- 🚨 CRITICAL SECURITY: Auth Guard must run immediately -->
+  <script type="module" src="./js/auth-guard.js"></script>
 
   <div class="hero-glow"></div>
   <div class="grid-pattern"></div>

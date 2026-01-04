@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <title>Login — TechVyro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://apis.google.com https://www.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com; script-src 'self' 'unsafe-inline' https://apis.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com;">
 
   <style>
   /* ================= BRAND & THEME ================= */
@@ -168,12 +169,12 @@
 
         <div class="input-group">
           <label class="input-label">Email Address</label>
-          <input type="text" id="username" class="input-field" placeholder="name@example.com">
+          <input type="email" id="username" class="input-field" placeholder="name@example.com" autocomplete="email" required>
         </div>
 
         <div class="input-group">
           <label class="input-label">Password</label>
-          <input type="password" id="password" class="input-field" placeholder="••••••••">
+          <input type="password" id="password" class="input-field" placeholder="••••••••" autocomplete="current-password">
         </div>
 
         <button id="loginBtn" class="btn-primary">Login </button>
@@ -192,7 +193,7 @@
 
         <div class="input-group">
           <label class="input-label">Your Email</label>
-          <input type="email" id="resetEmail" class="input-field" placeholder="name@example.com">
+          <input type="email" id="resetEmail" class="input-field" placeholder="name@example.com" autocomplete="email">
         </div>
 
         <button id="resetBtn" class="btn-primary">Send Reset Link</button>
@@ -213,7 +214,7 @@
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     const rotateX = ((y - centerY) / centerY) * -10; // Tilt Up/Down
     const rotateY = ((x - centerX) / centerX) * 10;  // Tilt Left/Right
 
@@ -223,23 +224,6 @@
   document.querySelector('.js-tilt').addEventListener('mouseleave', (e) => {
     e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
   });
-
-  // --- LOGIC: Firebase + Manual ---
-  let auth = null;
-  let signInWithEmailAndPassword = null;
-  let sendPasswordResetEmail = null;
-  
-  try {
-    const fb = await import('js/firebase.js');
-    const fbAuth = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-    auth = fb.auth;
-    signInWithEmailAndPassword = fbAuth.signInWithEmailAndPassword;
-    sendPasswordResetEmail = fbAuth.sendPasswordResetEmail;
-
-    fbAuth.onAuthStateChanged(auth, (user) => {
-      if (user) localStorage.setItem("techvyro_user_logged_in", "true");
-    });
-  } catch (e) { console.log("Simulation Mode Active"); }
 
   // UI TOGGLE
   window.showResetForm = () => {
@@ -262,37 +246,10 @@
     setTimeout(() => toast.style.display = "none", 4000);
   };
 
-  // 1. LOGIN
+  // 1. LOGIN - Use auth-login.js module
   document.getElementById("loginBtn").addEventListener('click', async (e) => {
-    e.preventDefault(); 
-    const btn = document.getElementById("loginBtn");
-    const u = document.getElementById("username").value.trim();
-    const p = document.getElementById("password").value;
-
-    if(!u || !p) return showToast("Please enter email and password", "error");
-
-    const originalText = btn.innerText;
-    btn.innerText = 'Verifying...'; btn.disabled = true;
-
-    let email = u.includes("@") ? u : `${u}@mobile.techvyro`;
-
-    try {
-      if (auth && signInWithEmailAndPassword) {
-        await signInWithEmailAndPassword(auth, email, p);
-        showToast("Login Successful!", "success");
-        localStorage.setItem("techvyro_user_logged_in", "true");
-        setTimeout(() => window.location.href = "dashboard.html", 1000);
-      } else {
-        setTimeout(() => {
-          showToast("Login Successful!", "success");
-          localStorage.setItem("techvyro_user_logged_in", "true");
-          setTimeout(() => window.location.href = "dashboard.html", 1000);
-        }, 1200);
-      }
-    } catch (err) {
-      showToast("Invalid Credentials", "error");
-      btn.innerText = originalText; btn.disabled = false;
-    }
+    e.preventDefault();
+    await window.login();
   });
 
   // 2. RESET PASSWORD
@@ -305,8 +262,12 @@
     btn.innerText = 'Sending...'; btn.disabled = true;
 
     try {
-      if (auth && sendPasswordResetEmail) {
-        await sendPasswordResetEmail(auth, email);
+      // Import Firebase auth for password reset
+      const fb = await import('./js/firebase.js');
+      const fbAuth = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+
+      if (fb.auth && fbAuth.sendPasswordResetEmail) {
+        await fbAuth.sendPasswordResetEmail(fb.auth, email);
         showToast("Reset link sent! Check email.", "success");
         setTimeout(() => showLoginForm(), 3000);
       } else {
@@ -321,6 +282,9 @@
       btn.disabled = false;
     }
   });
+
+  // Import auth-login.js for login functionality with rate limiting
+  import('./js/auth-login.js');
   </script>
 
 </body>
