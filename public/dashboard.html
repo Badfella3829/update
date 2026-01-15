@@ -1208,15 +1208,15 @@
     </a>
 
     <ul class="nav-menu">
-      <li class="nav-item active" onclick="scrollToTop()" data-tooltip="Return to top of dashboard"><span>🏠</span> Dashboard</li>
+      <li class="nav-item active" onclick="smoothScrollTo('section-welcome')" data-tooltip="Return to top of dashboard"><span>🏠</span> Dashboard</li>
 
       <div class="nav-label">Navigate Tools</div>
-      <a href="#section-ai" class="nav-item" data-tooltip="Explore AI-powered tools for chat, image generation, and more"><span>🧠</span> AI Tools</a>
-      <a href="#section-design" class="nav-item" data-tooltip="Design tools for colors, images, logos, and creative work"><span>🎨</span> Design</a>
-      <a href="#section-dev" class="nav-item" data-tooltip="Developer utilities for code formatting, testing, and debugging"><span>🔧</span> Dev Tools</a>
-      <a href="#section-seo" class="nav-item" data-tooltip="SEO analysis, keyword research, and social media tools"><span>📈</span> SEO & Social</a>
-      <a href="#section-util" class="nav-item" data-tooltip="Security, conversion, and utility tools"><span>🔐</span> Utility</a>
-      <a href="#section-file" class="nav-item" data-tooltip="File processing, conversion, and management tools"><span>📂</span> File Tools</a>
+      <li class="nav-item" onclick="smoothScrollTo('section-ai')" data-tooltip="Explore AI-powered tools for chat, image generation, and more"><span>🧠</span> AI Tools</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-design')" data-tooltip="Design tools for colors, images, logos, and creative work"><span>🎨</span> Design</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-dev')" data-tooltip="Developer utilities for code formatting, testing, and debugging"><span>🔧</span> Dev Tools</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-seo')" data-tooltip="SEO analysis, keyword research, and social media tools"><span>📈</span> SEO & Social</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-util')" data-tooltip="Security, conversion, and utility tools"><span>🔐</span> Utility</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-file')" data-tooltip="File processing, conversion, and management tools"><span>📂</span> File Tools</li>
     </ul>
 
     <div class="sidebar-footer">
@@ -1283,7 +1283,7 @@
       <div class="dashboard-main">
 
         <!-- WELCOME SECTION (First Impression Area) -->
-        <div class="welcome-section">
+        <div class="welcome-section" id="section-welcome">
           <div class="welcome-content">
             <div class="welcome-left">
               <div class="welcome-message">
@@ -2133,6 +2133,17 @@
       if (hours < 24) return `${hours} hours ago`;
       return `${days} days ago`;
     }
+
+    window.smoothScrollTo = (id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Close sidebar on mobile after clicking
+        if (window.innerWidth <= 900) {
+          closeSidebar();
+        }
+      }
+    };
 
     window.toggleSidebar = () => {
       const sidebar = document.getElementById('sidebar');
