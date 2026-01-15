@@ -2342,17 +2342,23 @@
           
           auth.onAuthStateChanged(async (user) => {
             if (user) {
+              // Check if we have a saved name in localStorage first
+              const localName = localStorage.getItem('userName');
+              
               const userDoc = await getDoc(doc(db, "users", user.uid));
-              let name = user.displayName || user.email?.split('@')[0] || "User";
+              let name = localName || user.displayName || user.email?.split('@')[0] || "User";
               let plan = "free";
               
               if (userDoc.exists()) {
                 const data = userDoc.data();
-                name = data.name || data.displayName || name;
+                // Only use Firestore name if it exists
+                if (data.name || data.displayName) {
+                  name = data.name || data.displayName;
+                  // Update localStorage only if Firestore has actual name
+                  localStorage.setItem('userName', name);
+                }
                 plan = data.plan || "free";
                 
-                // Update localStorage with latest data
-                localStorage.setItem('userName', name);
                 const updatedUser = { ...storedUser, name, displayName: name, plan };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
               }
