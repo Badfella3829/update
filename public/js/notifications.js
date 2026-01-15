@@ -214,76 +214,6 @@ export async function createNewFeatureAlert(userIds, featureName, featureDescrip
  * Show in-app notification
  */
 function showInAppNotification(notification) {
-  // Ensure styles are present
-  if (!document.getElementById('notification-styles')) {
-    const styles = document.createElement('style');
-    styles.id = 'notification-styles';
-    styles.textContent = `
-      .in-app-notification {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: rgba(15, 23, 42, 0.9);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 12px;
-        padding: 16px 20px;
-        color: #f8fafc;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.1);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        max-width: 380px;
-        animation: notificationSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        font-family: 'Inter', system-ui, sans-serif;
-      }
-
-      @keyframes notificationSlideIn {
-        from { transform: translateX(100%) scale(0.9); opacity: 0; }
-        to { transform: translateX(0) scale(1); opacity: 1; }
-      }
-
-      .notification-content h4 {
-        margin: 0 0 4px 0;
-        color: #60a5fa;
-        font-size: 0.95rem;
-        font-weight: 600;
-      }
-
-      .notification-content p {
-        margin: 0;
-        color: #cbd5e1;
-        font-size: 0.85rem;
-        line-height: 1.4;
-      }
-
-      .notification-close {
-        background: rgba(255, 255, 255, 0.05);
-        border: none;
-        color: #94a3b8;
-        font-size: 20px;
-        cursor: pointer;
-        width: 28px;
-        height: 28px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-      }
-
-      .notification-close:hover {
-        background: rgba(239, 68, 68, 0.15);
-        color: #ef4444;
-      }
-
-      .in-app-notification.urgent { border-color: #ef4444; }
-      .in-app-notification.high { border-color: #f59e0b; }
-    `;
-    document.head.appendChild(styles);
-  }
-
   // Create notification element
   const notificationEl = document.createElement('div');
   notificationEl.className = `in-app-notification ${notification.priority}`;
@@ -298,15 +228,12 @@ function showInAppNotification(notification) {
   // Add to page
   document.body.appendChild(notificationEl);
 
-  // Auto-remove after 6 seconds
+  // Auto-remove after 5 seconds
   setTimeout(() => {
     if (notificationEl.parentElement) {
-      notificationEl.style.opacity = '0';
-      notificationEl.style.transform = 'translateX(20px)';
-      notificationEl.style.transition = 'all 0.4s ease';
-      setTimeout(() => notificationEl.remove(), 400);
+      notificationEl.remove();
     }
-  }, 6000);
+  }, 5000);
 
   // Mark as shown
   markAsShown(notification.id);

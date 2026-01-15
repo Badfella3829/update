@@ -21,19 +21,34 @@ const server = http.createServer((req, res) => {
       contentType = 'image/png';
       break;
     case '.jpg':
-      contentType = 'image/jpg';
+    case '.jpeg':
+      contentType = 'image/jpeg';
+      break;
+    case '.svg':
+      contentType = 'image/svg+xml';
       break;
     case '.ico':
       contentType = 'image/x-icon';
+      break;
+    case '.html':
+      contentType = 'text/html';
       break;
   }
 
   fs.readFile(filePath, (err, content) => {
     if (err) {
       if (err.code === 'ENOENT') {
+        // Handle SPA routing or missing files
+        if (!ext || ext === '.html') {
+          fs.readFile(path.join(__dirname, 'index.html'), (err, content) => {
+             res.writeHead(200, { 'Content-Type': 'text/html' });
+             res.end(content, 'utf8');
+          });
+          return;
+        }
         fs.readFile(path.join(__dirname, '404.html'), (err, content) => {
-          res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end(content, 'utf8');
+          res.writeHead(404, { 'Content-Type': 'text/html' });
+          res.end(content || '404 Not Found', 'utf8');
         });
       } else {
         res.writeHead(500);
