@@ -187,26 +187,14 @@
   .stat h3 { font-size: 36px; color: var(--blue); margin-bottom: 5px; }
   .stat p { color: var(--text-muted); font-size: 14px; }
 
-  .bottom-brand{
-    position:fixed;
-    left:20px;
-    bottom:20px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 14px;
-    background:rgba(2,6,23,.85);
-    backdrop-filter:blur(10px);
-    border-radius:14px;
-    text-decoration:none;
-    z-index:999;
-    opacity:0;
-    pointer-events:none;
-    transform:translateY(20px) scale(.95);
-    transition:.4s ease;
-    box-shadow:0 20px 60px rgba(59,130,246,.35);
-    border: 1px solid rgba(255,255,255,0.08);
+  /* ================= FOOTER ================= */
+  .footer { 
+    margin-top: 80px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); 
+    text-align: center; color: #64748b; font-size: 14px; 
   }
+  .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+  .footer-links a { color: var(--text-muted); text-decoration: none; transition: 0.3s; }
+  .footer-links a:hover { color: var(--blue); }
 
   .bottom-brand.show{
     opacity:1;
@@ -338,8 +326,8 @@
     <div class="footer reveal">
       <div class="footer-links">
         <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="refund.html">Refund Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="refund.html">Refunds</a>
         <a href="contact.html">Support</a>
       </div>
       <p>© 2025 TechVyro — Premium AI SaaS Platform</p>
