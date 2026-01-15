@@ -68,7 +68,7 @@ async function storeLog(logEntry) {
       collectionName = 'usage_logs';
     }
 
-    await addDoc(collection(collectionName), logEntry);
+    await addDoc(collection(db, collectionName), logEntry);
   } catch (error) {
     // Don't throw - logging failures shouldn't break the app
     console.error('Log storage failed:', error);

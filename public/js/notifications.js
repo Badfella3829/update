@@ -93,8 +93,7 @@ export async function createNotification(userId, type, title, message, data = {}
 
     const docRef = await addDoc(collection(db, 'notifications'), notification);
 
-    // Log notification creation
-    if (window.logger) {
+    if (window.logger && typeof window.logger.info === 'function') {
       window.logger.info('notification_created', {
         notificationId: docRef.id,
         type,
