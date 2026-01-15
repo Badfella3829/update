@@ -136,33 +136,35 @@ export function showError(message, options = {}) {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(2, 6, 23, 0.85);
+        backdrop-filter: blur(8px);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 10000;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
       }
 
       .error-modal-content {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        background: #0f172a;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 16px;
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
         max-width: 400px;
         width: 90%;
         overflow: hidden;
-        animation: modalSlideIn 0.3s ease-out;
+        animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       @keyframes modalSlideIn {
-        from { transform: translateY(-50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+        from { transform: scale(0.9) translateY(20px); opacity: 0; }
+        to { transform: scale(1) translateY(0); opacity: 1; }
       }
 
       .error-modal-header {
-        background: #f8f9fa;
+        background: rgba(255, 255, 255, 0.03);
         padding: 16px 20px;
-        border-bottom: 1px solid #e9ecef;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -170,8 +172,9 @@ export function showError(message, options = {}) {
 
       .error-modal-title {
         font-weight: 600;
-        color: #495057;
+        color: #f8fafc;
         margin: 0;
+        font-size: 1.1rem;
       }
 
       .error-modal-close {
@@ -179,75 +182,86 @@ export function showError(message, options = {}) {
         border: none;
         font-size: 24px;
         cursor: pointer;
-        color: #6c757d;
+        color: #94a3b8;
         padding: 0;
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
-        transition: background 0.2s;
+        border-radius: 8px;
+        transition: all 0.2s;
       }
 
       .error-modal-close:hover {
-        background: #e9ecef;
+        background: rgba(255, 255, 255, 0.1);
+        color: #f8fafc;
       }
 
       .error-modal-body {
-        padding: 24px 20px;
+        padding: 32px 24px;
         text-align: center;
       }
 
       .error-icon {
-        font-size: 48px;
-        margin-bottom: 16px;
+        font-size: 56px;
+        margin-bottom: 20px;
+        display: block;
       }
 
-      .error-icon.error::before { content: '❌'; }
-      .error-icon.warning::before { content: '⚠️'; }
-      .error-icon.info::before { content: 'ℹ️'; }
+      .error-icon.error::before { content: '✨'; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
+      .error-icon.warning::before { content: '⚡'; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
+      .error-icon.info::before { content: '💙'; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
 
       .error-message {
-        color: #495057;
+        color: #cbd5e1;
         font-size: 16px;
-        line-height: 1.5;
+        line-height: 1.6;
         margin: 0;
       }
 
       .error-modal-footer {
         padding: 16px 20px;
-        border-top: 1px solid #e9ecef;
+        background: rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         gap: 12px;
       }
 
       .error-modal-footer button {
-        padding: 8px 16px;
+        padding: 10px 24px;
         border: none;
-        border-radius: 6px;
+        border-radius: 10px;
         cursor: pointer;
-        font-weight: 500;
-        transition: all 0.2s;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 100px;
       }
 
       .ok-btn {
-        background: #6c757d;
-        color: white;
+        background: rgba(59, 130, 246, 0.1);
+        color: #60a5fa;
+        border: 1px solid rgba(59, 130, 246, 0.2) !important;
       }
 
       .ok-btn:hover {
-        background: #5a6268;
+        background: #3b82f6;
+        color: white;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
       }
 
       .retry-btn {
-        background: #007bff;
+        background: #3b82f6;
         color: white;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
       }
 
       .retry-btn:hover {
-        background: #0056b3;
+        background: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
       }
     `;
     document.head.appendChild(styles);
