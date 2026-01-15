@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <title>About — TechVyro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,29 +8,36 @@
   <style>
   /* ================= BRAND & THEME ================= */
   :root{
-    --blue: #3b82f6;
-    --blue-glow: rgba(59,130,246,.35);
+    --blue:#3b82f6;
+    --blue-soft:rgba(59,130,246,.12);
+    --blue-glow:rgba(59,130,246,.35);
     --bg-dark: #020617;
     --text-main: #e5e7eb;
     --text-muted: #9aa0b4;
   }
 
   /* ================= RESET ================= */
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+  *{box-sizing:border-box;margin:0;padding:0}
 
-  body {
-    background: var(--bg-dark);
-    color: var(--text-main);
-    overflow-x: hidden;
-    perspective: 1000px;
+  body{
+    background:#020617;
+    color:#e5e7eb;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+    overflow-x:hidden;
+    position: relative;
   }
 
-  /* ================= BACKGROUND FX ================= */
+  /* ================= BACKGROUND EFFECTS ================= */
   .hero-glow {
-    position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
-    width: 90%; height: 700px;
-    background: radial-gradient(circle at center, rgba(59,130,246,0.15) 0%, transparent 60%);
-    z-index: -2; pointer-events: none;
+    position: absolute; 
+    top: -120px;
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 90%; 
+    height: 700px;
+    background: radial-gradient(circle at center, rgba(59,130,246,0.18) 0%, transparent 60%);
+    z-index: -2; 
+    pointer-events: none;
   }
 
   .grid-pattern {
@@ -41,22 +47,63 @@
       linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size: 50px 50px;
     mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+    -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
     z-index: -1; pointer-events: none;
   }
 
   /* ================= HEADER ================= */
-  .main-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 15px 5%; position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-    background: rgba(2,6,23,0.85); backdrop-filter: blur(12px);
-    z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.08);
+  .main-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 40px;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    background:rgba(2,6,23,0.9);
+    backdrop-filter:blur(16px);
+    z-index:1000;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
   }
-  .nav-left a { font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; }
-  .nav-left span { color: var(--blue); }
-  .nav-right { display: flex; gap: 25px; }
-  
-  .nav-link { color: var(--text-muted); font-weight: 600; text-decoration: none; transition: .3s; font-size: 15px; }
-  .nav-link:hover, .nav-link.active { color: #fff; text-shadow: 0 0 10px rgba(59,130,246,0.5); }
+
+  .nav-left,.nav-right{
+    display:flex;
+    align-items:center;
+    gap:26px;
+  }
+
+  .brand-logo {
+    height: 40px; width: auto; display: block;
+  }
+
+  .nav-link{
+    color:#9aa0b4;
+    font-weight:500;
+    text-decoration:none;
+    position:relative;
+    padding:6px 0;
+    font-size: 14px;
+    transition:.3s;
+  }
+
+  .nav-link::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    width:0;
+    height:2px;
+    background:#38bdf8;
+    transition:.25s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active{color:#fff}
+
+  .nav-link:hover::after,
+  .nav-link.active::after{width:100%}
 
   /* ================= PAGE LAYOUT ================= */
   .page {
@@ -162,11 +209,13 @@
 
   <header class="main-header">
     <div class="nav-left">
-      <a href="index.html">Tech<span>Vyro</span></a>
+      <a href="index.html">
+        <img src="./logo-192.png" alt="TechVyro" class="brand-logo">
+      </a>
     </div>
     <div class="nav-right">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="about.html" class="nav-link active">About</a> <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="about.html" class="nav-link active">About</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
       <a href="contact.html" class="nav-link">Contact</a>
     </div>
   </header>
@@ -256,12 +305,39 @@
     </section>
 
     <div class="footer reveal">
-      © 2025 TechVyro — Building AI, Automation & Creator Systems for the Future
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="contact.html">Support</a>
+      </div>
+      <p>© 2025 TechVyro — Premium AI SaaS Platform</p>
     </div>
 
   </div>
 
+  <a href="index.html" class="bottom-brand" id="bottomBrand">
+    <img src="https://image2url.com/images/1765202115120-ca991f21-3464-4ead-a8fd-008fa47edd6a.jpg" alt="TechVyro">
+    <span class="brand-name">
+      <span class="brand-tech">Tech</span><span class="brand-vyro">Vyro</span>
+    </span>
+  </a>
+
   <script>
+    /* PAGE LOADER */
+    const loader=document.createElement('div');
+    loader.style.cssText='position:fixed;inset:0;background:#020617;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease';
+    loader.innerHTML='<span style="color:#3b82f6;font-size:22px;font-weight:900">TechVyro</span>';
+    window.addEventListener('load',()=>{ document.body.appendChild(loader); loader.style.opacity='0'; setTimeout(()=>loader.remove(),600); });
+
+    /* SCROLL PROGRESS */
+    const progress=document.createElement('div');
+    progress.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;background:#3b82f6;z-index:9998';
+    document.body.appendChild(progress);
+    window.addEventListener('scroll',()=>{
+      const h=document.documentElement.scrollHeight-window.innerHeight;
+      progress.style.width=(window.scrollY/h)*100+'%';
+    });
     // Reveal Animation
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
