@@ -443,125 +443,97 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 40px;
+    padding: 12px 40px;
     position: sticky;
     top: 0;
-    background: linear-gradient(180deg, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 0.88));
+    background: rgba(2, 6, 23, 0.85);
     backdrop-filter: blur(20px);
     z-index: 1000;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    margin-bottom: 35px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     width: 100%;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 70px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
   }
 
-  body.sidebar-collapsed .header {
-    width: 100%;
-    left: 0;
-  }
+  .header-left { display: flex; align-items: center; gap: 15px; }
+  .header-logo { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+  .page-title h1 { font-size: 20px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
+  .page-title p { color: var(--text-muted); font-size: 12px; margin: 0; }
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  .header-right { display: flex; align-items: center; gap: 20px; }
+  .search-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 50px;
+    color: #fff;
+    width: 200px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s;
   }
+  .search-input:focus { border-color: var(--blue); background: rgba(255,255,255,0.08); width: 240px; }
 
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  /* Credits Graph */
   .credit-box {
-    text-align: center; background: var(--card-bg); border: 1px solid var(--border);
-    padding: 10px 24px; border-radius: 50px; min-width: 240px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 6px 14px;
+    border-radius: 50px;
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 700;
   }
-  .credit-text { font-size: 14px; font-weight: 800; color: var(--blue); margin-bottom: 6px; }
-  .credit-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
-  .credit-fill { height: 100%; width: 100%; background: var(--blue); box-shadow: 0 0 10px var(--blue); transition: width 0.4s ease; }
 
-  /* Notifications */
-  .notification-container { position: relative; }
-  .notification-icon {
-    background: rgba(59, 130, 246, 0.1); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);
-    padding: 10px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s;
-    position: relative;
-  }
-  .notification-icon:hover { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
-  .notification-badge {
-    position: absolute; top: -5px; right: -5px; background: #ef4444; color: white;
-    border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold;
-    display: flex; align-items: center; justify-content: center; display: none;
-  }
-  .notification-dropdown {
-    position: absolute; top: 50px; right: 0; background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 12px; padding: 0; min-width: 300px; max-height: 400px; overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; z-index: 1000;
-  }
-  .notification-dropdown.show { display: block; }
-  .notification-header {
-    padding: 15px; border-bottom: 1px solid var(--border); font-weight: 700; color: var(--text-main);
-  }
-  .notification-item {
-    padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;
-  }
-  .notification-item:hover { background: rgba(59, 130, 246, 0.05); }
-  .notification-item.unread { background: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--blue); }
-  .notification-title { font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
-  .notification-message { color: var(--text-muted); font-size: 14px; line-height: 1.4; }
-  .notification-time { color: var(--text-muted); font-size: 12px; margin-top: 5px; }
-  .notification-empty { padding: 30px; text-align: center; color: var(--text-muted); }
-
-  /* In-app notification overlay */
-  .in-app-notification {
-    position: fixed; top: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px; min-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    z-index: 1001; animation: slideInRight 0.3s ease; border-left: 4px solid var(--blue);
-  }
-  .in-app-notification.high { border-left-color: #f59e0b; }
-  .in-app-notification.urgent { border-left-color: #ef4444; }
-  .in-app-notification.low { border-left-color: #6b7280; }
-  @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-  .notification-content h4 { color: var(--text-main); margin-bottom: 8px; }
-  .notification-content p { color: var(--text-muted); line-height: 1.4; }
-  .notification-close {
-    position: absolute; top: 10px; right: 10px; background: none; border: none;
-    color: var(--text-muted); font-size: 18px; cursor: pointer; padding: 5px;
-  }
-  .notification-close:hover { color: #fff; }
-
-  /* Theme Toggle */
-  .theme-toggle-container { display: flex; align-items: center; justify-content: center; }
-  .theme-toggle-btn {
-    background: rgba(59, 130, 246, 0.1); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);
-    padding: 10px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s;
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-  }
-  .theme-toggle-btn:hover { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
-
-  /* Settings Dropdown */
-  .settings-container { position: relative; }
   .settings-btn {
-    background: rgba(59, 130, 246, 0.1); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);
-    padding: 10px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s;
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 4px 12px 4px 6px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s;
   }
-  .settings-btn:hover { background: var(--blue); color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+  .settings-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  
+  .user-avatar {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--blue), #8b5cf6);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px;
+  }
+  .user-name { font-size: 13px; font-weight: 600; }
+  .dropdown-arrow { font-size: 9px; opacity: 0.5; }
+
   .settings-dropdown {
-    position: absolute; top: 50px; right: 0; background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 12px; padding: 8px 0; min-width: 160px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    display: none; z-index: 1000;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    min-width: 220px;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    z-index: 2000;
   }
-  .settings-dropdown.show { display: block; }
-  .settings-item {
-    padding: 12px 16px; color: var(--text-main); font-size: 14px; cursor: pointer; transition: 0.2s;
-    display: flex; align-items: center; gap: 8px;
+  .dropdown-divider { border-top: 1px solid rgba(255,255,255,0.08); margin: 6px 0; }
+  .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
+
+  @media(max-width:900px){
+    .header { padding: 10px 20px; }
+    .search-container, .page-title p { display: none; }
+    .menu-toggle { display: block; }
   }
-  .settings-item:hover { background: rgba(59, 130, 246, 0.05); }
+
   .settings-item.logout { color: #ef4444; }
   .settings-item.logout:hover { background: rgba(239, 68, 68, 0.05); }
 
@@ -1238,54 +1210,44 @@
 
   <main class="main-content">
 
-    <!-- HEADER - Moved to top as first element -->
-    <div class="header">
+    <!-- HEADER -->
+    <header class="header">
       <div class="header-left">
-        <button class="menu-toggle" onclick="toggleSidebar()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">☰</button>
-        <img src="logo.jpg" alt="TechVyro" class="header-logo" style="width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+        <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Menu">☰</button>
+        <img src="logo.jpg" alt="TechVyro" class="header-logo">
         <div class="page-title">
-          <h1 style="font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">Dashboard</h1>
-          <p style="color: var(--text-muted); font-size: 13px;">Manage your AI tools</p>
+          <h1>Dashboard</h1>
+          <p>Manage your AI tools</p>
         </div>
       </div>
 
       <div class="header-right">
         <div class="search-container">
-          <input type="text" id="globalSearch" class="search-input" placeholder="Search tools..." style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 50px; color: #fff; width: 220px;">
+          <input type="text" id="globalSearch" class="search-input" placeholder="Search tools...">
         </div>
 
-        <div class="credit-box" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); padding: 6px 16px; border-radius: 50px; display: flex; align-items: center; gap: 10px;">
-          <div class="credit-text" id="creditText" style="font-size: 14px; font-weight: 700; color: var(--blue);">⚡ 200 Credits</div>
+        <div class="credit-box">
+          ⚡ <span id="creditText">200 Credits</span>
         </div>
 
-        <!-- USER PROFILE DROPDOWN IN HEADER -->
+        <!-- USER PROFILE DROPDOWN -->
         <div class="settings-container">
-          <button class="settings-btn" onclick="toggleSettings(event)" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 4px 12px 4px 6px; height: 44px; border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; color: #fff; transition: all 0.3s ease;">
-            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);" id="headerUserAvatar">U</div>
-            <span style="font-size: 14px; font-weight: 600;" id="headerUserName">User</span>
-            <span style="font-size: 10px; opacity: 0.5;">▼</span>
+          <button class="settings-btn" onclick="toggleSettings(event)">
+            <div class="user-avatar" id="headerUserAvatar">U</div>
+            <span class="user-name" id="headerUserName">User</span>
+            <span class="dropdown-arrow">▼</span>
           </button>
-          <div class="settings-dropdown" id="settingsDropdown" style="display: none; position: absolute; right: 0; top: 55px; min-width: 240px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); z-index: 9999; opacity: 0; transform: translateY(10px); transition: all 0.3s ease;">
-            <div class="settings-item" onclick="openProfile()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">👤</span> Profile Settings
-            </div>
-            <div class="settings-item" onclick="toggleTheme()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">🌗</span> Toggle Theme
-            </div>
-            <div class="settings-item" onclick="openReferral()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">🎁</span> Refer & Earn
-            </div>
-            <div class="settings-item" onclick="openSupport()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">💬</span> Get Support
-            </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.08); margin: 8px 0;"></div>
-            <div class="settings-item logout" onclick="logout()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #ef4444; font-size: 14px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">🚪</span> Logout Account
-            </div>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <div class="settings-item" onclick="openProfile()"><span>👤</span> Profile Settings</div>
+            <div class="settings-item" onclick="toggleTheme()"><span>🌗</span> Toggle Theme</div>
+            <div class="settings-item" onclick="openReferral()"><span>🎁</span> Refer & Earn</div>
+            <div class="settings-item" onclick="openSupport()"><span>💬</span> Get Support</div>
+            <div class="dropdown-divider"></div>
+            <div class="settings-item logout" onclick="logout()"><span>🚪</span> Logout Account</div>
           </div>
         </div>
       </div>
-    </div>
+    </header>
 
     <!-- DASHBOARD CONTAINER - Two Column Layout -->
     <div class="dashboard-container">
@@ -2050,9 +2012,10 @@
     };
 
     function updateCreditUI() {
-      document.getElementById('creditText').innerText = `⚡ ${credits} Credits`;
-      const percentage = (credits / maxCredits) * 100;
-      document.getElementById('creditBar').style.width = percentage + "%";
+      const creditText = document.getElementById('creditText');
+      if (creditText) {
+        creditText.innerText = `${credits} Credits`;
+      }
     }
 
     // --- UTILS ---
