@@ -1219,32 +1219,6 @@
     </ul>
 
     <div class="sidebar-footer">
-      <!-- Premium User Card -->
-      <div class="sidebar-user-card">
-        <div class="user-card-header">
-          <div class="user-avatar-container">
-            <div class="user-avatar-ring">
-              <div class="user-avatar-inner" id="sidebarUserAvatar">U</div>
-            </div>
-            <div class="user-status-dot"></div>
-          </div>
-          <div class="user-card-info">
-            <div class="user-card-name" id="sidebarUserName">User</div>
-            <div class="user-card-plan">
-              <span class="plan-badge">FREE</span>
-            </div>
-          </div>
-        </div>
-        <div class="user-card-actions">
-          <a href="profile.html" class="user-action-btn profile">
-            <span>👤</span> Profile
-          </a>
-          <button onclick="logout()" class="user-action-btn logout">
-            <span>🚪</span> Logout
-          </button>
-        </div>
-      </div>
-      
       <!-- Premium Upgrade CTA -->
       <a href="pricing.html" class="sidebar-upgrade-btn">
         <div class="upgrade-glow"></div>
@@ -1283,14 +1257,20 @@
           <div class="credit-text" id="creditText" style="font-size: 14px; font-weight: 700; color: var(--blue);">⚡ 200 Credits</div>
         </div>
 
+        <!-- USER PROFILE DROPDOWN IN HEADER -->
         <div class="settings-container">
-          <button class="settings-btn" onclick="toggleSettings()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff;">⚙️</button>
-          <div class="settings-dropdown" id="settingsDropdown">
+          <button class="settings-btn" onclick="toggleSettings()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px 4px 6px; height: 44px; border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; color: #fff; transition: all 0.3s ease;">
+            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--blue), #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;" id="headerUserAvatar">U</div>
+            <span style="font-size: 14px; font-weight: 600;" id="headerUserName">User</span>
+            <span style="font-size: 10px; opacity: 0.5;">▼</span>
+          </button>
+          <div class="settings-dropdown" id="settingsDropdown" style="right: 0; top: 55px; min-width: 200px;">
             <div class="settings-item" onclick="openProfile()"><span>👤</span> Profile Settings</div>
             <div class="settings-item" onclick="toggleTheme()"><span>🌗</span> Toggle Theme</div>
             <div class="settings-item" onclick="openReferral()"><span>🎁</span> Refer & Earn</div>
             <div class="settings-item" onclick="openSupport()"><span>💬</span> Get Support</div>
-            <div class="settings-item logout" onclick="logout()"><span>🚪</span> Logout Account</div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.06); margin: 4px 0;"></div>
+            <div class="settings-item logout" onclick="logout()" style="color: #ef4444;"><span>🚪</span> Logout Account</div>
           </div>
         </div>
       </div>
