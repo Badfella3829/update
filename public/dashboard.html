@@ -511,20 +511,7 @@
   .user-name { font-size: 13px; font-weight: 600; }
   .dropdown-arrow { font-size: 9px; opacity: 0.5; }
 
-  .settings-dropdown {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 50px;
-    min-width: 220px;
-    background: rgba(15, 23, 42, 0.98);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px;
-    padding: 8px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    z-index: 2000;
-  }
+  .notification-dropdown.show { display: block !important; }
   .dropdown-divider { border-top: 1px solid rgba(255,255,255,0.08); margin: 6px 0; }
   .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
 
@@ -1268,9 +1255,20 @@
               </div>
             </div>
             <div class="welcome-right">
-              <button class="notification-icon-small" onclick="toggleNotifications()" data-tooltip="View your notifications">
+              <button class="notification-icon-small" onclick="toggleNotifications()" data-tooltip="View your notifications" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
                 🔔
+                <div class="notification-badge" id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: none; align-items: center; justify-content: center; border: 2px solid #0f172a;"></div>
               </button>
+              
+              <!-- Notification Dropdown -->
+              <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 60px; right: 0; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 320px; max-height: 450px; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 2000; display: none; padding: 0;">
+                <div class="notification-header" style="padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 700; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                  Notifications
+                </div>
+                <div id="notificationsList">
+                  <div class="notification-empty" style="padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px;">No new notifications</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2046,9 +2044,13 @@
 
     // Load notifications from Firebase
     async function loadNotifications() {
+      if (!window.notifications) return;
       const notifications = await window.notifications.getNotifications();
       const dropdown = document.getElementById('notificationDropdown');
       const badge = document.getElementById('notificationBadge');
+      const listContainer = document.getElementById('notificationsList');
+      if (!dropdown || !badge || !listContainer) return;
+
       const unreadCount = notifications.filter(n => !n.isRead).length;
 
       if (unreadCount > 0) {
@@ -2058,34 +2060,28 @@
         badge.style.display = 'none';
       }
 
-      const header = dropdown.querySelector('.notification-header');
-      header.innerHTML = `Notifications ${unreadCount > 0 ? `<span style="color: var(--blue); font-size: 14px;">(${unreadCount} new)</span>` : ''}`;
-
-      // Clear existing items
-      const existingItems = dropdown.querySelectorAll('.notification-item');
-      existingItems.forEach(item => item.remove());
-
-      const emptyDiv = dropdown.querySelector('.notification-empty');
+      // Clear existing items except empty state
+      listContainer.innerHTML = '';
+      
       if (notifications.length === 0) {
-        emptyDiv.style.display = 'block';
+        listContainer.innerHTML = '<div class="notification-empty" style="padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px;">No new notifications</div>';
         return;
       }
-      emptyDiv.style.display = 'none';
 
       notifications.forEach(notification => {
         const item = document.createElement('div');
-        item.className = `notification-item ${!notification.isRead ? 'unread' : ''}`;
+        item.style.cssText = `padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; background: ${!notification.isRead ? 'rgba(59, 130, 246, 0.05)' : 'transparent'}`;
         item.onclick = () => markAsRead(notification.id);
 
         const timeAgo = getTimeAgo(notification.createdAt?.toDate?.() || new Date(notification.createdAt));
 
         item.innerHTML = `
-          <div class="notification-title">${notification.title}</div>
-          <div class="notification-message">${notification.message}</div>
-          <div class="notification-time">${timeAgo}</div>
+          <div style="font-weight: 600; color: #fff; margin-bottom: 4px; font-size: 14px;">${notification.title}</div>
+          <div style="color: var(--text-muted); font-size: 13px; line-height: 1.4;">${notification.message}</div>
+          <div style="color: var(--text-muted); font-size: 11px; margin-top: 8px; opacity: 0.7;">${timeAgo}</div>
         `;
 
-        dropdown.appendChild(item);
+        listContainer.appendChild(item);
       });
     }
 
@@ -2203,8 +2199,11 @@
       window.location.href = "contact.html";
     };
 
-    window.openHelp = () => {
-      window.location.href = "contact.html";
+    window.toggleNotifications = () => {
+      const dropdown = document.getElementById('notificationDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('show');
+      }
     };
 
     // --- LOGOUT ---
