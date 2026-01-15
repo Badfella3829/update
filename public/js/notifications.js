@@ -1,184 +1,284 @@
-// Notifications system for the dashboard
-import { auth, db } from './firebase.js';
-import { collection, addDoc, getDocs, updateDoc, doc, query, orderBy, where, limit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+/**
+ * Notifications System
+ * Handles in-app notifications, plan expiry reminders, and new feature alerts
+ */
 
-class NotificationManager {
-  constructor() {
-    this.notifications = [];
-    this.unreadCount = 0;
-  }
+import { db } from "./firebase.js";
+import { collection, addDoc, query, where, orderBy, onSnapshot, updateDoc, doc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { auth } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { logNotificationCreated, logNotificationRead, logNotificationShown } from "./logger.js";
 
-  // Initialize notifications system
-  async initNotifications() {
-    try {
-      const user = auth.currentUser;
-      if (!user) return;
+// Notification types
+export const NOTIFICATION_TYPES = {
+  IN_APP: 'in_app',
+  PLAN_EXPIRY: 'plan_expiry',
+  NEW_FEATURE: 'new_feature'
+};
 
-      // Load notifications from Firestore
-      await this.loadNotifications();
+// Notification priorities
+export const NOTIFICATION_PRIORITIES = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high',
+  URGENT: 'urgent'
+};
 
-      // Set up real-time listener for new notifications (simplified)
-      this.setupNotificationListener();
-    } catch (error) {
-      console.error('Error initializing notifications:', error);
+let currentUser = null;
+let notificationsListener = null;
+
+/**
+ * Initialize notifications for the current user
+ */
+export function initNotifications() {
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      setupNotificationsListener(user.uid);
+    } else {
+      if (notificationsListener) {
+        notificationsListener();
+        notificationsListener = null;
+      }
     }
-  }
+  });
+}
 
-  // Load notifications from Firestore
-  async loadNotifications() {
-    try {
-      const user = auth.currentUser;
-      if (!user) return;
+/**
+ * Set up real-time listener for user notifications
+ */
+function setupNotificationsListener(userId) {
+  const notificationsRef = collection(db, 'notifications');
+  const q = query(
+    notificationsRef,
+    where('userId', '==', userId),
+    where('isRead', '==', false),
+    orderBy('createdAt', 'desc')
+  );
 
-      const notificationsRef = collection(db, 'users', user.uid, 'notifications');
-      const q = query(notificationsRef, orderBy('createdAt', 'desc'), limit(50));
-      const querySnapshot = await getDocs(q);
+  notificationsListener = onSnapshot(q, (snapshot) => {
+    const notifications = [];
+    snapshot.forEach((doc) => {
+      notifications.push({ id: doc.id, ...doc.data() });
+    });
 
-      this.notifications = [];
-      querySnapshot.forEach((doc) => {
-        this.notifications.push({
-          id: doc.id,
-          ...doc.data()
-        });
+    // Update notification badge
+    updateNotificationBadge(notifications.length);
+
+    // Show in-app notifications if any
+    notifications.forEach(notification => {
+      if (notification.type === NOTIFICATION_TYPES.IN_APP && !notification.shown) {
+        showInAppNotification(notification);
+      }
+    });
+  });
+}
+
+/**
+ * Create a new notification
+ */
+export async function createNotification(userId, type, title, message, data = {}, priority = NOTIFICATION_PRIORITIES.MEDIUM) {
+  try {
+    const notification = {
+      userId,
+      type,
+      title,
+      message,
+      data,
+      priority,
+      isRead: false,
+      shown: false,
+      createdAt: serverTimestamp()
+    };
+
+    const docRef = await addDoc(collection(db, 'notifications'), notification);
+
+    // Log notification creation
+    if (window.logger) {
+      window.logger.info('notification_created', {
+        notificationId: docRef.id,
+        type,
+        priority,
+        category: 'notification'
       });
-
-      this.updateUnreadCount();
-    } catch (error) {
-      console.error('Error loading notifications:', error);
-    }
-  }
-
-  // Set up notification listener (simplified polling for demo)
-  setupNotificationListener() {
-    // In a real app, you'd use Firestore real-time listeners
-    setInterval(async () => {
-      await this.loadNotifications();
-      this.updateUI();
-    }, 30000); // Check every 30 seconds
-  }
-
-  // Get all notifications
-  getNotifications() {
-    return this.notifications;
-  }
-
-  // Mark notification as read
-  async markAsRead(notificationId) {
-    try {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const notificationRef = doc(db, 'users', user.uid, 'notifications', notificationId);
-      await updateDoc(notificationRef, {
-        isRead: true,
-        readAt: new Date()
-      });
-
-      // Update local state
-      const notification = this.notifications.find(n => n.id === notificationId);
-      if (notification) {
-        notification.isRead = true;
-        this.updateUnreadCount();
-      }
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-    }
-  }
-
-  // Add new notification
-  async addNotification(title, message, type = 'info', priority = 'normal') {
-    try {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const notificationData = {
-        title,
-        message,
-        type, // 'info', 'success', 'warning', 'error'
-        priority, // 'low', 'normal', 'high', 'urgent'
-        isRead: false,
-        createdAt: new Date(),
-        userId: user.uid
-      };
-
-      const notificationsRef = collection(db, 'users', user.uid, 'notifications');
-      const docRef = await addDoc(notificationsRef, notificationData);
-
-      // Add to local state
-      this.notifications.unshift({
-        id: docRef.id,
-        ...notificationData
-      });
-
-      this.updateUnreadCount();
-      this.updateUI();
-
-      // Show in-app notification for high priority
-      if (priority === 'high' || priority === 'urgent') {
-        this.showInAppNotification(title, message, priority);
-      }
-    } catch (error) {
-      console.error('Error adding notification:', error);
-    }
-  }
-
-  // Show in-app notification overlay
-  showInAppNotification(title, message, priority = 'normal') {
-    const notification = document.createElement('div');
-    notification.className = `in-app-notification ${priority}`;
-    notification.innerHTML = `
-      <div class="notification-content">
-        <h4>${title}</h4>
-        <p>${message}</p>
-      </div>
-      <button class="notification-close" onclick="this.parentElement.remove()">×</button>
-    `;
-
-    document.body.appendChild(notification);
-
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-      if (notification.parentElement) {
-        notification.remove();
-      }
-    }, 5000);
-  }
-
-  // Update unread count
-  updateUnreadCount() {
-    this.unreadCount = this.notifications.filter(n => !n.isRead).length;
-  }
-
-  // Initialize notification UI
-  initNotificationUI() {
-    // This will be called to set up the notification dropdown and badge
-    this.updateUI();
-  }
-
-  // Update notification UI elements
-  updateUI() {
-    const badge = document.getElementById('notificationBadge');
-    const dropdown = document.getElementById('notificationDropdown');
-
-    if (badge) {
-      if (this.unreadCount > 0) {
-        badge.textContent = this.unreadCount > 9 ? '9+' : this.unreadCount;
-        badge.style.display = 'flex';
-      } else {
-        badge.style.display = 'none';
-      }
     }
 
-    // Update dropdown header
-    const header = dropdown?.querySelector('.notification-header');
-    if (header) {
-      header.innerHTML = `Notifications ${this.unreadCount > 0 ? `<span style="color: var(--blue); font-size: 14px;">(${this.unreadCount} new)</span>` : ''}`;
-    }
+    return docRef.id;
+  } catch (error) {
+    console.error('Failed to create notification:', error);
+    throw error;
   }
 }
 
-// Create global notification manager instance
-export const notifications = new NotificationManager();
+/**
+ * Mark notification as read
+ */
+export async function markAsRead(notificationId) {
+  try {
+    await updateDoc(doc(db, 'notifications', notificationId), {
+      isRead: true,
+      readAt: serverTimestamp()
+    });
 
-// Export individual functions for backward compatibility
-export { NotificationManager };
+    // Log notification read
+    logNotificationRead(notificationId);
+  } catch (error) {
+    console.error('Failed to mark notification as read:', error);
+  }
+}
+
+/**
+ * Mark notification as shown (for in-app notifications)
+ */
+export async function markAsShown(notificationId) {
+  try {
+    await updateDoc(doc(db, 'notifications', notificationId), {
+      shown: true,
+      shownAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error('Failed to mark notification as shown:', error);
+  }
+}
+
+/**
+ * Get all notifications for current user
+ */
+export async function getNotifications() {
+  if (!currentUser) return [];
+
+  try {
+    const notificationsRef = collection(db, 'notifications');
+    const q = query(
+      notificationsRef,
+      where('userId', '==', currentUser.uid),
+      orderBy('createdAt', 'desc')
+    );
+
+    const snapshot = await getDocs(q);
+    const notifications = [];
+    snapshot.forEach((doc) => {
+      notifications.push({ id: doc.id, ...doc.data() });
+    });
+
+    return notifications;
+  } catch (error) {
+    console.error('Failed to get notifications:', error);
+    return [];
+  }
+}
+
+/**
+ * Create plan expiry reminder
+ */
+export async function createPlanExpiryReminder(userId, planEndDate, daysUntilExpiry = 7) {
+  const expiryDate = new Date(planEndDate);
+  const reminderDate = new Date(expiryDate);
+  reminderDate.setDate(expiryDate.getDate() - daysUntilExpiry);
+
+  const title = `Plan Expiring Soon`;
+  const message = `Your plan will expire on ${expiryDate.toLocaleDateString()}. Renew now to continue enjoying premium features.`;
+
+  return await createNotification(
+    userId,
+    NOTIFICATION_TYPES.PLAN_EXPIRY,
+    title,
+    message,
+    { planEndDate: expiryDate.toISOString(), daysUntilExpiry },
+    NOTIFICATION_PRIORITIES.HIGH
+  );
+}
+
+/**
+ * Create new feature alert
+ */
+export async function createNewFeatureAlert(userIds, featureName, featureDescription) {
+  const title = `New Feature: ${featureName}`;
+  const message = featureDescription;
+
+  const promises = userIds.map(userId =>
+    createNotification(
+      userId,
+      NOTIFICATION_TYPES.NEW_FEATURE,
+      title,
+      message,
+      { featureName },
+      NOTIFICATION_PRIORITIES.MEDIUM
+    )
+  );
+
+  return await Promise.all(promises);
+}
+
+/**
+ * Show in-app notification
+ */
+function showInAppNotification(notification) {
+  // Create notification element
+  const notificationEl = document.createElement('div');
+  notificationEl.className = `in-app-notification ${notification.priority}`;
+  notificationEl.innerHTML = `
+    <div class="notification-content">
+      <h4>${notification.title}</h4>
+      <p>${notification.message}</p>
+    </div>
+    <button class="notification-close" onclick="this.parentElement.remove()">&times;</button>
+  `;
+
+  // Add to page
+  document.body.appendChild(notificationEl);
+
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    if (notificationEl.parentElement) {
+      notificationEl.remove();
+    }
+  }, 5000);
+
+  // Mark as shown
+  markAsShown(notification.id);
+}
+
+/**
+ * Update notification badge count
+ */
+function updateNotificationBadge(count) {
+  const badge = document.querySelector('.notification-badge');
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'none';
+  }
+}
+
+/**
+ * Initialize notification UI
+ */
+export function initNotificationUI() {
+  // This will be called when the dashboard loads
+  const notificationIcon = document.querySelector('.notification-icon');
+  if (notificationIcon) {
+    notificationIcon.addEventListener('click', toggleNotificationDropdown);
+  }
+}
+
+/**
+ * Toggle notification dropdown
+ */
+function toggleNotificationDropdown() {
+  const dropdown = document.querySelector('.notification-dropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('show');
+  }
+}
+
+// Export for global access
+window.notifications = {
+  createNotification,
+  createPlanExpiryReminder,
+  createNewFeatureAlert,
+  markAsRead,
+  getNotifications,
+  initNotifications,
+  initNotificationUI,
+  showInAppNotification
+};

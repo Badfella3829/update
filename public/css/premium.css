@@ -1,0 +1,13 @@
+/* ================= PREMIUM UI ================= */
+
+.premium-box{
+  background:linear-gradient(135deg,#020617,#0f172a);
+  padding:25px;
+  border-radius:16px;
+  box-shadow:0 15px 40px rgba(108,92,231,.35);
+}
+
+.premium-title{
+  font-size:22px;
+  margin-bottom:10px;
+}

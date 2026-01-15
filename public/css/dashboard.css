@@ -1,0 +1,350 @@
+/* ================= DASHBOARD PAGE ONLY ================= */
+
+ul{
+  list-style:none;
+  padding:0;
+}
+
+li{
+  background:#141a2e;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:10px;
+}
+
+/* ================= SKELETON LOADING COMPONENTS ================= */
+
+/* Skeleton Card Base Styles */
+.skeleton-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+/* Skeleton Elements */
+.skeleton-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.skeleton-title {
+  width: 60%;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-description {
+  width: 85%;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.skeleton-description:nth-child(2) {
+  width: 70%;
+  margin-bottom: 20px;
+}
+
+.skeleton-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.skeleton-status {
+  width: 50px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.skeleton-button {
+  width: 60px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+/* ================= ENHANCED EMPTY STATES ================= */
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.empty-title {
+  color: var(--text-main);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.empty-message {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 400px;
+}
+
+.empty-action {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--blue), #4f46e5);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  margin-top: 10px;
+}
+
+.empty-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+}
+
+/* SVG Illustrations for Empty States */
+.empty-illustration {
+  width: 120px;
+  height: 120px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.empty-illustration svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ================= THEME TOGGLE ENHANCEMENTS ================= */
+
+.theme-toggle-container {
+  position: relative;
+}
+
+.theme-toggle-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.05);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Smooth theme transition for body */
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body * {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* ================= ENHANCED HOVER EFFECTS ================= */
+
+/* Card Hover Enhancements */
+.card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 50px -10px var(--blue-glow);
+}
+
+/* Button Hover Enhancements */
+.card-btn, .quick-action-btn, .sidebar-upgrade-btn, .upgrade-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-btn::before,
+.quick-action-btn::before,
+.sidebar-upgrade-btn::before,
+.upgrade-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.card-btn:hover::before,
+.quick-action-btn:hover::before,
+.sidebar-upgrade-btn:hover::before,
+.upgrade-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Notification Icon Enhancements */
+.notification-icon, .notification-icon-small {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-icon:hover, .notification-icon-small:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Social Icon Hover Effects */
+.s-icon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.s-icon:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* ================= RESPONSIVE ENHANCEMENTS ================= */
+
+@media (max-width: 768px) {
+  .skeleton-card {
+    padding: 20px;
+  }
+
+  .empty-state {
+    padding: 40px 15px;
+  }
+
+  .empty-illustration {
+    width: 80px;
+    height: 80px;
+  }
+
+  .empty-title {
+    font-size: 20px;
+  }
+
+  .empty-message {
+    font-size: 14px;
+  }
+}
+
+/* ================= LOADING STATE ANIMATIONS ================= */
+
+.loading-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.loading-fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* Section Loading States */
+.section-loading {
+  position: relative;
+}
+
+.section-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.section-loading::before {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(59, 130, 246, 0.3);
+  border-top: 3px solid var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

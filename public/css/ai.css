@@ -1,0 +1,21 @@
+/* ================= AI PAGE ONLY ================= */
+
+textarea,
+input,
+select{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  background:#020617;
+  color:white;
+  border:1px solid #1e293b;
+  border-radius:8px;
+}
+
+pre{
+  background:#020617;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
+  overflow:auto;
+}
