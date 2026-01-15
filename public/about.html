@@ -200,10 +200,25 @@
     border-radius:14px;
     text-decoration:none;
     z-index:999;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(20px) scale(.95);
     transition:.4s ease;
     box-shadow:0 20px 60px rgba(59,130,246,.35);
     border: 1px solid rgba(255,255,255,0.08);
   }
+
+  .bottom-brand.show{
+    opacity:1;
+    pointer-events:auto;
+    transform:none;
+  }
+
+  .bottom-brand img{ height:36px; width:36px; object-fit: cover; border-radius:8px; border: 1px solid rgba(255,255,255,0.1); }
+
+  .brand-name{ font-size:22px; font-weight:800; color:#fff; letter-spacing:0.5px; display: flex; align-items: center; }
+  .brand-tech{color:#e5e7eb}
+  .brand-vyro{color:#3b82f6}
 
   /* MOBILE */
   @media(max-width:768px) {
@@ -333,9 +348,9 @@
   </div>
 
   <a href="index.html" class="bottom-brand" id="bottomBrand">
-    <img src="./logo.jpg" alt="TechVyro" style="height: 36px; width: 36px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-    <span class="brand-name" style="font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 0.5px; display: flex; align-items: center;">
-      Tech<span style="color: #3b82f6;">Vyro</span>
+    <img src="./logo.jpg" alt="TechVyro">
+    <span class="brand-name">
+      Tech<span style="color: var(--blue);">Vyro</span>
     </span>
   </a>
 
@@ -353,6 +368,14 @@
     window.addEventListener('scroll',()=>{
       const h=document.documentElement.scrollHeight-window.innerHeight;
       progress.style.width=(window.scrollY/h)*100+'%';
+      
+      /* BOTTOM BRAND SHOW/HIDE ON SCROLL */
+      const bottomBrand = document.getElementById('bottomBrand');
+      if (window.scrollY > 300) {
+        bottomBrand.classList.add('show');
+      } else {
+        bottomBrand.classList.remove('show');
+      }
     });
     // Reveal Animation
     const observer = new IntersectionObserver(entries => {
