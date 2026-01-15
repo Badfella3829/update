@@ -2316,9 +2316,11 @@
           }
           
           // First load from localStorage for instant display
+          const savedName = localStorage.getItem('userName');
           const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-          if (storedUser.name || storedUser.displayName) {
-            updateProfileUI(storedUser.name || storedUser.displayName, storedUser.plan || 'free');
+          const instantName = savedName || storedUser.name || storedUser.displayName;
+          if (instantName) {
+            updateProfileUI(instantName, storedUser.plan || 'free');
           }
           
           auth.onAuthStateChanged(async (user) => {
@@ -2333,6 +2335,7 @@
                 plan = data.plan || "free";
                 
                 // Update localStorage with latest data
+                localStorage.setItem('userName', name);
                 const updatedUser = { ...storedUser, name, displayName: name, plan };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
               }
