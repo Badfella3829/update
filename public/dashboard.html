@@ -769,10 +769,53 @@
   }
 
   /* Mobile */
-  .menu-toggle { display: none; font-size: 26px; background: none; border: none; color: var(--text-main); }
+  .menu-toggle { display: none; font-size: 26px; background: none; border: none; color: var(--text-main); cursor: pointer; }
+  
+  /* Sidebar Close Button */
+  .sidebar-close {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  .sidebar-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
+  }
+  
+  /* Sidebar Overlay */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1050;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+  
   @media(max-width:900px){
-    .sidebar{ position: fixed; left: -280px; height: 100%; box-shadow: 20px 0 60px #000; }
+    .sidebar{ position: fixed; left: -280px; height: 100%; box-shadow: 20px 0 60px #000; z-index: 1100; }
     .sidebar.active{ left: 0; }
+    .sidebar-close { display: flex; }
     .main-content{ padding: 20px; }
     .menu-toggle{ display: block; margin-right: 15px; }
     .header { grid-template-columns: auto 1fr; gap: 15px; padding: 20px 0; }
@@ -912,8 +955,14 @@
 
   <div class="hero-glow"></div>
   <div class="grid-pattern"></div>
+  
+  <!-- Sidebar Overlay for Mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
   <aside class="sidebar" id="sidebar">
+    <!-- Close Button for Mobile -->
+    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    
     <a href="index.html" class="brand">
       <img src="logo.jpg" alt="TechVyro" class="brand-logo">
       <div class="brand-name">TechVyro</div>
@@ -1837,11 +1886,28 @@
     }
 
     window.toggleSidebar = () => {
-      document.body.classList.toggle('sidebar-collapsed');
-      const header = document.querySelector('.header');
-      if (header) {
-        header.classList.toggle('hidden');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      
+      // For mobile - toggle active class
+      if (window.innerWidth <= 900) {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+      } else {
+        // For desktop - toggle collapsed state
+        document.body.classList.toggle('sidebar-collapsed');
+        const header = document.querySelector('.header');
+        if (header) {
+          header.classList.toggle('hidden');
+        }
       }
+    };
+    
+    window.closeSidebar = () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
     };
 
       // Initialize notifications on page load
