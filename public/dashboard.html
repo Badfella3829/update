@@ -486,60 +486,114 @@
     font-weight: 700;
   }
 
+  .settings-container {
+    position: relative;
+  }
   .settings-btn {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
-    padding: 4px 12px 4px 6px;
-    height: 40px;
-    border-radius: 10px;
+    padding: 8px 14px 8px 10px;
+    height: 42px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     cursor: pointer;
     color: #fff;
-    transition: all 0.3s;
-    position: relative;
+    transition: all 0.3s ease;
+    font-family: inherit;
   }
-  .settings-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  .settings-btn:hover { 
+    background: rgba(255,255,255,0.1); 
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+  }
+  .settings-gear { font-size: 18px; }
+  .user-name { font-size: 13px; font-weight: 600; }
+  .dropdown-arrow { font-size: 9px; opacity: 0.6; transition: transform 0.3s ease; }
+  .settings-btn:hover .dropdown-arrow { transform: rotate(180deg); }
   
   .settings-dropdown {
-    display: none;
     position: absolute;
     right: 0;
-    top: 55px;
+    top: 52px;
     min-width: 260px;
     background: rgba(15, 23, 42, 0.98);
     backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 16px;
     padding: 10px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.7);
     z-index: 9999;
     opacity: 0;
+    visibility: hidden;
     transform: translateY(10px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
   }
   .settings-dropdown.show {
-    display: block !important;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .dropdown-user-info {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+  }
+  .dropdown-user-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .dropdown-user-info .user-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  }
+  .dropdown-user-details h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .dropdown-user-details p {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
   }
   .settings-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 12px;
+    padding: 12px 16px;
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
     border-radius: 10px;
-    text-decoration: none;
-    transition: all 0.2s;
-    margin-bottom: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
-  .settings-item:hover { background: rgba(255,255,255,0.05); }
-  .item-title { display: block; font-size: 13px; font-weight: 600; color: #fff; }
-  .item-desc { display: block; font-size: 10px; color: var(--text-muted); }
-  .dropdown-divider { border-top: 1px solid rgba(255,255,255,0.08); margin: 6px 0; }
+  .settings-item:hover { 
+    background: rgba(255,255,255,0.06);
+    transform: translateX(4px);
+  }
+  .item-icon { font-size: 18px; }
+  .settings-item.logout { color: #ef4444; font-weight: 600; }
+  .settings-item.logout:hover { background: rgba(239, 68, 68, 0.1); }
+  .dropdown-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 8px 0; }
   .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 26px; cursor: pointer; }
 
   /* Quick Actions Panel */
@@ -1237,36 +1291,36 @@
 
         <!-- SETTINGS DROPDOWN -->
         <div class="settings-container">
-          <button class="settings-btn" onclick="toggleSettings(event)" title="Settings & Profile" style="padding: 4px 14px 4px 10px; cursor: pointer; position: relative; z-index: 10001;">
-            <span style="font-size: 18px; pointer-events: none;">⚙️</span>
-            <span class="user-name" id="headerUserName" style="margin-left: 5px; pointer-events: none;">Settings</span>
-            <span class="dropdown-arrow" style="pointer-events: none;">▼</span>
+          <button class="settings-btn" onclick="toggleSettings(event)" title="Settings & Profile">
+            <span class="settings-gear">⚙️</span>
+            <span class="user-name" id="headerUserName">Settings</span>
+            <span class="dropdown-arrow">▼</span>
           </button>
-          <div class="settings-dropdown" id="settingsDropdown" style="display: none; position: absolute; right: 0; top: 55px; min-width: 260px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); z-index: 9999; opacity: 0; transform: translateY(10px); transition: all 0.3s ease;">
-            <div class="dropdown-user-info" style="padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 10px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-              <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="user-avatar" id="headerUserAvatar" style="width: 45px; height: 45px; font-size: 18px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">U</div>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <div class="dropdown-user-info">
+              <div class="dropdown-user-row">
+                <div class="user-avatar" id="headerUserAvatar">U</div>
                 <div class="dropdown-user-details">
-                  <h4 id="dropdownFullName" style="margin: 0; font-size: 15px; font-weight: 700; color: #fff;">User Name</h4>
-                  <p id="dropdownPlanType" style="margin: 2px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.5);">Free Member</p>
+                  <h4 id="dropdownFullName">User Name</h4>
+                  <p id="dropdownPlanType">Free Member</p>
                 </div>
               </div>
             </div>
-            <div class="settings-item" onclick="openProfile()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">👤</span> Profile Settings
+            <div class="settings-item" onclick="openProfile()">
+              <span class="item-icon">👤</span> Profile Settings
             </div>
-            <div class="settings-item" onclick="toggleTheme()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">🌗</span> Toggle Theme
+            <div class="settings-item" onclick="toggleTheme()">
+              <span class="item-icon">🌗</span> Toggle Theme
             </div>
-            <div class="settings-item" onclick="openReferral()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">🎁</span> Refer & Earn
+            <div class="settings-item" onclick="openReferral()">
+              <span class="item-icon">🎁</span> Refer & Earn
             </div>
-            <div class="settings-item" onclick="openSupport()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">💬</span> Get Support
+            <div class="settings-item" onclick="openSupport()">
+              <span class="item-icon">💬</span> Get Support
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.08); margin: 8px 0;"></div>
-            <div class="settings-item logout" onclick="logout()" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #ef4444; font-size: 14px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-              <span style="font-size: 18px;">🚪</span> Logout Account
+            <div class="dropdown-divider"></div>
+            <div class="settings-item logout" onclick="logout()">
+              <span class="item-icon">🚪</span> Logout Account
             </div>
           </div>
         </div>
@@ -2241,48 +2295,19 @@
         event.preventDefault();
         event.stopPropagation();
       }
-      const settingsDropdown = document.getElementById('settingsDropdown');
-      if (!settingsDropdown) return;
-      
-      const isShowing = settingsDropdown.classList.contains('show');
-      
-      if (isShowing) {
-        settingsDropdown.classList.remove('show');
-        settingsDropdown.style.opacity = '0';
-        settingsDropdown.style.transform = 'translateY(10px)';
-        settingsDropdown.style.pointerEvents = 'none';
-        setTimeout(() => {
-          if (!settingsDropdown.classList.contains('show')) {
-            settingsDropdown.style.display = 'none';
-          }
-        }, 300);
-      } else {
-        settingsDropdown.style.display = 'block';
-        // Force reflow
-        settingsDropdown.offsetHeight;
-        settingsDropdown.classList.add('show');
-        settingsDropdown.style.opacity = '1';
-        settingsDropdown.style.transform = 'translateY(0)';
-        settingsDropdown.style.pointerEvents = 'auto';
-      }
+      const dropdown = document.getElementById('settingsDropdown');
+      if (!dropdown) return;
+      dropdown.classList.toggle('show');
     };
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (event) => {
       const dropdown = document.getElementById('settingsDropdown');
-      const settingsBtn = document.querySelector('.settings-btn');
-      if (dropdown && dropdown.classList.contains('show') && 
-          !dropdown.contains(event.target) && 
-          !settingsBtn.contains(event.target)) {
-        dropdown.classList.remove('show');
-        settingsDropdown.style.opacity = '0';
-        settingsDropdown.style.transform = 'translateY(10px)';
-        settingsDropdown.style.pointerEvents = 'none';
-        setTimeout(() => {
-          if (!dropdown.classList.contains('show')) {
-            dropdown.style.display = 'none';
-          }
-        }, 300);
+      const settingsContainer = document.querySelector('.settings-container');
+      if (dropdown && dropdown.classList.contains('show')) {
+        if (!settingsContainer.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
       }
     });
 
