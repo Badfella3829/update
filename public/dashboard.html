@@ -1234,10 +1234,10 @@
 
         <!-- SETTINGS DROPDOWN -->
         <div class="settings-container">
-          <button class="settings-btn" onclick="toggleSettings(event)" title="Settings & Profile" style="padding: 4px 14px 4px 10px;">
-            <span style="font-size: 18px;">⚙️</span>
-            <span class="user-name" id="headerUserName" style="margin-left: 5px;">Settings</span>
-            <span class="dropdown-arrow">▼</span>
+          <button class="settings-btn" onclick="toggleSettings(event)" title="Settings & Profile" style="padding: 4px 14px 4px 10px; cursor: pointer; position: relative; z-index: 10001;">
+            <span style="font-size: 18px; pointer-events: none;">⚙️</span>
+            <span class="user-name" id="headerUserName" style="margin-left: 5px; pointer-events: none;">Settings</span>
+            <span class="dropdown-arrow" style="pointer-events: none;">▼</span>
           </button>
           <div class="settings-dropdown" id="settingsDropdown" style="display: none; position: absolute; right: 0; top: 55px; min-width: 260px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); z-index: 9999; opacity: 0; transform: translateY(10px); transition: all 0.3s ease;">
             <div class="dropdown-user-info" style="padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 10px; background: rgba(255,255,255,0.03); border-radius: 12px;">
@@ -2234,22 +2234,33 @@
 
 
     window.toggleSettings = (event) => {
-      if (event) event.stopPropagation();
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       const settingsDropdown = document.getElementById('settingsDropdown');
-      const isShowing = settingsDropdown.style.display === 'block';
+      if (!settingsDropdown) return;
+      
+      const isShowing = settingsDropdown.classList.contains('show');
       
       if (isShowing) {
+        settingsDropdown.classList.remove('show');
         settingsDropdown.style.opacity = '0';
         settingsDropdown.style.transform = 'translateY(10px)';
+        settingsDropdown.style.pointerEvents = 'none';
         setTimeout(() => {
-          settingsDropdown.style.display = 'none';
+          if (!settingsDropdown.classList.contains('show')) {
+            settingsDropdown.style.display = 'none';
+          }
         }, 300);
       } else {
         settingsDropdown.style.display = 'block';
         // Force reflow
         settingsDropdown.offsetHeight;
+        settingsDropdown.classList.add('show');
         settingsDropdown.style.opacity = '1';
         settingsDropdown.style.transform = 'translateY(0)';
+        settingsDropdown.style.pointerEvents = 'auto';
       }
     };
 
@@ -2257,10 +2268,18 @@
     document.addEventListener('click', (event) => {
       const dropdown = document.getElementById('settingsDropdown');
       const settingsBtn = document.querySelector('.settings-btn');
-      if (dropdown && dropdown.style.display === 'block' && 
+      if (dropdown && dropdown.classList.contains('show') && 
           !dropdown.contains(event.target) && 
           !settingsBtn.contains(event.target)) {
-        dropdown.style.display = 'none';
+        dropdown.classList.remove('show');
+        settingsDropdown.style.opacity = '0';
+        settingsDropdown.style.transform = 'translateY(10px)';
+        settingsDropdown.style.pointerEvents = 'none';
+        setTimeout(() => {
+          if (!dropdown.classList.contains('show')) {
+            dropdown.style.display = 'none';
+          }
+        }, 300);
       }
     });
 
