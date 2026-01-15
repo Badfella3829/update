@@ -815,13 +815,19 @@
         <button class="settings-btn" onclick="toggleSettings()" data-tooltip="Access account settings and options">⚙️</button>
         <div class="settings-dropdown" id="settingsDropdown">
           <div class="settings-item" onclick="openProfile()">
-            <span>👤</span> Profile
+            <span>👤</span> Profile Settings
           </div>
-          <div class="settings-item" onclick="openHelp()">
-            <span>❓</span> Help
+          <div class="settings-item" onclick="toggleTheme()">
+            <span>🌗</span> Toggle Theme
+          </div>
+          <div class="settings-item" onclick="openReferral()">
+            <span>🎁</span> Refer & Earn
+          </div>
+          <div class="settings-item" onclick="openSupport()">
+            <span>💬</span> Get Support
           </div>
           <div class="settings-item logout" onclick="logout()">
-            <span>🚪</span> Logout
+            <span>🚪</span> Logout Account
           </div>
         </div>
       </div>
@@ -1868,8 +1874,16 @@
       window.location.href = "profile.html";
     };
 
+    window.openReferral = () => {
+      window.location.href = "referral.html";
+    };
+
+    window.openSupport = () => {
+      window.location.href = "contact.html";
+    };
+
     window.openHelp = () => {
-      window.location.href = "help.html";
+      window.location.href = "contact.html";
     };
 
     // --- LOGOUT ---
