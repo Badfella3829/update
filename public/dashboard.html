@@ -12,6 +12,21 @@
   <meta http-equiv="Expires" content="0" />
 
   <style>
+    /* SIDEBAR COLLAPSE STYLES */
+    body.sidebar-collapsed .sidebar {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+      border-right: none;
+    }
+    body.sidebar-collapsed .main-content {
+      padding-left: 40px;
+    }
+    body.sidebar-collapsed .header {
+      left: 0;
+    }
+  </style>
+
   /* ================= BRAND THEME ================= */
   :root {
     --bg-dark: #020617;
@@ -1695,6 +1710,14 @@
       if (hours < 24) return `${hours} hours ago`;
       return `${days} days ago`;
     }
+
+    window.toggleSidebar = () => {
+      document.body.classList.toggle('sidebar-collapsed');
+      const header = document.querySelector('.header');
+      if (header) {
+        header.classList.toggle('hidden');
+      }
+    };
 
     // Initialize notifications on page load
     document.addEventListener('DOMContentLoaded', async () => {
