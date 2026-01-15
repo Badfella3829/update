@@ -513,6 +513,9 @@
         document.getElementById('nameInput').value = name;
         document.getElementById('profileName').textContent = name;
         document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
+        
+        // Sync name to localStorage for dashboard
+        localStorage.setItem('userName', name);
 
         const badge = document.getElementById('planBadge');
         badge.textContent = plan.toUpperCase();
