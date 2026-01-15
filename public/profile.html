@@ -572,6 +572,12 @@
 
         document.getElementById('profileName').textContent = newName;
         document.getElementById('profileAvatar').textContent = newName.charAt(0).toUpperCase();
+        
+        // Update localStorage for faster sync across pages
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        storedUser.name = newName;
+        storedUser.displayName = newName;
+        localStorage.setItem('user', JSON.stringify(storedUser));
 
         const status = document.getElementById('saveStatus');
         status.classList.add('show');
