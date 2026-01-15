@@ -1291,7 +1291,7 @@
 
         <!-- SETTINGS DROPDOWN -->
         <div class="settings-container">
-          <button class="settings-btn" onclick="toggleSettings(event)" title="Settings & Profile">
+          <button class="settings-btn" id="settingsBtn" title="Settings & Profile">
             <span class="settings-gear">⚙️</span>
             <span class="user-name" id="headerUserName">Settings</span>
             <span class="dropdown-arrow">▼</span>
@@ -1326,6 +1326,60 @@
         </div>
       </div>
     </header>
+
+    <!-- Settings Dropdown Script (non-module for immediate execution) -->
+    <script>
+      (function() {
+        // Wait for DOM to be ready
+        function initSettingsDropdown() {
+          var btn = document.getElementById('settingsBtn');
+          var dropdown = document.getElementById('settingsDropdown');
+          var container = document.querySelector('.settings-container');
+          
+          if (!btn || !dropdown) {
+            setTimeout(initSettingsDropdown, 50);
+            return;
+          }
+          
+          // Toggle dropdown on button click
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+          });
+          
+          // Close when clicking outside
+          document.addEventListener('click', function(e) {
+            if (dropdown.classList.contains('show') && container && !container.contains(e.target)) {
+              dropdown.classList.remove('show');
+            }
+          });
+          
+          // Close on escape key
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && dropdown.classList.contains('show')) {
+              dropdown.classList.remove('show');
+            }
+          });
+        }
+        
+        // Global functions for dropdown menu items
+        window.openProfile = function() { window.location.href = 'profile.html'; };
+        window.openReferral = function() { window.location.href = 'referral.html'; };
+        window.openSupport = function() { window.location.href = 'contact.html'; };
+        window.toggleTheme = function() {
+          document.body.classList.toggle('light-mode');
+          localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        };
+        
+        // Initialize
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initSettingsDropdown);
+        } else {
+          initSettingsDropdown();
+        }
+      })();
+    </script>
 
     <!-- DASHBOARD CONTAINER - Two Column Layout -->
     <div class="dashboard-container">
