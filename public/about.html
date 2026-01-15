@@ -371,7 +371,10 @@
       
       /* BOTTOM BRAND SHOW/HIDE ON SCROLL */
       const bottomBrand = document.getElementById('bottomBrand');
-      if (window.scrollY > 300) {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const threshold = document.documentElement.scrollHeight - 100; // Trigger near the very end
+
+      if (scrollPosition >= threshold) {
         bottomBrand.classList.add('show');
       } else {
         bottomBrand.classList.remove('show');
