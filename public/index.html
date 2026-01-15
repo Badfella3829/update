@@ -322,8 +322,8 @@
       
       /* BOTTOM BRAND TRIGGER (ONLY AT THE VERY END) */
       const bottomBrand = document.getElementById('bottomBrand');
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const threshold = document.documentElement.scrollHeight - 100;
+      const scrollPosition = window.innerHeight + window.pageYOffset;
+      const threshold = document.documentElement.scrollHeight - 50;
 
       if (scrollPosition >= threshold) {
         bottomBrand.classList.add('show');

@@ -357,10 +357,10 @@
       const h=document.documentElement.scrollHeight-window.innerHeight;
       progress.style.width=(window.scrollY/h)*100+'%';
       
-      /* BOTTOM BRAND SHOW/HIDE ON SCROLL */
+      /* BOTTOM BRAND TRIGGER (ONLY AT THE VERY END) */
       const bottomBrand = document.getElementById('bottomBrand');
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const threshold = document.documentElement.scrollHeight - 100; // Trigger near the very end
+      const scrollPosition = window.innerHeight + window.pageYOffset;
+      const threshold = document.documentElement.scrollHeight - 50; 
 
       if (scrollPosition >= threshold) {
         bottomBrand.classList.add('show');
