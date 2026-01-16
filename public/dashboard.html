@@ -1493,6 +1493,86 @@
       })();
     </script>
 
+    <!-- WELCOME SECTION -->
+    <div class="welcome-section" id="section-welcome">
+      <div class="welcome-content">
+        <div class="welcome-left">
+          <div class="welcome-message">
+            <span class="welcome-emoji">👋</span>
+            <span class="welcome-text">Welcome back, <span id="userName">User</span>!</span>
+          </div>
+          <div class="user-details">
+            <span class="plan-badge" id="userPlan">Free Plan</span>
+            <span class="member-since" id="memberSince">Member since...</span>
+          </div>
+        </div>
+        <div class="welcome-right">
+          <button class="notification-icon-small" onclick="toggleNotifications()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
+            🔔
+            <div class="notification-badge" id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: none; align-items: center; justify-content: center; border: 2px solid #0f172a;"></div>
+          </button>
+          <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 60px; right: 0; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 320px; max-height: 450px; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 2000; display: none; padding: 0;">
+            <div class="notification-header" style="padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 700; color: #fff;">Notifications</div>
+            <div id="notificationsList">
+              <div class="notification-empty" style="padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px;">No new notifications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT ACTIVITY SECTION -->
+    <div class="recent-activity-section">
+      <div class="section-header">
+        📜 Recent Activity
+        <div class="section-header-line"></div>
+      </div>
+      <div class="recent-activity-content">
+        <div class="activity-item">
+          <div class="activity-icon">📊</div>
+          <div class="activity-info">
+            <div class="activity-value" id="todayUsage">0</div>
+            <div class="activity-label">Today's Usage</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">🎯</div>
+          <div class="activity-info">
+            <div class="activity-value" id="remainingLimit">--</div>
+            <div class="activity-label">Remaining Limit</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">🕒</div>
+          <div class="activity-info">
+            <div class="activity-value" id="lastActivity">--</div>
+            <div class="activity-label">Last Activity</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">🔧</div>
+          <div class="activity-info">
+            <div class="activity-value" id="lastUsedTool">--</div>
+            <div class="activity-label">Last Used Tool</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">🔐</div>
+          <div class="activity-info">
+            <div class="activity-value" id="lastLoginTime">--</div>
+            <div class="activity-label">Last Login Time</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">🚀</div>
+          <div class="activity-info">
+            <div class="activity-value" id="lastUpgradeAttempt">--</div>
+            <div class="activity-label">Last Upgrade Attempt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="section-ai" class="section-header">🧠 AI Tools</div>
     <div class="grid" id="ai-tools-content" style="display: grid;">
       <div class="card js-tilt">
@@ -2042,86 +2122,6 @@
           <div class="card-footer">
             <span class="card-status free">🟢 Free</span>
             <button class="card-btn" onclick="showComingSoon()">Open</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- WELCOME SECTION -->
-    <div class="welcome-section" id="section-welcome" style="margin: 30px 0;">
-      <div class="welcome-content">
-        <div class="welcome-left">
-          <div class="welcome-message">
-            <span class="welcome-emoji">👋</span>
-            <span class="welcome-text">Welcome back, <span id="userName">User</span>!</span>
-          </div>
-          <div class="user-details">
-            <span class="plan-badge" id="userPlan">Free Plan</span>
-            <span class="member-since" id="memberSince">Member since...</span>
-          </div>
-        </div>
-        <div class="welcome-right">
-          <button class="notification-icon-small" onclick="toggleNotifications()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
-            🔔
-            <div class="notification-badge" id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: none; align-items: center; justify-content: center; border: 2px solid #0f172a;"></div>
-          </button>
-          <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 60px; right: 0; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 320px; max-height: 450px; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 2000; display: none; padding: 0;">
-            <div class="notification-header" style="padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 700; color: #fff;">Notifications</div>
-            <div id="notificationsList">
-              <div class="notification-empty" style="padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px;">No new notifications</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RECENT ACTIVITY SECTION -->
-    <div class="recent-activity-section" style="margin: 20px 0;">
-      <div class="section-header">
-        📜 Recent Activity
-        <div class="section-header-line"></div>
-      </div>
-      <div class="recent-activity-content">
-        <div class="activity-item">
-          <div class="activity-icon">📊</div>
-          <div class="activity-info">
-            <div class="activity-value" id="todayUsage">0</div>
-            <div class="activity-label">Today's Usage</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🎯</div>
-          <div class="activity-info">
-            <div class="activity-value" id="remainingLimit">--</div>
-            <div class="activity-label">Remaining Limit</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🕒</div>
-          <div class="activity-info">
-            <div class="activity-value" id="lastActivity">--</div>
-            <div class="activity-label">Last Activity</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🔧</div>
-          <div class="activity-info">
-            <div class="activity-value" id="lastUsedTool">--</div>
-            <div class="activity-label">Last Used Tool</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🔐</div>
-          <div class="activity-info">
-            <div class="activity-value" id="lastLoginTime">--</div>
-            <div class="activity-label">Last Login Time</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon">🚀</div>
-          <div class="activity-info">
-            <div class="activity-value" id="lastUpgradeAttempt">--</div>
-            <div class="activity-label">Last Upgrade Attempt</div>
           </div>
         </div>
       </div>
