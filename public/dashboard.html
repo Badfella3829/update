@@ -2329,17 +2329,19 @@
       return `${days} days ago`;
     }
 
-    window.smoothScrollTo = (id) => {
+    window.smoothScrollTo = function(id) {
       const element = document.getElementById(id);
-      const mainContent = document.querySelector('.main-content');
-      if (element && mainContent) {
-        const headerHeight = 80;
-        const elementTop = element.offsetTop - headerHeight;
-        mainContent.scrollTo({ top: elementTop, behavior: 'smooth' });
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
         // Update active nav item
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        event.target.closest('.nav-item')?.classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(function(item) {
+          item.classList.remove('active');
+        });
+        if (event && event.target) {
+          const navItem = event.target.closest('.nav-item');
+          if (navItem) navItem.classList.add('active');
+        }
       }
     };
 
