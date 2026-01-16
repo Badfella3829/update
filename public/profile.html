@@ -504,6 +504,21 @@
         
         if (userDoc.exists()) {
           data = userDoc.data();
+        } else {
+          // Create Firestore document if it doesn't exist
+          const defaultName = user.displayName || user.email?.split('@')[0] || 'User';
+          data = {
+            uid: user.uid,
+            email: user.email,
+            name: defaultName,
+            displayName: defaultName,
+            plan: 'free',
+            credits: 100,
+            emailVerified: user.emailVerified,
+            blocked: false,
+            createdAt: new Date()
+          };
+          await setDoc(doc(db, 'users', user.uid), data);
         }
         
         const name = data.name || data.displayName || user.displayName || user.email?.split('@')[0] || 'User';
