@@ -1426,6 +1426,22 @@
             }
           });
           
+          // Close on scroll
+          window.addEventListener('scroll', function() {
+            if (dropdown.classList.contains('show')) {
+              dropdown.classList.remove('show');
+            }
+          }, true);
+          
+          // Also close on main-content scroll
+          var mainContent = document.querySelector('.main-content');
+          if (mainContent) {
+            mainContent.addEventListener('scroll', function() {
+              if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+              }
+            });
+          }
         }
         
         // Global functions for dropdown menu items
@@ -2474,6 +2490,23 @@
         dropdown.classList.toggle('show');
       }
     };
+
+    // Close all dropdowns on scroll
+    (function() {
+      function closeAllDropdowns() {
+        const settingsDropdown = document.getElementById('settingsDropdown');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        if (settingsDropdown) settingsDropdown.classList.remove('show');
+        if (notificationDropdown) notificationDropdown.style.display = 'none';
+      }
+      
+      window.addEventListener('scroll', closeAllDropdowns, true);
+      
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.addEventListener('scroll', closeAllDropdowns);
+      }
+    })();
 
     // --- LOGOUT ---
     window.logout = async () => {
