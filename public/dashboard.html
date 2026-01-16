@@ -625,15 +625,15 @@
 
   /* ================= 3D GRIDS ================= */
   .section-header {
-    font-size: 22px;
-    font-weight: 800;
+    font-size: 16px;
+    font-weight: 700;
     color: var(--text-main);
-    margin: 50px 0 30px 0;
+    margin: 20px 0 14px 0;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
     scroll-margin-top: 20px;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
   }
   .section-header::after {
     content: "";
@@ -642,13 +642,13 @@
     background: linear-gradient(90deg, var(--border), transparent);
   }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
 
   /* 3D Card - Premium Design */
   .card {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-    padding: 28px;
-    border-radius: 20px;
+    padding: 16px;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, 0.06);
     transform-style: preserve-3d;
     transform: perspective(1000px);
@@ -699,31 +699,31 @@
   .card-content { transform: translateZ(20px); width: 100%; position: relative; z-index: 1; }
 
   .card-icon {
-    font-size: 32px;
-    margin-bottom: 18px;
+    font-size: 22px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
     background: rgba(59, 130, 246, 0.1);
-    border-radius: 14px;
+    border-radius: 10px;
     border: 1px solid rgba(59, 130, 246, 0.15);
   }
   
   .card h3 {
-    font-size: 17px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--text-main);
-    margin-bottom: 10px;
-    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
   }
   
   .card-description {
-    font-size: 14px;
+    font-size: 11px;
     color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 20px;
+    line-height: 1.5;
+    margin-bottom: 10px;
   }
 
   .card-footer {
@@ -839,9 +839,11 @@
 
   /* WELCOME SECTION (First Impression Area) */
   .welcome-section {
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px; padding: 12px 18px; margin-bottom: 12px;
-    backdrop-filter: blur(12px);
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
 
   .welcome-content {
@@ -856,9 +858,9 @@
     display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
   }
 
-  .welcome-emoji { font-size: 18px; }
+  .welcome-emoji { font-size: 16px; }
   .welcome-text {
-    font-size: 15px; font-weight: 600; color: var(--text-main);
+    font-size: 13px; font-weight: 600; color: var(--text-main);
   }
 
   .user-details {
@@ -867,9 +869,9 @@
 
   .plan-badge {
     background: linear-gradient(135deg, var(--blue), #4f46e5);
-    color: white; padding: 6px 12px; border-radius: 20px;
-    font-size: 12px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.5px; box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+    color: white; padding: 4px 10px; border-radius: 14px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; box-shadow: 0 2px 8px rgba(59,130,246,0.3);
   }
 
   .plan-badge.free {
@@ -883,7 +885,7 @@
   }
 
   .member-since {
-    color: var(--text-muted); font-size: 14px; font-weight: 500;
+    color: var(--text-muted); font-size: 11px; font-weight: 500;
   }
 
   .notification-icon-small {
@@ -899,10 +901,12 @@
 
   /* PREMIUM HIGHLIGHT SECTION (Conversion Booster) */
   .premium-highlight-section {
-    background: linear-gradient(135deg, rgba(29, 78, 216, 0.08), rgba(56, 189, 248, 0.06));
-    border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 10px;
-    padding: 10px 18px; margin-bottom: 12px;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 14px;
+    padding: 14px 16px; margin-bottom: 14px;
     position: relative; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
   }
   .premium-highlight-section::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -916,27 +920,27 @@
   }
 
   .premium-benefits h3 {
-    font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;
+    font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;
     display: flex; align-items: center; gap: 6px;
   }
   .premium-benefits ul {
-    list-style: none; padding: 0; margin: 0; display: flex; gap: 16px; flex-wrap: wrap;
+    list-style: none; padding: 0; margin: 0; display: flex; gap: 12px; flex-wrap: wrap;
   }
   .premium-benefits li {
-    color: var(--text-muted); font-size: 12px;
+    color: var(--text-muted); font-size: 10px;
     display: flex; align-items: center; gap: 4px;
   }
   .premium-benefits li::before {
-    content: "✨"; font-size: 14px;
+    content: "✨"; font-size: 12px;
   }
 
   .unlock-message {
-    text-align: center; padding: 20px; background: rgba(255,255,255,0.05);
-    border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+    text-align: center; padding: 12px; background: rgba(255,255,255,0.05);
+    border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
   }
   .unlock-message p {
-    font-size: 16px; font-weight: 600; color: var(--text-main); margin: 0;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 12px; font-weight: 600; color: var(--text-main); margin: 0;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
   }
 
   .upgrade-cta {
@@ -944,10 +948,10 @@
   }
   .upgrade-btn {
     background: linear-gradient(135deg, #3b82f6, #60a5fa);
-    color: white; border: none; padding: 8px 16px; border-radius: 6px;
-    font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none;
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4); transition: 0.3s;
-    display: inline-flex; align-items: center; gap: 8px;
+    color: white; border: none; padding: 6px 12px; border-radius: 8px;
+    font-weight: 600; font-size: 10px; cursor: pointer; text-decoration: none;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); transition: 0.3s;
+    display: inline-flex; align-items: center; gap: 6px;
   }
   .upgrade-btn:hover {
     transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
@@ -1150,8 +1154,8 @@
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 20px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
   }
@@ -1174,7 +1178,7 @@
     gap: 10px;
     padding: 10px 12px;
     background: rgba(59, 130, 246, 0.05);
-    border-radius: 14px;
+    border-radius: 10px;
     border: 1px solid rgba(59, 130, 246, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
