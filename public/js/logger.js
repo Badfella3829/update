@@ -24,17 +24,21 @@ const CURRENT_LEVEL = LOG_LEVELS.INFO;
 function log(level, event, data = {}, userId = null) {
   if (level < CURRENT_LEVEL) return;
 
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, v]) => v !== undefined)
+  );
+  
   const logEntry = {
     timestamp: serverTimestamp(),
     level: Object.keys(LOG_LEVELS)[level],
     event,
     data: {
-      ...data,
+      ...cleanData,
       userAgent: navigator.userAgent,
       url: window.location.href,
       timestamp: new Date().toISOString()
     },
-    userId: userId || getCurrentUserId()
+    userId: userId || getCurrentUserId() || 'anonymous'
   };
 
   // Console logging for development
