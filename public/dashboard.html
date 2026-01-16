@@ -840,16 +840,16 @@
   /* WELCOME SECTION (First Impression Area) */
   .welcome-section {
     background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 16px; padding: 24px; margin-bottom: 30px;
+    border-radius: 12px; padding: 16px 24px; margin-bottom: 20px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
 
   .welcome-content {
     display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 20px;
+    gap: 20px;
   }
 
-  .welcome-left { flex: 1; min-width: 200px; }
+  .welcome-left { flex: 1; }
   .welcome-right { display: flex; align-items: center; }
 
   .welcome-message {
@@ -900,8 +900,8 @@
   /* PREMIUM HIGHLIGHT SECTION (Conversion Booster) */
   .premium-highlight-section {
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
-    border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 18px;
-    padding: 30px; margin-bottom: 40px; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px;
+    padding: 16px 24px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);
     position: relative; overflow: hidden;
   }
   .premium-highlight-section::before {
@@ -911,20 +911,20 @@
   }
 
   .premium-highlight-content {
-    display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
     position: relative; z-index: 1;
   }
 
   .premium-benefits h3 {
-    font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;
-    display: flex; align-items: center; gap: 10px;
+    font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
   }
   .premium-benefits ul {
-    list-style: none; padding: 0; margin: 0;
+    list-style: none; padding: 0; margin: 0; display: flex; gap: 20px; flex-wrap: wrap;
   }
   .premium-benefits li {
-    color: var(--text-muted); font-size: 15px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 8px;
+    color: var(--text-muted); font-size: 13px;
+    display: flex; align-items: center; gap: 6px;
   }
   .premium-benefits li::before {
     content: "✨"; font-size: 14px;
@@ -956,19 +956,18 @@
   /* USAGE / ACTIVITY OVERVIEW SECTION */
   .usage-overview-section {
     background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 16px; padding: 24px; margin-bottom: 30px;
+    border-radius: 12px; padding: 16px 24px; margin-bottom: 20px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
 
   .usage-overview-content {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center; gap: 15px;
   }
 
   .usage-metric {
-    display: flex; align-items: center; gap: 12px; padding: 16px;
-    background: rgba(59, 130, 246, 0.05); border-radius: 12px;
-    border: 1px solid rgba(59, 130, 246, 0.1); transition: 0.3s;
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    background: rgba(59, 130, 246, 0.05); border-radius: 10px;
+    border: 1px solid rgba(59, 130, 246, 0.1); transition: 0.3s; flex: 1;
   }
 
   .usage-metric:hover {
