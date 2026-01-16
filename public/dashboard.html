@@ -1411,6 +1411,12 @@
       <li class="nav-item" onclick="smoothScrollTo('section-seo')"><span>📈</span> SEO & Social</li>
       <li class="nav-item" onclick="smoothScrollTo('section-util')"><span>🔐</span> Utility</li>
       <li class="nav-item" onclick="smoothScrollTo('section-file')"><span>📂</span> File Tools</li>
+
+      <div class="nav-label">Premium</div>
+      <li class="nav-item" onclick="window.location.href='brand-dashboard.html'"><span>🏢</span> Brand Dashboard</li>
+
+      <div class="nav-label" id="adminSection" style="display:none;">Admin</div>
+      <li class="nav-item" id="adminLink" style="display:none;" onclick="window.location.href='admin.html'"><span>⚙️</span> Admin Panel</li>
     </ul>
 
     <div class="sidebar-footer">
@@ -2681,5 +2687,38 @@
   <script type="module" src="./js/credits.js"></script>
   <script type="module" src="./js/ux-enhancements.js"></script>
   <script type="module" src="./js/feature-flags.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1m-XF7kHhnT-IDnLHR1kj4Lf0l1X2LW4",
+      authDomain: "techvyro.firebaseapp.com",
+      projectId: "techvyro",
+      storageBucket: "techvyro.appspot.com",
+      messagingSenderId: "894851484214",
+      appId: "1:894851484214:web:f4efc3b3d6dceb65d79fc2"
+    };
+    const app = initializeApp(firebaseConfig, 'admin-check');
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData.plan === 'admin' || userData.role === 'admin') {
+              document.getElementById('adminSection').style.display = 'block';
+              document.getElementById('adminLink').style.display = 'flex';
+            }
+          }
+        } catch (e) { console.log('Admin check error:', e); }
+      }
+    });
+  </script>
 </body>
 </html>
