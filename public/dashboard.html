@@ -600,6 +600,30 @@
   .settings-item.logout { color: #ef4444; font-weight: 600; }
   .settings-item.logout:hover { background: rgba(239, 68, 68, 0.1); }
   .dropdown-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 8px 0; }
+  
+  .dropdown-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #9aa0b4;
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+  .dropdown-close-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    transform: scale(1.1);
+  }
   .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 26px; cursor: pointer; }
 
   /* Quick Actions Panel */
@@ -1320,6 +1344,7 @@
             <span class="dropdown-arrow">▼</span>
           </button>
           <div class="settings-dropdown" id="settingsDropdown">
+            <button class="dropdown-close-btn" id="dropdownCloseBtn" title="Close">×</button>
             <div class="dropdown-user-info">
               <div class="dropdown-user-row">
                 <div class="user-avatar" id="headerUserAvatar">U</div>
@@ -1384,6 +1409,16 @@
               dropdown.classList.remove('show');
             }
           });
+          
+          // Close button click
+          var closeBtn = document.getElementById('dropdownCloseBtn');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              dropdown.classList.remove('show');
+            });
+          }
         }
         
         // Global functions for dropdown menu items
