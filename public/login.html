@@ -143,8 +143,32 @@
   #loginContainer { animation: fadeIn 0.4s ease; }
   @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
 
+  /* Responsive - Tablet */
+  @media (max-width: 768px) {
+    body { overflow-y: auto; height: auto; min-height: 100vh; padding: 20px 0; }
+    .login-card { max-width: 380px; padding: 35px 28px; margin: 20px auto; }
+    .back-home { top: 15px; left: 15px; font-size: 13px; }
+  }
+
+  /* Responsive - Mobile */
   @media (max-width: 480px) {
-    .login-card { padding: 30px 24px; margin: 20px; }
+    body { padding: 15px; }
+    .login-card { padding: 28px 20px; margin: 15px; border-radius: 18px; }
+    .brand-name { font-size: 26px; }
+    .welcome-text { font-size: 13px; }
+    .input-label { font-size: 13px; }
+    .input-field { padding: 12px 14px; font-size: 14px; border-radius: 10px; }
+    .btn-primary { padding: 12px; font-size: 15px; border-radius: 10px; }
+    .btn-secondary { padding: 10px; font-size: 13px; }
+    .form-footer { flex-direction: column; gap: 10px; font-size: 13px; }
+    .back-home { top: 10px; left: 10px; font-size: 12px; }
+  }
+
+  /* Small phones */
+  @media (max-width: 360px) {
+    .login-card { padding: 24px 16px; }
+    .brand-name { font-size: 22px; }
+    .input-group { margin-bottom: 16px; }
   }
   </style>
 </head>

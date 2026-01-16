@@ -128,8 +128,33 @@
   }
   .back-home:hover { color: #fff; transform: translateX(-5px); }
 
+  /* Responsive - Tablet */
+  @media (max-width: 768px) {
+    body { overflow-y: auto; height: auto; min-height: 100vh; padding: 20px 0; }
+    .auth-card { max-width: 400px; padding: 35px 28px; margin: 20px auto; }
+    .back-home { top: 15px; left: 15px; font-size: 13px; }
+  }
+
+  /* Responsive - Mobile */
   @media (max-width: 480px) {
-    .auth-card { padding: 30px 24px; margin: 20px; }
+    body { padding: 15px; }
+    .auth-card { padding: 28px 20px; margin: 15px; border-radius: 18px; }
+    .logo { font-size: 26px; }
+    .subtitle { font-size: 13px; }
+    .label { font-size: 13px; }
+    .input-field { padding: 12px 14px; font-size: 14px; border-radius: 10px; }
+    .btn { padding: 12px; font-size: 15px; border-radius: 10px; }
+    .footer { font-size: 13px; margin-top: 20px; }
+    .back-home { top: 10px; left: 10px; font-size: 12px; }
+    .input-group { margin-bottom: 16px; }
+  }
+
+  /* Small phones */
+  @media (max-width: 360px) {
+    .auth-card { padding: 22px 14px; }
+    .logo { font-size: 22px; }
+    .input-group { margin-bottom: 14px; }
+    .header { margin-bottom: 20px; }
   }
   </style>
 </head>

@@ -1093,6 +1093,12 @@
   }
   
   /* Mobile - Same layout as desktop, just smaller sizes */
+  /* Tablet breakpoint */
+  @media(max-width:1024px){
+    .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .recent-activity-content { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  }
+
   @media(max-width:900px){
     :root {
       --sidebar-width: 200px;
@@ -1104,6 +1110,11 @@
       height: 100vh; 
       padding: 20px 12px;
     }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+    .card { padding: 18px; }
+    .card-icon { width: 44px; height: 44px; font-size: 24px; }
+    .card h3 { font-size: 16px; }
+    .card-description { font-size: 13px; }
     .sidebar-close { display: none !important; }
     .main-content{ padding: 15px; margin-left: var(--sidebar-width); }
     .menu-toggle{ display: none; }
@@ -1128,12 +1139,86 @@
   }
   
   /* Very small screens - keep same layout but even smaller */
+  /* Mobile breakpoint */
+  @media(max-width:768px){
+    :root {
+      --sidebar-width: 0px;
+    }
+    body { overflow-x: hidden; }
+    .sidebar { 
+      position: fixed; 
+      left: -260px; 
+      width: 260px;
+      height: 100vh;
+      z-index: 1001;
+      transition: left 0.3s ease;
+      padding: 20px 15px;
+    }
+    .sidebar.active { left: 0; }
+    .main-content { 
+      margin-left: 0 !important; 
+      padding: 15px;
+      width: 100%;
+    }
+    .header { 
+      margin-left: 0 !important;
+      padding: 12px 15px;
+    }
+    .menu-toggle { display: block !important; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .card { padding: 16px; }
+    .card-icon { width: 40px; height: 40px; font-size: 20px; margin-bottom: 10px; }
+    .card h3 { font-size: 14px; margin-bottom: 6px; }
+    .card-description { font-size: 12px; margin-bottom: 10px; }
+    .section-header { font-size: 18px; margin: 20px 0 15px 0; }
+    .welcome-section { padding: 12px; }
+    .welcome-text { font-size: 14px; }
+    .welcome-emoji { font-size: 18px; }
+    .recent-activity-section { padding: 12px; }
+    .recent-activity-content { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .activity-item { padding: 10px; }
+    .activity-icon { width: 32px; height: 32px; font-size: 16px; }
+    .activity-value { font-size: 13px; }
+    .activity-label { font-size: 10px; }
+    .premium-highlight-section { padding: 12px; }
+    .premium-benefits h3 { font-size: 14px; }
+    .premium-benefits li { font-size: 12px; }
+    .footer { padding: 12px; }
+    .footer a, .footer span { font-size: 12px; }
+    /* Sidebar overlay for mobile */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    .sidebar-overlay.active { display: block; }
+  }
+
+  @media(max-width:480px){
+    :root {
+      --sidebar-width: 0px;
+    }
+    .sidebar { width: 240px; left: -240px; }
+    .main-content { padding: 10px; }
+    .grid { grid-template-columns: 1fr; gap: 10px; }
+    .card { padding: 14px; }
+    .recent-activity-content { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .section-header { font-size: 16px; }
+    .welcome-content { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .premium-highlight-content { flex-direction: column; gap: 15px; text-align: center; }
+    .footer-content { flex-direction: column; gap: 10px; text-align: center; }
+  }
+
   @media(max-width:600px){
     :root {
       --sidebar-width: 160px;
     }
     .sidebar { padding: 15px 8px; }
-    .main-content { padding: 10px; }
     .brand { font-size: 14px; margin-bottom: 15px; }
     .brand-logo { width: 26px; height: 26px; }
     .nav-link { padding: 8px 10px; font-size: 12px; }
