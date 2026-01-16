@@ -1303,15 +1303,15 @@
     </a>
 
     <ul class="nav-menu">
-      <li class="nav-item active" onclick="smoothScrollTo('section-welcome')" data-tooltip="Return to top of dashboard"><span>🏠</span> Dashboard</li>
+      <li class="nav-item active" onclick="smoothScrollTo('section-welcome')"><span>🏠</span> Dashboard</li>
 
       <div class="nav-label">Navigate Tools</div>
-      <li class="nav-item" onclick="smoothScrollTo('section-ai')" data-tooltip="Explore AI-powered tools for chat, image generation, and more"><span>🧠</span> AI Tools</li>
-      <li class="nav-item" onclick="smoothScrollTo('section-design')" data-tooltip="Design tools for colors, images, logos, and creative work"><span>🎨</span> Design</li>
-      <li class="nav-item" onclick="smoothScrollTo('section-dev')" data-tooltip="Developer utilities for code formatting, testing, and debugging"><span>🔧</span> Dev Tools</li>
-      <li class="nav-item" onclick="smoothScrollTo('section-seo')" data-tooltip="SEO analysis, keyword research, and social media tools"><span>📈</span> SEO & Social</li>
-      <li class="nav-item" onclick="smoothScrollTo('section-util')" data-tooltip="Security, conversion, and utility tools"><span>🔐</span> Utility</li>
-      <li class="nav-item" onclick="smoothScrollTo('section-file')" data-tooltip="File processing, conversion, and management tools"><span>📂</span> File Tools</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-ai')"><span>🧠</span> AI Tools</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-design')"><span>🎨</span> Design</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-dev')"><span>🔧</span> Dev Tools</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-seo')"><span>📈</span> SEO & Social</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-util')"><span>🔐</span> Utility</li>
+      <li class="nav-item" onclick="smoothScrollTo('section-file')"><span>📂</span> File Tools</li>
     </ul>
 
     <div class="sidebar-footer">
@@ -1481,7 +1481,7 @@
               </div>
             </div>
             <div class="welcome-right">
-              <button class="notification-icon-small" onclick="toggleNotifications()" data-tooltip="View your notifications" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
+              <button class="notification-icon-small" onclick="toggleNotifications()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
                 🔔
                 <div class="notification-badge" id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: none; align-items: center; justify-content: center; border: 2px solid #0f172a;"></div>
               </button>
@@ -2331,12 +2331,15 @@
 
     window.smoothScrollTo = (id) => {
       const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Close sidebar on mobile after clicking
-        if (window.innerWidth <= 900) {
-          closeSidebar();
-        }
+      const mainContent = document.querySelector('.main-content');
+      if (element && mainContent) {
+        const headerHeight = 80;
+        const elementTop = element.offsetTop - headerHeight;
+        mainContent.scrollTo({ top: elementTop, behavior: 'smooth' });
+        
+        // Update active nav item
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        event.target.closest('.nav-item')?.classList.add('active');
       }
     };
 
