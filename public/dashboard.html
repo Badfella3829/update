@@ -2337,16 +2337,24 @@
       credits -= 5;
       updateCreditUI();
       
-      const titles = { chat: 'AI Chat Assistant', image: 'AI Image Generator' };
-      document.getElementById('tool-title').innerText = titles[toolType];
+      const titles = { chat: 'AI Chat', image: 'Image Gen', urlshort: 'URL Shortener' };
+      document.getElementById('tool-title').innerText = titles[toolType] || toolType;
       document.getElementById('tool-interface').classList.add('active');
+      
+      if (window.trackToolUsage) {
+        window.trackToolUsage(titles[toolType] || toolType);
+      }
     };
 
-    window.showComingSoon = () => {
+    window.showComingSoon = (toolName) => {
       const toast = document.getElementById('toast');
       toast.innerText = "🚀 Feature Coming Soon!";
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2000);
+      
+      if (toolName && window.trackToolUsage) {
+        window.trackToolUsage(toolName);
+      }
     };
 
     function updateCreditUI() {

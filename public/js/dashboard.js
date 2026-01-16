@@ -140,6 +140,9 @@ onAuthStateChanged(auth, async (user) => {
     // Dynamic Premium Awareness - Show/Hide upgrade elements based on plan
     updatePremiumAwareness(userPlan);
 
+    // === RECENT ACTIVITY SECTION ===
+    updateRecentActivity(user, userData, credits);
+
     // Hide loading state
     hideUserDataLoading();
 
@@ -283,3 +286,124 @@ function animateEntry(container) {
         }, index * 50);
     });
 }
+
+// === RECENT ACTIVITY FUNCTION ===
+function updateRecentActivity(user, userData, credits) {
+  // 1. Today's Usage - from localStorage or userData
+  const todayUsageEl = document.getElementById('todayUsage');
+  if (todayUsageEl) {
+    const today = new Date().toDateString();
+    const storedDate = localStorage.getItem('usageDate');
+    let todayCount = 0;
+    
+    if (storedDate === today) {
+      todayCount = parseInt(localStorage.getItem('todayUsageCount') || '0');
+    } else {
+      localStorage.setItem('usageDate', today);
+      localStorage.setItem('todayUsageCount', '0');
+    }
+    todayUsageEl.innerText = todayCount;
+  }
+
+  // 2. Remaining Limit - based on plan
+  const remainingLimitEl = document.getElementById('remainingLimit');
+  if (remainingLimitEl) {
+    const plan = userData?.plan || 'free';
+    if (plan === 'premium' || plan === 'pro' || plan === 'admin') {
+      remainingLimitEl.innerText = '∞';
+    } else {
+      remainingLimitEl.innerText = credits || 0;
+    }
+  }
+
+  // 3. Last Activity - from localStorage
+  const lastActivityEl = document.getElementById('lastActivity');
+  if (lastActivityEl) {
+    const lastActivityTime = localStorage.getItem('lastActivityTime');
+    if (lastActivityTime) {
+      const timeDiff = Date.now() - parseInt(lastActivityTime);
+      const minutes = Math.floor(timeDiff / 60000);
+      const hours = Math.floor(timeDiff / 3600000);
+      
+      if (minutes < 1) {
+        lastActivityEl.innerText = 'Just now';
+      } else if (minutes < 60) {
+        lastActivityEl.innerText = `${minutes}m ago`;
+      } else if (hours < 24) {
+        lastActivityEl.innerText = `${hours}h ago`;
+      } else {
+        lastActivityEl.innerText = `${Math.floor(hours/24)}d ago`;
+      }
+    } else {
+      lastActivityEl.innerText = 'Now';
+      localStorage.setItem('lastActivityTime', Date.now().toString());
+    }
+  }
+
+  // 4. Last Used Tool - from localStorage
+  const lastUsedToolEl = document.getElementById('lastUsedTool');
+  if (lastUsedToolEl) {
+    const lastTool = localStorage.getItem('lastUsedTool') || 'None';
+    lastUsedToolEl.innerText = lastTool;
+  }
+
+  // 5. Last Login Time - from Firebase auth or userData
+  const lastLoginTimeEl = document.getElementById('lastLoginTime');
+  if (lastLoginTimeEl) {
+    const lastLogin = user.metadata?.lastSignInTime;
+    if (lastLogin) {
+      const loginDate = new Date(lastLogin);
+      const now = new Date();
+      const diffMs = now - loginDate;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      
+      if (diffMins < 5) {
+        lastLoginTimeEl.innerText = 'Just now';
+      } else if (diffMins < 60) {
+        lastLoginTimeEl.innerText = `${diffMins}m ago`;
+      } else if (diffHours < 24) {
+        lastLoginTimeEl.innerText = `${diffHours}h ago`;
+      } else {
+        lastLoginTimeEl.innerText = loginDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      }
+    } else {
+      lastLoginTimeEl.innerText = 'Today';
+    }
+  }
+
+  // 6. Last Upgrade Attempt - from localStorage
+  const lastUpgradeAttemptEl = document.getElementById('lastUpgradeAttempt');
+  if (lastUpgradeAttemptEl) {
+    const lastUpgrade = localStorage.getItem('lastUpgradeAttempt');
+    if (lastUpgrade) {
+      const upgradeDate = new Date(parseInt(lastUpgrade));
+      lastUpgradeAttemptEl.innerText = upgradeDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    } else {
+      const plan = userData?.plan || 'free';
+      lastUpgradeAttemptEl.innerText = plan !== 'free' ? 'Upgraded' : 'None';
+    }
+  }
+}
+
+// Track tool usage for Recent Activity
+window.trackToolUsage = function(toolName) {
+  localStorage.setItem('lastUsedTool', toolName);
+  localStorage.setItem('lastActivityTime', Date.now().toString());
+  
+  const today = new Date().toDateString();
+  const storedDate = localStorage.getItem('usageDate');
+  
+  if (storedDate === today) {
+    const count = parseInt(localStorage.getItem('todayUsageCount') || '0') + 1;
+    localStorage.setItem('todayUsageCount', count.toString());
+  } else {
+    localStorage.setItem('usageDate', today);
+    localStorage.setItem('todayUsageCount', '1');
+  }
+};
+
+// Track upgrade attempts
+window.trackUpgradeAttempt = function() {
+  localStorage.setItem('lastUpgradeAttempt', Date.now().toString());
+};
