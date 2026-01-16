@@ -1,36 +1,272 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Investor Pitch | TechVyro</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+
+  <style>
+  :root {
+    --blue: #3b82f6;
+    --bg-dark: #020617;
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .hero-glow {
+    position: fixed; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    z-index: -2; pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1; pointer-events: none;
+  }
+
+  .header {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px;
+    background: rgba(2, 6, 23, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    z-index: 100;
+  }
+
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; font-size: 22px; font-weight: 800; color: #fff;
+  }
+
+  .brand img { width: 38px; height: 38px; border-radius: 10px; }
+  .brand span { color: var(--blue); }
+
+  .back-link {
+    color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;
+    transition: 0.3s;
+  }
+  .back-link:hover { color: #fff; }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 120px 30px 60px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .hero h1 {
+    font-size: 42px; font-weight: 900; margin-bottom: 15px;
+  }
+  .hero h1 span { color: var(--blue); }
+
+  .hero p {
+    color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto;
+  }
+
+  .card {
+    background: rgba(20, 26, 46, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 25px;
+  }
+
+  .card h2 {
+    font-size: 22px; font-weight: 700; color: var(--blue); margin-bottom: 15px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .card p {
+    color: var(--text-muted); font-size: 16px; line-height: 1.7;
+  }
+
+  .card ul {
+    list-style: none; padding: 0;
+  }
+
+  .card ul li {
+    color: var(--text-muted); font-size: 15px; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .card ul li:last-child { border-bottom: none; }
+
+  .card ul li::before {
+    content: '✓'; color: var(--blue); font-weight: bold;
+  }
+
+  .highlight-card {
+    background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+    border: 1px solid rgba(59,130,246,0.3);
+  }
+
+  .highlight-card h2 { color: #fff; }
+
+  .funding-amount {
+    font-size: 36px; font-weight: 900; color: var(--blue); margin: 15px 0;
+  }
+
+  .cta-section {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--blue);
+    color: #020617;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(59,130,246,0.3);
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(59,130,246,0.4);
+  }
+
+  .btn.secondary {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.2);
+    color: #fff;
+    margin-left: 15px;
+    box-shadow: none;
+  }
+
+  .btn.secondary:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 60px;
+  }
+
+  /* Tablet */
+  @media(max-width: 768px) {
+    .header { padding: 12px 20px; }
+    .brand { font-size: 18px; }
+    .brand img { width: 32px; height: 32px; }
+    .page { padding: 100px 20px 40px; }
+    .hero h1 { font-size: 32px; }
+    .hero p { font-size: 16px; }
+    .card { padding: 25px; }
+    .card h2 { font-size: 20px; }
+    .funding-amount { font-size: 28px; }
+  }
+
+  /* Mobile */
+  @media(max-width: 480px) {
+    .header { padding: 10px 15px; }
+    .brand { font-size: 16px; }
+    .back-link { font-size: 12px; }
+    .page { padding: 90px 15px 30px; }
+    .hero h1 { font-size: 26px; }
+    .hero p { font-size: 14px; }
+    .card { padding: 20px; border-radius: 16px; margin-bottom: 18px; }
+    .card h2 { font-size: 18px; }
+    .card p { font-size: 14px; }
+    .card ul li { font-size: 14px; padding: 8px 0; }
+    .funding-amount { font-size: 24px; }
+    .btn { padding: 14px 30px; font-size: 15px; width: 100%; text-align: center; }
+    .btn.secondary { margin-left: 0; margin-top: 12px; }
+    .cta-section { display: flex; flex-direction: column; gap: 0; }
+  }
+  </style>
 </head>
 <body>
 
-<h1>TechVyro – Investor Pitch</h1>
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
 
-<h2>Problem</h2>
-<p>Creators and brands use multiple tools for AI, analytics, and payments. This causes high cost, complexity, and slow growth.</p>
+  <header class="header">
+    <a href="index.html" class="brand">
+      <img src="logo.jpg" alt="TechVyro">
+      Tech<span>Vyro</span>
+    </a>
+    <a href="index.html" class="back-link">← Back to Home</a>
+  </header>
 
-<h2>Solution</h2>
-<p>TechVyro is an all-in-one AI SaaS platform with automation, analytics, and built-in payments.</p>
+  <div class="page">
+    <div class="hero">
+      <h1>Investor <span>Pitch</span></h1>
+      <p>Join us in building India's next-gen AI SaaS platform for creators, brands, and businesses.</p>
+    </div>
 
-<h2>Product (Live)</h2>
-<ul>
-  <li>AI Chat & Tool Builder</li>
-  <li>Credits system</li>
-  <li>Razorpay payments</li>
-  <li>Admin panel</li>
-  <li>Analytics dashboard</li>
-  <li>Auto subscription expiry</li>
-</ul>
+    <div class="card">
+      <h2>🔴 Problem</h2>
+      <p>Creators and brands use multiple disconnected tools for AI, analytics, and payments. This causes high costs, complexity, and slow growth. There's no unified platform that does it all.</p>
+    </div>
 
-<h2>Revenue Model</h2>
-<p>Monthly subscriptions using simple pricing.</p>
+    <div class="card">
+      <h2>💡 Solution</h2>
+      <p>TechVyro is an all-in-one AI SaaS platform with automation, analytics, and built-in payments — everything a modern creator or business needs in one place.</p>
+    </div>
 
-<h2>Funding Ask</h2>
-<p>Seeking ₹10–25 Lakhs seed funding for growth, UI polish, and feature expansion.</p>
+    <div class="card">
+      <h2>🚀 Product (Live)</h2>
+      <ul>
+        <li>AI Chat & Tool Builder</li>
+        <li>Credits-based usage system</li>
+        <li>Razorpay payment integration</li>
+        <li>Admin & Analytics dashboard</li>
+        <li>30+ Professional AI tools</li>
+        <li>Auto subscription management</li>
+      </ul>
+    </div>
 
-<a href="pricing.html">View Pricing</a>
+    <div class="card">
+      <h2>💰 Revenue Model</h2>
+      <p>Freemium model with monthly subscriptions. Free tier with 200 credits, Pro at ₹299/month, and Premium at ₹499/month with unlimited access.</p>
+    </div>
+
+    <div class="card highlight-card">
+      <h2>🎯 Funding Ask</h2>
+      <p>We are seeking seed funding for growth, UI enhancement, and feature expansion.</p>
+      <div class="funding-amount">₹10 – 25 Lakhs</div>
+      <p>This will help us scale marketing, add more AI models, and expand our team.</p>
+    </div>
+
+    <div class="cta-section">
+      <a href="pricing.html" class="btn">View Pricing</a>
+      <a href="contact.html" class="btn secondary">Contact Us</a>
+    </div>
+
+    <div class="footer">
+      <p>© 2026 TechVyro — Premium AI SaaS Platform</p>
+    </div>
+  </div>
 
 </body>
 </html>
