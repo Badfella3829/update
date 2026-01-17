@@ -74,14 +74,21 @@
     gap:26px;
   }
 
+  .nav-left a { 
+    display: flex; align-items: center; gap: 10px; text-decoration: none; 
+  }
+  .nav-left .brand-name { 
+    font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 0.5px;
+  }
+
   /* Brand Logo Style */
   .brand-logo {
     height: 40px; width: auto; display: block;
   }
-  .brand-text {
+  .brand-name {
     font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: 0.5px;
   }
-  .brand-text span { color: var(--blue); }
+  .brand-name span { color: var(--blue); }
 
   .nav-link{
     color:#9aa0b4;
@@ -431,7 +438,8 @@
   <header class="main-header">
     <div class="nav-left">
       <a href="index.html">
-        <img src="./logo-192.png" alt="TechVyro" class="brand-logo">
+        <img src="./logo.jpg?v=2" alt="TechVyro" class="brand-logo" style="height:40px; width:40px; border-radius:8px; object-fit:cover;">
+        <span class="brand-name">Tech<span style="color: var(--blue);">Vyro</span></span>
       </a>
     </div>
     <div class="nav-right">
