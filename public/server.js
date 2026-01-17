@@ -41,13 +41,19 @@ const server = http.createServer((req, res) => {
         // Handle SPA routing or missing files
         if (!ext || ext === '.html') {
           fs.readFile(path.join(__dirname, 'index.html'), (err, content) => {
-             res.writeHead(200, { 'Content-Type': 'text/html' });
+             res.writeHead(200, { 
+               'Content-Type': 'text/html',
+               'Cache-Control': 'no-cache, no-store, must-revalidate'
+             });
              res.end(content, 'utf8');
           });
           return;
         }
         fs.readFile(path.join(__dirname, '404.html'), (err, content) => {
-          res.writeHead(404, { 'Content-Type': 'text/html' });
+          res.writeHead(404, { 
+            'Content-Type': 'text/html',
+            'Cache-Control': 'no-cache, no-store, must-revalidate'
+          });
           res.end(content || '404 Not Found', 'utf8');
         });
       } else {
@@ -55,7 +61,10 @@ const server = http.createServer((req, res) => {
         res.end(`Server Error: ${err.code}`);
       }
     } else {
-      res.writeHead(200, { 'Content-Type': contentType });
+      res.writeHead(200, { 
+        'Content-Type': contentType,
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      });
       res.end(content, 'utf8');
     }
   });
