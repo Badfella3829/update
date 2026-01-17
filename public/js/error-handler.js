@@ -75,9 +75,12 @@ export function showError(message, options = {}) {
   const {
     showRetry = false,
     retryCallback = null,
-    title = 'Oops!',
+    title = null,
     type = 'error' // 'error', 'warning', 'info'
   } = options;
+
+  // Auto-set title based on type if not provided
+  const modalTitle = title || (type === 'info' ? 'Success!' : type === 'warning' ? 'Warning' : 'Oops!');
 
   // Create error modal/dialog
   const modal = document.createElement('div');
@@ -85,7 +88,7 @@ export function showError(message, options = {}) {
   modal.innerHTML = `
     <div class="error-modal-content">
       <div class="error-modal-header">
-        <span class="error-modal-title">${title}</span>
+        <span class="error-modal-title">${modalTitle}</span>
         <button class="error-modal-close">&times;</button>
       </div>
       <div class="error-modal-body">
@@ -136,18 +139,20 @@ export function showError(message, options = {}) {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(2, 6, 23, 0.85);
+        backdrop-filter: blur(8px);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 10000;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
       }
 
       .error-modal-content {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        background: #141a2e;
+        border-radius: 20px;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
         max-width: 400px;
         width: 90%;
         overflow: hidden;
@@ -160,18 +165,19 @@ export function showError(message, options = {}) {
       }
 
       .error-modal-header {
-        background: #f8f9fa;
+        background: rgba(59, 130, 246, 0.1);
         padding: 16px 20px;
-        border-bottom: 1px solid #e9ecef;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
       .error-modal-title {
-        font-weight: 600;
-        color: #495057;
+        font-weight: 700;
+        color: #fff;
         margin: 0;
+        font-size: 18px;
       }
 
       .error-modal-close {
@@ -179,7 +185,7 @@ export function showError(message, options = {}) {
         border: none;
         font-size: 24px;
         cursor: pointer;
-        color: #6c757d;
+        color: #9aa0b4;
         padding: 0;
         width: 30px;
         height: 30px;
@@ -187,15 +193,16 @@ export function showError(message, options = {}) {
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        transition: background 0.2s;
+        transition: all 0.2s;
       }
 
       .error-modal-close:hover {
-        background: #e9ecef;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
       }
 
       .error-modal-body {
-        padding: 24px 20px;
+        padding: 28px 24px;
         text-align: center;
       }
 
@@ -206,48 +213,52 @@ export function showError(message, options = {}) {
 
       .error-icon.error::before { content: '❌'; }
       .error-icon.warning::before { content: '⚠️'; }
-      .error-icon.info::before { content: 'ℹ️'; }
+      .error-icon.info::before { content: '✅'; }
 
       .error-message {
-        color: #495057;
+        color: #e5e7eb;
         font-size: 16px;
-        line-height: 1.5;
+        line-height: 1.6;
         margin: 0;
       }
 
       .error-modal-footer {
         padding: 16px 20px;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
         display: flex;
         justify-content: flex-end;
         gap: 12px;
       }
 
       .error-modal-footer button {
-        padding: 8px 16px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 6px;
+        border-radius: 10px;
         cursor: pointer;
-        font-weight: 500;
-        transition: all 0.2s;
+        font-weight: 600;
+        transition: all 0.3s;
       }
 
       .ok-btn {
-        background: #6c757d;
-        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .ok-btn:hover {
-        background: #5a6268;
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
       }
 
       .retry-btn {
-        background: #007bff;
-        color: white;
+        background: #3b82f6;
+        color: #020617;
       }
 
       .retry-btn:hover {
-        background: #0056b3;
+        background: #60a5fa;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
       }
     `;
     document.head.appendChild(styles);
