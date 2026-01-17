@@ -1,9 +1,8 @@
 [build]
   command = ""
-  publish = "."
+  publish = "public"
 
 [[redirects]]
-  from = "https://techvyro.com/*"
-  to = "https://techvyro.netlify.app/:splat"
+  from = "/*"
+  to = "/index.html"
   status = 200
-  force = true
