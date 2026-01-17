@@ -50,4 +50,4 @@ For collaborations and inquiries: techvyro@gmail.com
 
 ## License
 
-© 2025 TechVyro - All Rights Reserved
+© 2026 TechVyro - All Rights Reserved
