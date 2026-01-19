@@ -52,7 +52,7 @@
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Enter a description and AI will generate an image for you. (5 credits per generation)</p>
+    <p class="tool-description">Enter a description and AI will generate an image for you. (10 credits per generation) <span style="color:#9aa0b4;font-size:12px;">Press Ctrl+Enter to generate</span></p>
     
     <textarea id="prompt" rows="4" placeholder="Describe the image you want... (e.g., 'A futuristic city at sunset with flying cars')"></textarea>
     
@@ -64,15 +64,18 @@
   </div>
 
   <script type="module">
-    import { initAuthCredits, deductCredits, logToolUsage, getCredits } from './js/auth-credits.js';
+    import { initAuthCredits, deductCredits, logToolUsage, getCredits, setupKeyboardShortcuts, getToolCreditCost } from './js/auth-credits.js';
     
     let authReady = false;
+    const TOOL_NAME = 'image-gen';
+    const CREDIT_COST = getToolCreditCost(TOOL_NAME);
     
-    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+    initAuthCredits({ requireAuth: true, requirePremium: false, toolName: TOOL_NAME })
       .then(({ credits }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
         document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
         authReady = true;
+        setupKeyboardShortcuts(() => window.generateImage());
       })
       .catch(err => {
         console.log('Auth error:', err);
@@ -101,9 +104,9 @@
         const data = await response.json();
         
         if (data.success && data.imageUrl) {
-          const newCredits = await deductCredits(5);
+          const newCredits = await deductCredits(CREDIT_COST, TOOL_NAME);
           document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
-          await logToolUsage('Image Generator');
+          await logToolUsage(TOOL_NAME);
           
           result.innerHTML = `
             <img src="${data.imageUrl}" alt="Generated image">

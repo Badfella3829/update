@@ -1688,6 +1688,12 @@
       </div>
     </div>
 
+    <div id="section-favorites" class="section-header" style="display: none;">⭐ Favorites</div>
+    <div class="grid" id="favorites-grid" style="display: none;"></div>
+
+    <div id="section-recent" class="section-header" style="display: none;">🕐 Recently Used</div>
+    <div class="grid" id="recent-grid" style="display: none;"></div>
+
     <div id="section-ai" class="section-header">🧠 AI Tools</div>
     <div class="grid" id="ai-tools-content" style="display: grid;">
       <div class="card js-tilt">
@@ -3986,6 +3992,12 @@
   <script type="module" src="./js/credits.js"></script>
   <script type="module" src="./js/ux-enhancements.js"></script>
   <script type="module" src="./js/feature-flags.js"></script>
+  <script type="module">
+    import { initDashboardEnhancements } from './js/dashboard-enhancements.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initDashboardEnhancements, 500);
+    });
+  </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
