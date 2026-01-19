@@ -46,13 +46,26 @@ Preferred communication style: Simple, everyday language.
 - **Beta Users**: Flags support beta_users arrays for gradual rollout
 - **Admin Panel**: Web interface at admin.html for managing users, flags, and rate limits
 
-### AI Chat Backend (January 2026)
+### AI Backend (January 2026)
 - **Express Server**: public/server.js serves static files + AI API endpoints
 - **OpenAI Integration**: Uses Replit AI Integrations (no API key required, billed to credits)
-- **Streaming API**: `/api/chat` endpoint with Server-Sent Events for real-time responses
-- **Non-streaming API**: `/api/chat-simple` endpoint for simple request/response
-- **Security**: Input validation, message length limits, history sanitization
-- **Model**: gpt-4o-mini for cost-effective responses
+
+#### AI API Endpoints:
+- `/api/chat` - Streaming chat (SSE) - FREE
+- `/api/chat-simple` - Non-streaming chat - FREE
+- `/api/image-generate` - Image generation (gpt-image-1) - FREE
+- `/api/content-ai` - Blog/article generation - PREMIUM (requirePremium middleware)
+- `/api/code-ai` - Code generation/debugging - PREMIUM (requirePremium middleware)
+- `/api/email-ai` - Email generation - PREMIUM (requirePremium middleware)
+
+#### Security:
+- Input validation, message length limits, history sanitization
+- Premium endpoints require X-User-Plan header with valid premium plan
+- Model: gpt-4o-mini for chat, gpt-image-1 for images
+
+#### Frontend Pages:
+- `public/chat.html` - Dedicated AI Chat page with streaming
+- `public/dashboard.html` - Tool interfaces for Image, Content, Code, Email AI
 
 ### Error Handling
 - **Centralized Handler**: error-handler.js provides user-friendly error messages
