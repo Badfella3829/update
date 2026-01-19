@@ -46,6 +46,14 @@ Preferred communication style: Simple, everyday language.
 - **Beta Users**: Flags support beta_users arrays for gradual rollout
 - **Admin Panel**: Web interface at admin.html for managing users, flags, and rate limits
 
+### AI Chat Backend (January 2026)
+- **Express Server**: public/server.js serves static files + AI API endpoints
+- **OpenAI Integration**: Uses Replit AI Integrations (no API key required, billed to credits)
+- **Streaming API**: `/api/chat` endpoint with Server-Sent Events for real-time responses
+- **Non-streaming API**: `/api/chat-simple` endpoint for simple request/response
+- **Security**: Input validation, message length limits, history sanitization
+- **Model**: gpt-4o-mini for cost-effective responses
+
 ### Error Handling
 - **Centralized Handler**: error-handler.js provides user-friendly error messages
 - **Retry Logic**: Network errors offer retry options
