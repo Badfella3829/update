@@ -72,7 +72,36 @@ PREMIUM Tools (require X-User-Plan header):
 
 #### Frontend Pages:
 - `public/chat.html` - Dedicated AI Chat page with streaming
-- `public/dashboard.html` - All tool interfaces (Image, Logo, Voice, Content, Code, Email, Resume, Data AI)
+- `public/dashboard.html` - Main dashboard with tool cards that redirect to dedicated pages
+
+**AI Tool Pages:**
+- `public/image-gen.html` - Image Generator
+- `public/logo-gen.html` - Logo Maker
+- `public/voice-ai.html` - Voice AI (TTS)
+- `public/content-ai.html` - Content AI (Blog/Article)
+- `public/code-ai.html` - Code AI (Generate/Debug)
+- `public/email-ai.html` - Email AI
+- `public/resume-ai.html` - Resume AI
+- `public/data-ai.html` - Data Analysis AI
+
+**Utility Tool Pages:**
+- `public/color-gen.html` - Color Palette Generator
+- `public/gradient-gen.html` - CSS Gradient Generator
+- `public/img-compress.html` - Image Compression
+- `public/img-convert.html` - Image Format Converter
+- `public/json-format.html` - JSON Formatter/Validator
+- `public/code-minify.html` - Code Minifier
+- `public/jwt-decode.html` - JWT Token Decoder
+- `public/url-encode.html` - URL Encoder/Decoder
+- `public/regex-test.html` - Regex Tester
+- `public/pass-gen.html` - Password Generator
+- `public/qr-gen.html` - QR Code Generator
+- `public/hashtag-gen.html` - Hashtag Generator
+- `public/utm-gen.html` - UTM Link Builder
+- `public/case-convert.html` - Case Converter
+- `public/unit-convert.html` - Unit Converter
+- `public/ip-lookup.html` - IP Address Lookup
+- `public/fake-data.html` - Fake Data Generator
 
 ### Error Handling
 - **Centralized Handler**: error-handler.js provides user-friendly error messages
