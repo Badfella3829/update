@@ -27,11 +27,21 @@ Preferred communication style: Simple, everyday language.
 - **Shared Module**: `public/js/auth-credits.js` provides unified auth, credit, and plan management
 - **Auth Guard**: All 26 tool pages require login - redirects to login.html if not authenticated
 - **Credit Sync**: Credits fetched from Firebase on page load, stored in localStorage as backup
-- **Credit Deduction**: 5 credits deducted AFTER successful tool use (not before redirect)
+- **Variable Credit Costs**: AI tools = 10 credits, utility tools = 3 credits (configured in TOOL_CREDIT_COSTS map)
+- **Credit Deduction**: Credits deducted AFTER successful tool use (not before redirect)
 - **Premium Check**: 6 premium tools (Voice, Content, Code, Email, Resume, Data AI) require pro/premium/admin plan
+- **Low Credits Warning**: Toast notification when credits fall below 15
+- **Credit History**: All transactions logged to Firebase credit_history collection
 - **Usage Logging**: Tool usage logged to Firebase usage_logs collection
 - **Loading Screen**: All tool pages show loading screen during auth initialization
 - **Credit Badge**: Real-time credit display in header of each tool page
+- **Keyboard Shortcuts**: Ctrl+Enter triggers generate action on tool pages
+
+### Dashboard Enhancements (January 2026)
+- **Recently Used Tools**: Shows last 6 tools used (stored in localStorage)
+- **Favorite Tools**: Star button on each card to bookmark favorites (synced to Firebase)
+- **Credit Cost Display**: Each tool card shows its credit cost
+- **Dashboard Enhancements Module**: `public/js/dashboard-enhancements.js` handles favorites and recent tools
 
 ### User Plans & Credits
 - **Plan Tiers**: free, pro, premium, admin
