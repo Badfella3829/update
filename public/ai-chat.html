@@ -368,8 +368,9 @@
 
     } catch (error) {
       removeTypingIndicator();
-      addMessage('Sorry, something went wrong. Please try again.', 'assistant');
-      console.error('Chat error:', error);
+      console.error('Chat error details:', error);
+      console.error('Error message:', error.message);
+      addMessage('Sorry, something went wrong: ' + error.message, 'assistant');
     }
 
     isLoading = false;
