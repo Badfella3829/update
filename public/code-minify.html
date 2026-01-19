@@ -12,7 +12,8 @@
     .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
     .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
     .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
-    .header h1 { font-size: 20px; font-weight: 700; }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .tool-container { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 30px 20px; }
     .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
     select, textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
@@ -24,16 +25,23 @@
     .stats { background: rgba(34,197,94,0.1); color: #22c55e; padding: 12px 15px; border-radius: 10px; margin-bottom: 15px; }
     pre { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: #22c55e; overflow-x: auto; word-break: break-all; white-space: pre-wrap; font-family: 'Fira Code', monospace; font-size: 13px; }
     .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
   <div class="header">
     <a href="dashboard.html" class="back-btn">← Back</a>
     <h1>⚡ Code Minify</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Minify JavaScript and CSS code to reduce file size.</p>
+    <p class="tool-description">Minify JavaScript and CSS code to reduce file size. (5 credits per use)</p>
     
     <label>Code Type</label>
     <select id="type">
@@ -49,10 +57,23 @@
     <div id="result" class="result"></div>
   </div>
 
-  <script>
-    let lastMinified = '';
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
-    function minifyCode() {
+    let lastMinified = '';
+    let authReady = false;
+    let creditsDeducted = false;
+    
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+    
+    window.minifyCode = async function() {
+      if (!authReady) return;
+      
       const type = document.getElementById('type').value;
       const input = document.getElementById('input').value;
       const result = document.getElementById('result');
@@ -67,21 +88,28 @@
       const minifiedSize = new Blob([lastMinified]).size;
       const savings = ((1 - minifiedSize / originalSize) * 100).toFixed(1);
       
+      if (!creditsDeducted) {
+        const newCredits = await deductCredits(5);
+        document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+        await logToolUsage('Code Minify');
+        creditsDeducted = true;
+      }
+      
       result.innerHTML = `
         <div class="stats">📉 Reduced by ${savings}% (${originalSize} → ${minifiedSize} bytes)</div>
         <pre>${escapeHtml(lastMinified)}</pre>
         <button class="copy-btn" onclick="copyMinified()">📋 Copy</button>
       `;
-    }
+    };
     
     function escapeHtml(text) {
       return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
     
-    function copyMinified() {
+    window.copyMinified = function() {
       navigator.clipboard.writeText(lastMinified);
       alert('Copied!');
-    }
+    };
   </script>
 </body>
 </html>

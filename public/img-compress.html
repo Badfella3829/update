@@ -12,7 +12,8 @@
     .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
     .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
     .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
-    .header h1 { font-size: 20px; font-weight: 700; }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
     .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
     .upload-area { border: 2px dashed var(--border); border-radius: 16px; padding: 40px; text-align: center; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
@@ -26,16 +27,23 @@
     .result img { max-width: 100%; max-height: 400px; border-radius: 12px; margin: 15px 0; }
     .stats { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
     .download-btn { display: inline-block; background: #22c55e; color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; margin-top: 15px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
   <div class="header">
     <a href="dashboard.html" class="back-btn">← Back</a>
     <h1>🖼️ Image Compress</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Compress images without losing quality.</p>
+    <p class="tool-description">Compress images without losing quality. (5 credits per use)</p>
     
     <div class="upload-area" onclick="document.getElementById('fileInput').click()">
       <p style="font-size: 40px; margin-bottom: 10px;">📁</p>
@@ -52,18 +60,30 @@
     <div id="result" class="result"></div>
   </div>
 
-  <script>
-    let selectedFile = null;
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
-    function handleFile(input) {
+    let selectedFile = null;
+    let authReady = false;
+    let creditsDeducted = false;
+    
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+    
+    window.handleFile = function(input) {
       if (input.files[0]) {
         selectedFile = input.files[0];
         document.querySelector('.upload-area p:first-child').textContent = '✅';
         document.querySelector('.upload-area p:nth-child(2)').textContent = selectedFile.name;
       }
-    }
+    };
     
-    function compressImage() {
+    window.compressImage = async function() {
+      if (!authReady) return;
       if (!selectedFile) { alert('Please select an image first'); return; }
       
       const quality = parseInt(document.getElementById('quality').value) / 100;
@@ -71,20 +91,27 @@
       result.innerHTML = '<p style="color: var(--text-muted);">Compressing...</p>';
       
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const img = new Image();
-        img.onload = () => {
+        img.onload = async () => {
           const canvas = document.createElement('canvas');
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
           
-          canvas.toBlob((blob) => {
+          canvas.toBlob(async (blob) => {
             const originalSize = (selectedFile.size / 1024).toFixed(2);
             const compressedSize = (blob.size / 1024).toFixed(2);
             const savings = ((1 - blob.size / selectedFile.size) * 100).toFixed(1);
             const url = URL.createObjectURL(blob);
+            
+            if (!creditsDeducted) {
+              const newCredits = await deductCredits(5);
+              document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+              await logToolUsage('Image Compress');
+              creditsDeducted = true;
+            }
             
             result.innerHTML = `
               <div class="stats">
@@ -101,7 +128,7 @@
         img.src = e.target.result;
       };
       reader.readAsDataURL(selectedFile);
-    }
+    };
   </script>
 </body>
 </html>

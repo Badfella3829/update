@@ -20,7 +20,8 @@
     .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
     .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; }
     .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
-    .header h1 { font-size: 20px; font-weight: 700; }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
     .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
     textarea, input[type="text"] { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: none; }
@@ -32,16 +33,26 @@
     .result img { max-width: 100%; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
     .error { color: #ef4444; padding: 15px; background: rgba(239,68,68,0.1); border-radius: 10px; margin-top: 15px; }
     .loading { color: var(--text-muted); padding: 20px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);">
+      <div style="font-size: 40px; margin-bottom: 15px;">⏳</div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
   <div class="header">
     <a href="dashboard.html" class="back-btn">← Back</a>
     <h1>🖼️ Image Generator</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Enter a description and AI will generate an image for you.</p>
+    <p class="tool-description">Enter a description and AI will generate an image for you. (5 credits per generation)</p>
     
     <textarea id="prompt" rows="4" placeholder="Describe the image you want... (e.g., 'A futuristic city at sunset with flying cars')"></textarea>
     
@@ -52,8 +63,24 @@
     <div id="result" class="result"></div>
   </div>
 
-  <script>
-    async function generateImage() {
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage, getCredits } from './js/auth-credits.js';
+    
+    let authReady = false;
+    
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      })
+      .catch(err => {
+        console.log('Auth error:', err);
+      });
+    
+    window.generateImage = async function() {
+      if (!authReady) return;
+      
       const prompt = document.getElementById('prompt').value.trim();
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
@@ -74,6 +101,10 @@
         const data = await response.json();
         
         if (data.success && data.imageUrl) {
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Image Generator');
+          
           result.innerHTML = `
             <img src="${data.imageUrl}" alt="Generated image">
             <p style="margin-top: 15px; color: var(--text-muted);">Right-click to save the image</p>
@@ -87,7 +118,7 @@
       
       btn.disabled = false;
       btn.innerHTML = '<span>✨ Generate Image</span>';
-    }
+    };
   </script>
 </body>
 </html>

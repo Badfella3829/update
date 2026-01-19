@@ -12,7 +12,8 @@
     .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
     .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
     .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
-    .header h1 { font-size: 20px; font-weight: 700; }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .tool-container { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 30px 20px; }
     .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
     input, textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
@@ -29,16 +30,23 @@
     .highlighted mark { background: #fbbf24; color: black; padding: 2px 4px; border-radius: 3px; }
     pre { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: #22c55e; overflow-x: auto; margin-top: 15px; font-family: 'Fira Code', monospace; font-size: 13px; }
     .error { color: #ef4444; background: rgba(239,68,68,0.1); padding: 15px; border-radius: 10px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
   <div class="header">
     <a href="dashboard.html" class="back-btn">← Back</a>
     <h1>🧬 Regex Test</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Test and validate regular expressions with live highlighting.</p>
+    <p class="tool-description">Test and validate regular expressions with live highlighting. (5 credits per use)</p>
     
     <label>Pattern</label>
     <div class="input-row">
@@ -54,8 +62,22 @@
     <div id="result" class="result"></div>
   </div>
 
-  <script>
-    function testRegex() {
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+    
+    let authReady = false;
+    let creditsDeducted = false;
+    
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+    
+    window.testRegex = async function() {
+      if (!authReady) return;
+      
       const pattern = document.getElementById('pattern').value;
       const flags = document.getElementById('flags').value;
       const text = document.getElementById('text').value;
@@ -68,6 +90,13 @@
         const matches = text.match(regex);
         const highlighted = text.replace(regex, '<mark>$&</mark>');
         
+        if (!creditsDeducted) {
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Regex Test');
+          creditsDeducted = true;
+        }
+        
         result.innerHTML = `
           <div class="match-count">✨ Found ${matches ? matches.length : 0} match(es)</div>
           <div class="highlighted">${highlighted}</div>
@@ -76,7 +105,7 @@
       } catch(e) {
         result.innerHTML = `<div class="error">❌ Invalid regex: ${e.message}</div>`;
       }
-    }
+    };
   </script>
 </body>
 </html>

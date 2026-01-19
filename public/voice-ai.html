@@ -13,8 +13,9 @@
     .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
     .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; }
     .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
-    .header h1 { font-size: 20px; font-weight: 700; }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
     .premium-badge { background: linear-gradient(135deg, #a855f7, #6366f1); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
     .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
     textarea, select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
@@ -26,17 +27,24 @@
     .result { margin-top: 25px; }
     audio { width: 100%; margin-top: 15px; border-radius: 10px; }
     .error { color: #ef4444; padding: 15px; background: rgba(239,68,68,0.1); border-radius: 10px; margin-top: 15px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
   <div class="header">
     <a href="dashboard.html" class="back-btn">← Back</a>
     <h1>🎙️ Voice AI</h1>
     <span class="premium-badge">Premium</span>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Convert text to natural speech using AI voices.</p>
+    <p class="tool-description">Convert text to natural speech using AI voices. (5 credits per generation)</p>
     
     <label>Enter Text</label>
     <textarea id="text" rows="6" placeholder="Type or paste the text you want to convert to speech..."></textarea>
@@ -58,8 +66,23 @@
     <div id="result" class="result"></div>
   </div>
 
-  <script>
-    async function generateVoice() {
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage, getPlan } from './js/auth-credits.js';
+    
+    let authReady = false;
+    let userPlan = 'free';
+    
+    initAuthCredits({ requireAuth: true, requirePremium: true, creditCost: 5 })
+      .then(({ credits, plan }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        userPlan = plan;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+    
+    window.generateVoice = async function() {
+      if (!authReady) return;
+      
       const text = document.getElementById('text').value.trim();
       const voice = document.getElementById('voice').value;
       const btn = document.getElementById('generateBtn');
@@ -76,7 +99,7 @@
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'X-User-Plan': localStorage.getItem('userPlan') || 'free'
+            'X-User-Plan': userPlan
           },
           body: JSON.stringify({ text, voice })
         });
@@ -84,6 +107,11 @@
         if (response.ok) {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
+          
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Voice AI');
+          
           result.innerHTML = `
             <audio controls src="${url}"></audio>
             <p style="margin-top: 15px; color: var(--text-muted);">Click play to listen</p>
@@ -98,7 +126,7 @@
       
       btn.disabled = false;
       btn.innerHTML = '<span>🎙️ Generate Voice</span>';
-    }
+    };
   </script>
 </body>
 </html>

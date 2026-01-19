@@ -12,7 +12,8 @@
     .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
     .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
     .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
-    .header h1 { font-size: 20px; font-weight: 700; }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
     .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
     textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: vertical; margin-bottom: 15px; }
@@ -24,16 +25,23 @@
     pre { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: #22c55e; overflow-x: auto; word-break: break-all; white-space: pre-wrap; font-family: 'Fira Code', monospace; }
     .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px; }
     .error { color: #ef4444; background: rgba(239,68,68,0.1); padding: 15px; border-radius: 10px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
   <div class="header">
     <a href="dashboard.html" class="back-btn">← Back</a>
     <h1>🔗 URL Encode/Decode</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
   </div>
   
   <div class="tool-container">
-    <p class="tool-description">Encode or decode URLs and query strings.</p>
+    <p class="tool-description">Encode or decode URLs and query strings. (5 credits per use)</p>
     
     <textarea id="input" rows="6" placeholder="Enter text or URL to encode/decode..."></textarea>
     
@@ -45,19 +53,40 @@
     <div id="result" class="result"></div>
   </div>
 
-  <script>
-    let lastOutput = '';
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
-    function encodeURL() {
+    let lastOutput = '';
+    let authReady = false;
+    let creditsDeducted = false;
+    
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+    
+    async function chargeCredits() {
+      if (authReady && !creditsDeducted) {
+        const newCredits = await deductCredits(5);
+        document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+        await logToolUsage('URL Encode');
+        creditsDeducted = true;
+      }
+    }
+    
+    window.encodeURL = async function() {
       const input = document.getElementById('input').value;
       lastOutput = encodeURIComponent(input);
       document.getElementById('result').innerHTML = `
         <pre>${lastOutput}</pre>
         <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
       `;
-    }
+      await chargeCredits();
+    };
     
-    function decodeURL() {
+    window.decodeURL = async function() {
       const input = document.getElementById('input').value;
       try {
         lastOutput = decodeURIComponent(input);
@@ -65,15 +94,16 @@
           <pre>${lastOutput}</pre>
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
         `;
+        await chargeCredits();
       } catch(e) {
         document.getElementById('result').innerHTML = `<div class="error">❌ Error decoding URL</div>`;
       }
-    }
+    };
     
-    function copyOutput() {
+    window.copyOutput = function() {
       navigator.clipboard.writeText(lastOutput);
       alert('Copied!');
-    }
+    };
   </script>
 </body>
 </html>
