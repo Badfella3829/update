@@ -51,21 +51,28 @@ Preferred communication style: Simple, everyday language.
 - **OpenAI Integration**: Uses Replit AI Integrations (no API key required, billed to credits)
 
 #### AI API Endpoints:
-- `/api/chat` - Streaming chat (SSE) - FREE
-- `/api/chat-simple` - Non-streaming chat - FREE
-- `/api/image-generate` - Image generation (gpt-image-1) - FREE
-- `/api/content-ai` - Blog/article generation - PREMIUM (requirePremium middleware)
-- `/api/code-ai` - Code generation/debugging - PREMIUM (requirePremium middleware)
-- `/api/email-ai` - Email generation - PREMIUM (requirePremium middleware)
+FREE Tools:
+- `/api/chat` - Streaming chat (SSE)
+- `/api/chat-simple` - Non-streaming chat
+- `/api/image-generate` - Image generation (gpt-image-1)
+- `/api/logo-generate` - Logo creation (gpt-image-1)
+
+PREMIUM Tools (require X-User-Plan header):
+- `/api/content-ai` - Blog/article generation
+- `/api/code-ai` - Code generation/debugging
+- `/api/email-ai` - Email generation
+- `/api/voice-ai/tts` - Text to Speech (gpt-audio-mini)
+- `/api/resume-ai` - Professional resume generation
+- `/api/data-ai` - Data analysis and insights
 
 #### Security:
 - Input validation, message length limits, history sanitization
 - Premium endpoints require X-User-Plan header with valid premium plan
-- Model: gpt-4o-mini for chat, gpt-image-1 for images
+- Models: gpt-4o-mini (chat/text), gpt-image-1 (images), gpt-audio-mini (voice)
 
 #### Frontend Pages:
 - `public/chat.html` - Dedicated AI Chat page with streaming
-- `public/dashboard.html` - Tool interfaces for Image, Content, Code, Email AI
+- `public/dashboard.html` - All tool interfaces (Image, Logo, Voice, Content, Code, Email, Resume, Data AI)
 
 ### Error Handling
 - **Centralized Handler**: error-handler.js provides user-friendly error messages

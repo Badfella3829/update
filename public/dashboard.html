@@ -5,7 +5,7 @@
   <title>Dashboard — TechVyro</title>
   <link rel="icon" href="logo-192.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://pagead2.googlesyndication.com https://*.firebaseio.com https://*.firebase.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:; frame-src 'self' https:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://pagead2.googlesyndication.com https://*.firebaseio.com https://*.firebase.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' https:; frame-src 'self' https:;">
   <!-- 🚨 SECURITY: Prevent caching to avoid BFCache issues -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -1710,7 +1710,7 @@
           <p class="card-description">Convert text to speech and speech to text</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn" onclick="openPremiumTool('voice')">Open</button>
           </div>
         </div>
       </div>
@@ -1721,7 +1721,7 @@
           <p class="card-description">Create and edit videos with AI assistance</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn upgrade" onclick="showComingSoon('Video AI')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -1776,7 +1776,7 @@
           <p class="card-description">Analyze and visualize data with AI insights</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn" onclick="openPremiumTool('data')">Open</button>
           </div>
         </div>
       </div>
@@ -1878,8 +1878,8 @@
           <h3>Logo Maker</h3>
           <p class="card-description">Create custom logos with AI</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('logo')">Open</button>
           </div>
         </div>
       </div>
@@ -2349,6 +2349,62 @@
       <div id="email-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
     </div>
 
+    <div id="voice-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Convert text to natural speech with AI voices.</p>
+      <textarea id="voice-text" placeholder="Enter the text you want to convert to speech..." style="width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: none; margin-bottom: 15px;"></textarea>
+      <select id="voice-select" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="alloy">Alloy (Neutral)</option>
+        <option value="echo">Echo (Male)</option>
+        <option value="fable">Fable (British)</option>
+        <option value="onyx">Onyx (Deep Male)</option>
+        <option value="nova">Nova (Female)</option>
+        <option value="shimmer">Shimmer (Soft Female)</option>
+      </select>
+      <button onclick="generateVoice()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Speech</button>
+      <div id="voice-result" style="margin-top: 20px; text-align: center;"></div>
+    </div>
+
+    <div id="resume-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Create a professional resume with AI assistance.</p>
+      <input id="resume-name" placeholder="Your Full Name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <input id="resume-job" placeholder="Target Job Title (e.g., Software Engineer)" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <textarea id="resume-experience" placeholder="Work Experience (briefly describe your roles and achievements)" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: none; margin-bottom: 15px;"></textarea>
+      <input id="resume-skills" placeholder="Skills (e.g., JavaScript, Python, Leadership)" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <input id="resume-education" placeholder="Education (e.g., B.Tech in CS, XYZ University)" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <button onclick="generateResume()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Resume</button>
+      <div id="resume-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
+    </div>
+
+    <div id="data-tool" class="tool-content" style="display:none; padding: 20px; max-width: 900px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Analyze data and get AI-powered insights.</p>
+      <select id="data-task" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="analyze">Analyze Data</option>
+        <option value="summarize">Summarize Data</option>
+        <option value="visualize">Suggest Visualizations</option>
+        <option value="question">Ask a Question</option>
+      </select>
+      <input id="data-question" placeholder="Your question about the data (optional)" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px; display: none;">
+      <textarea id="data-input" placeholder="Paste your data here (CSV, JSON, or plain text)..." style="width: 100%; height: 150px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-family: monospace; font-size: 13px; resize: none; margin-bottom: 15px;"></textarea>
+      <button onclick="analyzeData()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Analyze</button>
+      <div id="data-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
+    </div>
+
+    <div id="logo-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Create a custom logo for your brand with AI.</p>
+      <input id="logo-brand" placeholder="Brand/Company Name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <select id="logo-style" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="modern">Modern & Minimalist</option>
+        <option value="classic">Classic & Professional</option>
+        <option value="playful">Playful & Creative</option>
+        <option value="tech">Tech & Futuristic</option>
+        <option value="elegant">Elegant & Luxury</option>
+      </select>
+      <input id="logo-colors" placeholder="Preferred colors (e.g., Blue and White)" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <input id="logo-industry" placeholder="Industry (e.g., Technology, Food, Fashion)" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <button id="generate-logo-btn" onclick="generateLogo()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Logo</button>
+      <div id="logo-result" style="margin-top: 20px; text-align: center;"></div>
+    </div>
+
     <div id="generic-tool" class="tool-content" style="display:none; padding: 20px; text-align: center;">
       <div style="font-size:60px; margin-bottom:20px">🚀</div>
       <p style="font-size:18px; color: var(--text-muted);">This tool is coming soon!</p>
@@ -2418,6 +2474,10 @@
         content: 'Content AI',
         code: 'Code AI',
         email: 'Email AI',
+        voice: 'Voice AI',
+        resume: 'Resume AI',
+        data: 'Data AI',
+        logo: 'Logo Maker',
         urlshort: 'URL Shortener' 
       };
       
@@ -2591,6 +2651,179 @@
       } catch (error) {
         result.innerHTML = 'Error: Could not connect to server';
       }
+    };
+    
+    // Voice AI - Text to Speech
+    window.generateVoice = async () => {
+      const text = document.getElementById('voice-text').value.trim();
+      const voice = document.getElementById('voice-select').value;
+      
+      if (!text) {
+        alert('Please enter text to convert to speech');
+        return;
+      }
+      
+      const result = document.getElementById('voice-result');
+      result.innerHTML = '<p style="color: var(--text-muted);">Generating speech...</p>';
+      
+      try {
+        const response = await fetch('/api/voice-ai/tts', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': getUserPlan()
+          },
+          body: JSON.stringify({ text, voice })
+        });
+        
+        const data = await response.json();
+        if (data.code === 'PREMIUM_REQUIRED') {
+          result.innerHTML = '<p style="color: #ef4444;">This feature requires a Premium subscription.</p>';
+          return;
+        }
+        if (data.success && data.audio) {
+          result.innerHTML = `
+            <audio controls style="width: 100%; margin-bottom: 15px;">
+              <source src="${data.audio}" type="audio/wav">
+              Your browser does not support audio playback.
+            </audio>
+            <br>
+            <a href="${data.audio}" download="techvyro-speech.wav" style="color: var(--blue); text-decoration: none;">Download Audio</a>
+          `;
+        } else if (data.text) {
+          result.innerHTML = `<p style="color: var(--text-muted);">Generated text: ${data.text}</p>`;
+        } else {
+          result.innerHTML = `<p style="color: #ef4444;">Error: ${data.error || 'Failed to generate speech'}</p>`;
+        }
+      } catch (error) {
+        result.innerHTML = '<p style="color: #ef4444;">Error: Could not connect to server</p>';
+      }
+    };
+    
+    // Resume AI
+    window.generateResume = async () => {
+      const name = document.getElementById('resume-name').value.trim();
+      const jobTitle = document.getElementById('resume-job').value.trim();
+      const experience = document.getElementById('resume-experience').value;
+      const skills = document.getElementById('resume-skills').value;
+      const education = document.getElementById('resume-education').value;
+      
+      if (!name || !jobTitle) {
+        alert('Please enter your name and target job title');
+        return;
+      }
+      
+      const result = document.getElementById('resume-result');
+      result.style.display = 'block';
+      result.innerHTML = 'Generating your professional resume...';
+      
+      try {
+        const response = await fetch('/api/resume-ai', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': getUserPlan()
+          },
+          body: JSON.stringify({ name, jobTitle, experience, skills, education })
+        });
+        
+        const data = await response.json();
+        if (data.code === 'PREMIUM_REQUIRED') {
+          result.innerHTML = 'This feature requires a Premium subscription.';
+          return;
+        }
+        result.innerHTML = data.success ? data.resume : `Error: ${data.error}`;
+      } catch (error) {
+        result.innerHTML = 'Error: Could not connect to server';
+      }
+    };
+    
+    // Data AI
+    document.getElementById('data-task')?.addEventListener('change', (e) => {
+      const questionInput = document.getElementById('data-question');
+      if (questionInput) {
+        questionInput.style.display = e.target.value === 'question' ? 'block' : 'none';
+      }
+    });
+    
+    window.analyzeData = async () => {
+      const data = document.getElementById('data-input').value.trim();
+      const task = document.getElementById('data-task').value;
+      const question = document.getElementById('data-question').value;
+      
+      if (!data) {
+        alert('Please enter or paste your data');
+        return;
+      }
+      
+      const result = document.getElementById('data-result');
+      result.style.display = 'block';
+      result.innerHTML = 'Analyzing your data...';
+      
+      try {
+        const response = await fetch('/api/data-ai', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': getUserPlan()
+          },
+          body: JSON.stringify({ data, task, question })
+        });
+        
+        const responseData = await response.json();
+        if (responseData.code === 'PREMIUM_REQUIRED') {
+          result.innerHTML = 'This feature requires a Premium subscription.';
+          return;
+        }
+        result.innerHTML = responseData.success ? responseData.analysis : `Error: ${responseData.error}`;
+      } catch (error) {
+        result.innerHTML = 'Error: Could not connect to server';
+      }
+    };
+    
+    // Logo Generator
+    window.generateLogo = async () => {
+      const brandName = document.getElementById('logo-brand').value.trim();
+      const style = document.getElementById('logo-style').value;
+      const colors = document.getElementById('logo-colors').value;
+      const industry = document.getElementById('logo-industry').value;
+      
+      if (!brandName) {
+        alert('Please enter your brand name');
+        return;
+      }
+      
+      const btn = document.getElementById('generate-logo-btn');
+      const result = document.getElementById('logo-result');
+      
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+      result.innerHTML = '<p style="color: var(--text-muted);">Creating your logo... This may take a moment.</p>';
+      
+      try {
+        const response = await fetch('/api/logo-generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brandName, style, colors, industry })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.image) {
+          result.innerHTML = `
+            <img src="${data.image}" alt="Generated Logo" style="max-width: 100%; max-height: 400px; border-radius: 12px; margin-bottom: 15px;">
+            <br>
+            <a href="${data.image}" download="${brandName}-logo.png" style="color: var(--blue); text-decoration: none;">Download Logo</a>
+          `;
+        } else {
+          result.innerHTML = `<p style="color: #ef4444;">Error: ${data.error || 'Failed to generate logo'}</p>`;
+        }
+      } catch (error) {
+        result.innerHTML = '<p style="color: #ef4444;">Error: Could not connect to server</p>';
+      }
+      
+      btn.disabled = false;
+      btn.textContent = 'Generate Logo';
     };
 
     window.showComingSoon = (toolName) => {

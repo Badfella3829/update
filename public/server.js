@@ -237,6 +237,151 @@ app.post('/api/email-ai', requirePremium, async (req, res) => {
   }
 });
 
+// Voice AI - Text to Speech API endpoint (PREMIUM)
+app.post('/api/voice-ai/tts', requirePremium, async (req, res) => {
+  try {
+    const { text, voice = 'alloy' } = req.body;
+
+    if (!text || typeof text !== 'string') {
+      return res.status(400).json({ error: 'Text is required' });
+    }
+
+    const safeText = text.slice(0, 4096);
+    const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+    const selectedVoice = validVoices.includes(voice) ? voice : 'alloy';
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-audio-mini',
+      modalities: ['text', 'audio'],
+      audio: { voice: selectedVoice, format: 'wav' },
+      messages: [
+        { role: 'system', content: 'You are a helpful voice assistant. Convert the following text to natural speech.' },
+        { role: 'user', content: `Read this aloud: ${safeText}` }
+      ],
+      max_completion_tokens: 2048,
+    });
+
+    const audioData = response.choices[0]?.message?.audio?.data;
+    if (audioData) {
+      res.json({ success: true, audio: `data:audio/wav;base64,${audioData}` });
+    } else {
+      res.json({ success: true, text: response.choices[0]?.message?.content || safeText });
+    }
+  } catch (error) {
+    console.error('Voice AI TTS Error:', error);
+    res.status(500).json({ error: 'Failed to generate speech' });
+  }
+});
+
+// Resume AI API endpoint (PREMIUM)
+app.post('/api/resume-ai', requirePremium, async (req, res) => {
+  try {
+    const { name, jobTitle, experience, skills, education, summary } = req.body;
+
+    if (!name || !jobTitle) {
+      return res.status(400).json({ error: 'Name and job title are required' });
+    }
+
+    const prompt = `Create a professional resume for:
+Name: ${name}
+Target Job Title: ${jobTitle}
+Experience: ${experience || 'Not provided'}
+Skills: ${skills || 'Not provided'}
+Education: ${education || 'Not provided'}
+Summary/About: ${summary || 'Not provided'}
+
+Generate a complete, well-formatted resume with:
+- Professional Summary
+- Work Experience section (create realistic examples if not provided)
+- Skills section (technical and soft skills)
+- Education section
+- Format it clearly with sections and bullet points`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: 'You are an expert resume writer and career coach. Create ATS-friendly, professional resumes that highlight achievements and use action verbs.' },
+        { role: 'user', content: prompt }
+      ],
+      max_completion_tokens: 3000,
+    });
+
+    const resume = response.choices[0]?.message?.content || 'Sorry, could not generate resume.';
+    res.json({ success: true, resume });
+  } catch (error) {
+    console.error('Resume AI Error:', error);
+    res.status(500).json({ error: 'Failed to generate resume' });
+  }
+});
+
+// Data AI API endpoint (PREMIUM)
+app.post('/api/data-ai', requirePremium, async (req, res) => {
+  try {
+    const { data, task = 'analyze', question } = req.body;
+
+    if (!data || typeof data !== 'string') {
+      return res.status(400).json({ error: 'Data is required' });
+    }
+
+    const tasks = {
+      'analyze': 'Analyze the following data and provide key insights, patterns, and trends:',
+      'summarize': 'Summarize the following data in a clear and concise manner:',
+      'visualize': 'Suggest the best ways to visualize this data and describe what charts/graphs would be most effective:',
+      'question': question ? `Answer this question about the data: ${question}` : 'Analyze the data:'
+    };
+
+    const taskPrompt = tasks[task] || tasks['analyze'];
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: 'You are a data analyst expert. Provide clear, actionable insights from data. Use bullet points and organize your analysis well.' },
+        { role: 'user', content: `${taskPrompt}\n\nData:\n${data.slice(0, 8000)}` }
+      ],
+      max_completion_tokens: 2048,
+    });
+
+    const analysis = response.choices[0]?.message?.content || 'Sorry, could not analyze data.';
+    res.json({ success: true, analysis });
+  } catch (error) {
+    console.error('Data AI Error:', error);
+    res.status(500).json({ error: 'Failed to analyze data' });
+  }
+});
+
+// Logo Generator API endpoint (FREE - uses image generation)
+app.post('/api/logo-generate', async (req, res) => {
+  try {
+    const { brandName, style = 'modern', colors, industry } = req.body;
+
+    if (!brandName || typeof brandName !== 'string') {
+      return res.status(400).json({ error: 'Brand name is required' });
+    }
+
+    const prompt = `Create a professional logo design for "${brandName}". 
+Style: ${style} (minimalist, clean, professional)
+${colors ? `Colors: ${colors}` : 'Colors: Use professional color palette'}
+${industry ? `Industry: ${industry}` : ''}
+Requirements: Simple, memorable, scalable logo suitable for business use. White or transparent background. No text unless essential.`;
+
+    const response = await openai.images.generate({
+      model: 'gpt-image-1',
+      prompt: prompt.slice(0, 1000),
+      n: 1,
+      size: '1024x1024',
+    });
+
+    const imageData = response.data[0];
+    res.json({
+      success: true,
+      image: imageData.b64_json ? `data:image/png;base64,${imageData.b64_json}` : imageData.url
+    });
+  } catch (error) {
+    console.error('Logo Generator Error:', error);
+    res.status(500).json({ error: 'Failed to generate logo' });
+  }
+});
+
 // Non-streaming chat endpoint (simpler alternative)
 app.post('/api/chat-simple', async (req, res) => {
   try {
