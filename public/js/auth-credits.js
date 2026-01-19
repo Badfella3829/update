@@ -1,29 +1,11 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { auth, db } from './firebase.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, getDoc, updateDoc, increment, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX",
-  authDomain: "techvyro.firebaseapp.com",
-  projectId: "techvyro",
-  storageBucket: "techvyro.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
-};
-
-let app, auth, db;
 let currentUser = null;
 let userCredits = 0;
 let userPlan = 'free';
 let isInitialized = false;
-
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-} catch (e) {
-  console.log('Firebase already initialized or config issue');
-}
 
 export function initAuthCredits(options = {}) {
   const { 
@@ -122,7 +104,6 @@ export async function logToolUsage(toolName) {
   if (!currentUser || !db) return;
 
   try {
-    const { addDoc, collection, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
     await addDoc(collection(db, 'usage_logs'), {
       userId: currentUser.uid,
       tool: toolName,

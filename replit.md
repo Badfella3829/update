@@ -23,6 +23,16 @@ Preferred communication style: Simple, everyday language.
 - **Session Management**: Uses Firebase auth state with localStorage for device trust
 - **Protected Routes**: auth-check.js and auth-guard.js enforce authentication on protected pages
 
+### Tool Page Authentication & Credits (January 2026)
+- **Shared Module**: `public/js/auth-credits.js` provides unified auth, credit, and plan management
+- **Auth Guard**: All 26 tool pages require login - redirects to login.html if not authenticated
+- **Credit Sync**: Credits fetched from Firebase on page load, stored in localStorage as backup
+- **Credit Deduction**: 5 credits deducted AFTER successful tool use (not before redirect)
+- **Premium Check**: 6 premium tools (Voice, Content, Code, Email, Resume, Data AI) require pro/premium/admin plan
+- **Usage Logging**: Tool usage logged to Firebase usage_logs collection
+- **Loading Screen**: All tool pages show loading screen during auth initialization
+- **Credit Badge**: Real-time credit display in header of each tool page
+
 ### User Plans & Credits
 - **Plan Tiers**: free, pro, premium, admin
 - **Credits System**: Users have credits (called "miles") that are consumed by AI tools
