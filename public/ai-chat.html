@@ -235,7 +235,7 @@
     <p>Ask me anything - powered by advanced AI</p>
   </div>
 
-  <div class="chat-content">
+  <div class="premium-only">
     <div class="chat-actions">
       <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
       <button class="clear-btn" id="clearBtn">Clear Chat</button>
@@ -274,14 +274,12 @@
   });
 </script>
 
-<!-- Auth temporarily disabled for testing
 <script type="module">
   import './js/auth-check.js';
 </script>
 
 <script src="js/auth-plan.js"></script>
 <script src="js/premium-guard.js"></script>
--->
 
 <script type="module">
   const chatMessages = document.getElementById('chatMessages');
