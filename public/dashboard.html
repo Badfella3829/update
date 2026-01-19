@@ -1732,7 +1732,7 @@
           <p class="card-description">Generate articles, blogs, and marketing content</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn" onclick="openPremiumTool('content')">Open</button>
           </div>
         </div>
       </div>
@@ -1743,7 +1743,7 @@
           <p class="card-description">AI-powered code generation and debugging</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn" onclick="openPremiumTool('code')">Open</button>
           </div>
         </div>
       </div>
@@ -1754,7 +1754,7 @@
           <p class="card-description">Create professional resumes with AI help</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn upgrade" onclick="openPremiumTool('resume')">Open</button>
           </div>
         </div>
       </div>
@@ -1765,7 +1765,7 @@
           <p class="card-description">Generate professional emails and responses</p>
           <div class="card-footer">
             <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <button class="card-btn" onclick="openPremiumTool('email')">Open</button>
           </div>
         </div>
       </div>
@@ -2277,13 +2277,81 @@
       <h3 id="tool-title">Tool</h3>
       <button onclick="closeTool()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
     </div>
-    <div class="tb-content">
-      <div style="font-size:60px; margin-bottom:20px">🤖</div>
-      <p style="font-size:18px;">Tool is ready to use.</p>
+    
+    <div id="image-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Enter a description and AI will generate an image for you.</p>
+      <textarea id="image-prompt" placeholder="Describe the image you want... (e.g., 'A futuristic city at sunset with flying cars')" style="width: 100%; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: none;"></textarea>
+      <button id="generate-image-btn" onclick="generateImage()" style="margin-top: 15px; background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        <span>Generate Image</span>
+      </button>
+      <div id="image-result" style="margin-top: 20px; text-align: center;"></div>
     </div>
-    <div class="tb-input-area">
-      <input type="text" class="tb-input" placeholder="Enter prompt...">
-      <button class="tb-btn">Go</button>
+
+    <div id="content-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Generate professional content with AI.</p>
+      <select id="content-type" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="blog">Blog Post</option>
+        <option value="article">Article</option>
+        <option value="social">Social Media Posts</option>
+        <option value="marketing">Marketing Copy</option>
+        <option value="description">Product Description</option>
+      </select>
+      <input id="content-topic" placeholder="Enter your topic..." style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <select id="content-tone" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="professional">Professional</option>
+        <option value="casual">Casual</option>
+        <option value="friendly">Friendly</option>
+        <option value="formal">Formal</option>
+        <option value="humorous">Humorous</option>
+      </select>
+      <button onclick="generateContent()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Content</button>
+      <div id="content-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
+    </div>
+
+    <div id="code-tool" class="tool-content" style="display:none; padding: 20px; max-width: 900px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Get AI help with coding tasks.</p>
+      <input id="code-task" placeholder="What do you need help with? (e.g., 'Create a login form')" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <select id="code-language" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="html">HTML/CSS</option>
+        <option value="react">React</option>
+        <option value="nodejs">Node.js</option>
+        <option value="sql">SQL</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+      </select>
+      <textarea id="code-input" placeholder="Paste your code here (optional - for debugging/improvements)" style="width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-family: monospace; font-size: 13px; resize: none; margin-bottom: 15px;"></textarea>
+      <button onclick="generateCode()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Get Help</button>
+      <div id="code-result" style="margin-top: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; white-space: pre-wrap; font-family: monospace; font-size: 13px; display: none; overflow-x: auto;"></div>
+    </div>
+
+    <div id="email-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Generate professional emails instantly.</p>
+      <select id="email-type" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="business">Business Email</option>
+        <option value="follow-up">Follow-up</option>
+        <option value="thank-you">Thank You</option>
+        <option value="apology">Apology</option>
+        <option value="introduction">Introduction</option>
+        <option value="request">Request</option>
+        <option value="reply">Reply</option>
+      </select>
+      <input id="email-subject" placeholder="Email subject or purpose..." style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+      <textarea id="email-details" placeholder="Additional details (optional - context, recipient, key points...)" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: none; margin-bottom: 15px;"></textarea>
+      <select id="email-tone" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-main); padding: 12px; font-size: 14px; margin-bottom: 15px;">
+        <option value="professional">Professional</option>
+        <option value="friendly">Friendly</option>
+        <option value="formal">Formal</option>
+        <option value="casual">Casual</option>
+      </select>
+      <button onclick="generateEmail()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Email</button>
+      <div id="email-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
+    </div>
+
+    <div id="generic-tool" class="tool-content" style="display:none; padding: 20px; text-align: center;">
+      <div style="font-size:60px; margin-bottom:20px">🚀</div>
+      <p style="font-size:18px; color: var(--text-muted);">This tool is coming soon!</p>
     </div>
   </div>
 
@@ -2334,15 +2402,194 @@
         document.getElementById('premiumModal').style.display = 'flex';
         return;
       }
+      
+      // AI Chat redirects to dedicated page
+      if (toolType === 'chat') {
+        window.location.href = 'chat.html';
+        return;
+      }
+      
       credits -= 5;
       updateCreditUI();
       
-      const titles = { chat: 'AI Chat', image: 'Image Gen', urlshort: 'URL Shortener' };
+      const titles = { 
+        chat: 'AI Chat', 
+        image: 'Image Generator', 
+        content: 'Content AI',
+        code: 'Code AI',
+        email: 'Email AI',
+        urlshort: 'URL Shortener' 
+      };
+      
+      // Hide all tool contents
+      document.querySelectorAll('.tool-content').forEach(el => el.style.display = 'none');
+      
+      // Show specific tool
+      const toolElement = document.getElementById(`${toolType}-tool`);
+      if (toolElement) {
+        toolElement.style.display = 'block';
+      } else {
+        document.getElementById('generic-tool').style.display = 'block';
+      }
+      
       document.getElementById('tool-title').innerText = titles[toolType] || toolType;
       document.getElementById('tool-interface').classList.add('active');
       
       if (window.trackToolUsage) {
         window.trackToolUsage(titles[toolType] || toolType);
+      }
+    };
+    
+    // Image Generation
+    window.generateImage = async () => {
+      const prompt = document.getElementById('image-prompt').value.trim();
+      if (!prompt) {
+        alert('Please enter a description for your image');
+        return;
+      }
+      
+      const btn = document.getElementById('generate-image-btn');
+      const result = document.getElementById('image-result');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<span>Generating...</span>';
+      result.innerHTML = '<p style="color: var(--text-muted);">Creating your image... This may take a moment.</p>';
+      
+      try {
+        const response = await fetch('/api/image-generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.image) {
+          result.innerHTML = `
+            <img src="${data.image}" alt="Generated Image" style="max-width: 100%; border-radius: 12px; margin-bottom: 15px;">
+            <br>
+            <a href="${data.image}" download="techvyro-image.png" style="color: var(--blue); text-decoration: none;">Download Image</a>
+          `;
+        } else {
+          result.innerHTML = `<p style="color: #ef4444;">Error: ${data.error || 'Failed to generate image'}</p>`;
+        }
+      } catch (error) {
+        result.innerHTML = `<p style="color: #ef4444;">Error: Could not connect to server</p>`;
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = '<span>Generate Image</span>';
+    };
+    
+    // Get user plan for premium API calls
+    const getUserPlan = () => localStorage.getItem('userPlan') || 'free';
+    
+    // Content AI
+    window.generateContent = async () => {
+      const type = document.getElementById('content-type').value;
+      const topic = document.getElementById('content-topic').value.trim();
+      const tone = document.getElementById('content-tone').value;
+      
+      if (!topic) {
+        alert('Please enter a topic');
+        return;
+      }
+      
+      const result = document.getElementById('content-result');
+      result.style.display = 'block';
+      result.innerHTML = 'Generating content...';
+      
+      try {
+        const response = await fetch('/api/content-ai', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': getUserPlan()
+          },
+          body: JSON.stringify({ type, topic, tone })
+        });
+        
+        const data = await response.json();
+        if (data.code === 'PREMIUM_REQUIRED') {
+          result.innerHTML = 'This feature requires a Premium subscription.';
+          return;
+        }
+        result.innerHTML = data.success ? data.content : `Error: ${data.error}`;
+      } catch (error) {
+        result.innerHTML = 'Error: Could not connect to server';
+      }
+    };
+    
+    // Code AI
+    window.generateCode = async () => {
+      const task = document.getElementById('code-task').value.trim();
+      const language = document.getElementById('code-language').value;
+      const code = document.getElementById('code-input').value;
+      
+      if (!task) {
+        alert('Please describe what you need help with');
+        return;
+      }
+      
+      const result = document.getElementById('code-result');
+      result.style.display = 'block';
+      result.innerHTML = 'Processing...';
+      
+      try {
+        const response = await fetch('/api/code-ai', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': getUserPlan()
+          },
+          body: JSON.stringify({ task, language, code })
+        });
+        
+        const data = await response.json();
+        if (data.code === 'PREMIUM_REQUIRED') {
+          result.innerHTML = 'This feature requires a Premium subscription.';
+          return;
+        }
+        result.innerHTML = data.success ? data.result : `Error: ${data.error}`;
+      } catch (error) {
+        result.innerHTML = 'Error: Could not connect to server';
+      }
+    };
+    
+    // Email AI
+    window.generateEmail = async () => {
+      const type = document.getElementById('email-type').value;
+      const subject = document.getElementById('email-subject').value.trim();
+      const details = document.getElementById('email-details').value;
+      const tone = document.getElementById('email-tone').value;
+      
+      if (!subject) {
+        alert('Please enter the email subject or purpose');
+        return;
+      }
+      
+      const result = document.getElementById('email-result');
+      result.style.display = 'block';
+      result.innerHTML = 'Generating email...';
+      
+      try {
+        const response = await fetch('/api/email-ai', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': getUserPlan()
+          },
+          body: JSON.stringify({ type, subject, details, tone })
+        });
+        
+        const data = await response.json();
+        if (data.code === 'PREMIUM_REQUIRED') {
+          result.innerHTML = 'This feature requires a Premium subscription.';
+          return;
+        }
+        result.innerHTML = data.success ? data.email : `Error: ${data.error}`;
+      } catch (error) {
+        result.innerHTML = 'Error: Could not connect to server';
       }
     };
 
@@ -2355,6 +2602,22 @@
       if (toolName && window.trackToolUsage) {
         window.trackToolUsage(toolName);
       }
+    };
+    
+    // Premium tool access - checks user plan
+    window.openPremiumTool = async (toolType) => {
+      // Check if user is premium (from localStorage or Firebase)
+      const userPlan = localStorage.getItem('userPlan') || 'free';
+      const isPremium = ['pro', 'premium', 'admin'].includes(userPlan.toLowerCase());
+      
+      if (!isPremium) {
+        // Show premium modal
+        document.getElementById('premiumModal').style.display = 'flex';
+        return;
+      }
+      
+      // Open the tool for premium users
+      checkCreditAndOpen(toolType);
     };
 
     function updateCreditUI() {

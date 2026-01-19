@@ -13,6 +13,21 @@ const openai = new OpenAI({
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
 });
 
+// Premium plan verification middleware
+// In production, this should verify Firebase ID token and check plan from Firestore
+const requirePremium = (req, res, next) => {
+  const userPlan = req.headers['x-user-plan'];
+  const premiumPlans = ['pro', 'premium', 'admin'];
+  
+  if (!userPlan || !premiumPlans.includes(userPlan.toLowerCase())) {
+    return res.status(403).json({ 
+      error: 'Premium subscription required',
+      code: 'PREMIUM_REQUIRED'
+    });
+  }
+  next();
+};
+
 // Validate and sanitize chat history
 function validateHistory(history) {
   if (!Array.isArray(history)) return [];
@@ -82,6 +97,143 @@ app.post('/api/chat', async (req, res) => {
     } else {
       res.status(500).json({ error: 'Failed to get AI response' });
     }
+  }
+});
+
+// Image Generation API endpoint (FREE)
+app.post('/api/image-generate', async (req, res) => {
+  try {
+    const { prompt } = req.body;
+
+    if (!prompt || typeof prompt !== 'string') {
+      return res.status(400).json({ error: 'Prompt is required' });
+    }
+
+    const safePrompt = prompt.slice(0, 1000);
+
+    const response = await openai.images.generate({
+      model: 'gpt-image-1',
+      prompt: safePrompt,
+      n: 1,
+      size: '1024x1024',
+    });
+
+    const imageData = response.data[0];
+    res.json({
+      success: true,
+      image: imageData.b64_json ? `data:image/png;base64,${imageData.b64_json}` : imageData.url
+    });
+  } catch (error) {
+    console.error('Image Generation Error:', error);
+    res.status(500).json({ error: 'Failed to generate image' });
+  }
+});
+
+// Content AI API endpoint (PREMIUM)
+app.post('/api/content-ai', requirePremium, async (req, res) => {
+  try {
+    const { type, topic, tone = 'professional' } = req.body;
+
+    if (!topic || typeof topic !== 'string') {
+      return res.status(400).json({ error: 'Topic is required' });
+    }
+
+    const contentTypes = {
+      'blog': 'Write a detailed blog post about',
+      'article': 'Write an informative article about',
+      'social': 'Write engaging social media posts about',
+      'marketing': 'Write marketing copy about',
+      'description': 'Write a product description for'
+    };
+
+    const contentPrompt = contentTypes[type] || contentTypes['blog'];
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a professional content writer. Write in a ${tone} tone. Be creative, engaging, and informative.` },
+        { role: 'user', content: `${contentPrompt}: ${topic.slice(0, 500)}` }
+      ],
+      max_completion_tokens: 2048,
+    });
+
+    const content = response.choices[0]?.message?.content || 'Sorry, could not generate content.';
+    res.json({ success: true, content });
+  } catch (error) {
+    console.error('Content AI Error:', error);
+    res.status(500).json({ error: 'Failed to generate content' });
+  }
+});
+
+// Code AI API endpoint (PREMIUM)
+app.post('/api/code-ai', requirePremium, async (req, res) => {
+  try {
+    const { task, language = 'javascript', code = '' } = req.body;
+
+    if (!task || typeof task !== 'string') {
+      return res.status(400).json({ error: 'Task description is required' });
+    }
+
+    const systemPrompt = `You are an expert programmer. Help with coding tasks in ${language}. 
+    Provide clean, well-commented code. If debugging, explain the issue and fix it.
+    Format code properly with syntax highlighting markers.`;
+
+    const userMessage = code 
+      ? `Task: ${task.slice(0, 500)}\n\nCode:\n${code.slice(0, 3000)}`
+      : `Task: ${task.slice(0, 1000)}`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userMessage }
+      ],
+      max_completion_tokens: 3000,
+    });
+
+    const result = response.choices[0]?.message?.content || 'Sorry, could not process your code request.';
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error('Code AI Error:', error);
+    res.status(500).json({ error: 'Failed to process code request' });
+  }
+});
+
+// Email AI API endpoint (PREMIUM)
+app.post('/api/email-ai', requirePremium, async (req, res) => {
+  try {
+    const { type, subject, details, tone = 'professional' } = req.body;
+
+    if (!subject || typeof subject !== 'string') {
+      return res.status(400).json({ error: 'Email subject is required' });
+    }
+
+    const emailTypes = {
+      'business': 'Write a professional business email',
+      'follow-up': 'Write a follow-up email',
+      'thank-you': 'Write a thank you email',
+      'apology': 'Write an apology email',
+      'introduction': 'Write an introduction email',
+      'request': 'Write a request email',
+      'reply': 'Write a reply to an email'
+    };
+
+    const emailPrompt = emailTypes[type] || emailTypes['business'];
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are an expert email writer. Write clear, ${tone} emails that are well-structured and effective.` },
+        { role: 'user', content: `${emailPrompt} about: ${subject.slice(0, 200)}\n\nAdditional details: ${(details || '').slice(0, 500)}` }
+      ],
+      max_completion_tokens: 1024,
+    });
+
+    const email = response.choices[0]?.message?.content || 'Sorry, could not generate email.';
+    res.json({ success: true, email });
+  } catch (error) {
+    console.error('Email AI Error:', error);
+    res.status(500).json({ error: 'Failed to generate email' });
   }
 });
 
