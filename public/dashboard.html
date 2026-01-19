@@ -166,6 +166,306 @@
     transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
+  /* ================= FULL ANIMATION SYSTEM ================= */
+  
+  /* Scroll Reveal Animations */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Staggered Card Animation */
+  .card {
+    opacity: 0;
+    animation: cardFadeIn 0.6s ease forwards;
+  }
+  .grid .card:nth-child(1) { animation-delay: 0.1s; }
+  .grid .card:nth-child(2) { animation-delay: 0.15s; }
+  .grid .card:nth-child(3) { animation-delay: 0.2s; }
+  .grid .card:nth-child(4) { animation-delay: 0.25s; }
+  .grid .card:nth-child(5) { animation-delay: 0.3s; }
+  .grid .card:nth-child(6) { animation-delay: 0.35s; }
+  .grid .card:nth-child(7) { animation-delay: 0.4s; }
+  .grid .card:nth-child(8) { animation-delay: 0.45s; }
+  
+  @keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  
+  /* Card Icon Bounce on Hover */
+  .card:hover .card-icon {
+    animation: iconBounce 0.5s ease;
+  }
+  @keyframes iconBounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.2) rotate(-5deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+    75% { transform: scale(1.15) rotate(-3deg); }
+  }
+  
+  /* Button Ripple Effect */
+  .card-btn, .btn-primary, .btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-btn::after, .btn-primary::after, .btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.5s;
+  }
+  .card-btn:active::after, .btn-primary:active::after, .btn:active::after {
+    transform: scale(0);
+    opacity: 1;
+    transition: 0s;
+  }
+  
+  /* Floating Animation for Stats */
+  .stat-card {
+    animation: floatSoft 4s ease-in-out infinite;
+  }
+  .stat-card:nth-child(2) { animation-delay: 0.5s; }
+  .stat-card:nth-child(3) { animation-delay: 1s; }
+  .stat-card:nth-child(4) { animation-delay: 1.5s; }
+  
+  @keyframes floatSoft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  
+  /* Glowing Border Animation */
+  .card:hover {
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px -10px var(--blue-glow); }
+    50% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 60px -5px var(--blue-glow); }
+  }
+  
+  /* Section Header Slide In */
+  .section-header {
+    opacity: 0;
+    animation: slideInLeft 0.6s ease forwards;
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  /* Sidebar Items Hover Effect */
+  .nav-item {
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--blue);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+  .nav-item:hover::before {
+    transform: scaleY(1);
+  }
+  
+  /* Shimmer Loading Effect */
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Pulse Animation for Badges */
+  .credits-badge, .notification-badge {
+    animation: pulseBadge 2s ease-in-out infinite;
+  }
+  @keyframes pulseBadge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  /* Rotating Glow Background */
+  .hero-glow {
+    animation: rotateGlow 20s linear infinite;
+  }
+  @keyframes rotateGlow {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+  }
+  
+  /* Typing Cursor Animation */
+  .typing-cursor {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  /* Shake Animation for Errors */
+  .shake {
+    animation: shake 0.5s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+  }
+  
+  /* Success Checkmark Animation */
+  @keyframes checkmark {
+    0% { stroke-dashoffset: 50; }
+    100% { stroke-dashoffset: 0; }
+  }
+  
+  /* Card Tilt on Hover (3D) */
+  .card.js-tilt {
+    transform-style: preserve-3d;
+  }
+  
+  /* Smooth Scroll Indicator */
+  .scroll-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), #8b5cf6);
+    z-index: 9999;
+    transition: width 0.1s ease;
+  }
+  
+  /* Particle Float Animation */
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--blue);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: particleFloat 15s linear infinite;
+  }
+  @keyframes particleFloat {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+  }
+  
+  /* Notification Bell Shake */
+  .notification-btn:hover .item-icon {
+    animation: bellShake 0.5s ease;
+  }
+  @keyframes bellShake {
+    0%, 100% { transform: rotate(0); }
+    20%, 60% { transform: rotate(15deg); }
+    40%, 80% { transform: rotate(-15deg); }
+  }
+  
+  /* Button Hover Lift */
+  .card-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  }
+  
+  /* Input Focus Glow */
+  input:focus, textarea:focus {
+    animation: inputGlow 0.3s ease forwards;
+  }
+  @keyframes inputGlow {
+    to { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+  }
+  
+  /* Page Load Animation */
+  .main-content {
+    animation: pageLoad 0.8s ease;
+  }
+  @keyframes pageLoad {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Sidebar Slide In */
+  .sidebar {
+    animation: sidebarSlide 0.5s ease;
+  }
+  @keyframes sidebarSlide {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  /* Header Fade In */
+  .header {
+    animation: headerFade 0.6s ease;
+  }
+  @keyframes headerFade {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Premium Badge Shine */
+  .card-status.premium {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-status.premium::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: premiumShine 3s infinite;
+  }
+  @keyframes premiumShine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+  }
+  
+  /* Dropdown Appear Animation */
+  .settings-dropdown.show {
+    animation: dropdownAppear 0.3s ease;
+  }
+  @keyframes dropdownAppear {
+    from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  
+  /* Stats Counter Animation */
+  .stat-value {
+    display: inline-block;
+  }
+  .stat-value.counting {
+    animation: countPulse 0.3s ease;
+  }
+  @keyframes countPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); color: var(--blue); }
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, sans-serif; outline: none; scroll-behavior: smooth; }
 
   body {
@@ -4142,6 +4442,146 @@
     import { initDashboardEnhancements } from './js/dashboard-enhancements.js';
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(initDashboardEnhancements, 500);
+    });
+  </script>
+  
+  <script>
+    // ========== ANIMATION SYSTEM ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // 1. Scroll Progress Indicator
+      const scrollIndicator = document.createElement('div');
+      scrollIndicator.className = 'scroll-indicator';
+      document.body.appendChild(scrollIndicator);
+      
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.addEventListener('scroll', () => {
+          const scrollTop = mainContent.scrollTop;
+          const scrollHeight = mainContent.scrollHeight - mainContent.clientHeight;
+          const progress = (scrollTop / scrollHeight) * 100;
+          scrollIndicator.style.width = progress + '%';
+        });
+      }
+      
+      // 2. Create Floating Particles
+      const particleContainer = document.createElement('div');
+      particleContainer.style.cssText = 'position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;';
+      document.body.insertBefore(particleContainer, document.body.firstChild);
+      
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        particleContainer.appendChild(particle);
+      }
+      
+      // 3. Scroll Reveal for Sections
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      }, observerOptions);
+      
+      document.querySelectorAll('.section-header, .grid').forEach(el => {
+        el.classList.add('scroll-reveal');
+        revealObserver.observe(el);
+      });
+      
+      // 4. Mouse Tilt Effect on Cards
+      document.querySelectorAll('.card.js-tilt').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = (y - centerY) / 15;
+          const rotateY = (centerX - x) / 15;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+        });
+      });
+      
+      // 5. Counter Animation for Stats
+      function animateCounter(element, target) {
+        const duration = 1500;
+        const start = 0;
+        const increment = target / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current).toLocaleString();
+          element.classList.add('counting');
+          setTimeout(() => element.classList.remove('counting'), 100);
+        }, 16);
+      }
+      
+      // Animate stats when visible
+      const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.dataset.animated) {
+            entry.target.dataset.animated = 'true';
+            const value = parseInt(entry.target.dataset.value || entry.target.textContent);
+            if (!isNaN(value)) {
+              animateCounter(entry.target, value);
+            }
+          }
+        });
+      });
+      
+      document.querySelectorAll('.stat-value, .credits-value').forEach(el => {
+        el.dataset.value = el.textContent.replace(/,/g, '');
+        statsObserver.observe(el);
+      });
+      
+      // 6. Smooth Page Transitions
+      document.querySelectorAll('a[href]').forEach(link => {
+        if (link.hostname === window.location.hostname && !link.getAttribute('target')) {
+          link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && !href.startsWith('#') && !href.startsWith('javascript')) {
+              e.preventDefault();
+              document.body.style.opacity = '0';
+              document.body.style.transform = 'translateY(-20px)';
+              document.body.style.transition = 'all 0.3s ease';
+              setTimeout(() => window.location.href = href, 300);
+            }
+          });
+        }
+      });
+      
+      // 7. Button Press Animation
+      document.querySelectorAll('button, .card-btn').forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+          btn.style.transform = 'scale(0.95)';
+        });
+        btn.addEventListener('mouseup', () => {
+          btn.style.transform = '';
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = '';
+        });
+      });
+      
+      console.log('🎨 Animation system initialized!');
     });
   </script>
 
