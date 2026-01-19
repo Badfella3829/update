@@ -180,6 +180,31 @@ export function logPageView(page, data = {}) {
   });
 }
 
+// Notification logging functions
+export function logNotificationCreated(notificationId, data = {}) {
+  logger.info('notification_created', {
+    ...data,
+    notificationId,
+    category: 'notifications'
+  });
+}
+
+export function logNotificationRead(notificationId, data = {}) {
+  logger.info('notification_read', {
+    ...data,
+    notificationId,
+    category: 'notifications'
+  });
+}
+
+export function logNotificationShown(notificationId, data = {}) {
+  logger.info('notification_shown', {
+    ...data,
+    notificationId,
+    category: 'notifications'
+  });
+}
+
 // Error boundary for catching unhandled errors
 window.addEventListener('error', (event) => {
   logError(event.error || new Error(event.message), {
