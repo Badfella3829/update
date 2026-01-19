@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Convert - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    input, select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .row { display: flex; gap: 15px; }
+    .row select { flex: 1; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 10px; }
+    .btn:hover { transform: translateY(-2px); }
+    .result { margin-top: 25px; background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(99,102,241,0.2)); padding: 30px; border-radius: 16px; text-align: center; }
+    .result-value { font-size: 28px; font-weight: 700; color: #22c55e; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>📏 Unit Convert</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Convert between different measurement units.</p>
+    
+    <label>Category</label>
+    <select id="category" onchange="updateUnits()">
+      <option value="length">Length</option>
+      <option value="weight">Weight</option>
+      <option value="temperature">Temperature</option>
+      <option value="area">Area</option>
+      <option value="volume">Volume</option>
+    </select>
+    
+    <label>Value</label>
+    <input type="number" id="value" placeholder="Enter value">
+    
+    <div class="row">
+      <div style="flex:1">
+        <label>From</label>
+        <select id="from"></select>
+      </div>
+      <div style="flex:1">
+        <label>To</label>
+        <select id="to"></select>
+      </div>
+    </div>
+    
+    <button class="btn" onclick="convert()">🔄 Convert</button>
+    
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const unitData = {
+      length: { units: ['meters', 'kilometers', 'miles', 'feet', 'inches', 'centimeters'], conversions: { meters: 1, kilometers: 0.001, miles: 0.000621371, feet: 3.28084, inches: 39.3701, centimeters: 100 }},
+      weight: { units: ['kilograms', 'grams', 'pounds', 'ounces'], conversions: { kilograms: 1, grams: 1000, pounds: 2.20462, ounces: 35.274 }},
+      temperature: { units: ['celsius', 'fahrenheit', 'kelvin'], special: true },
+      area: { units: ['sqmeters', 'sqfeet', 'acres', 'hectares'], conversions: { sqmeters: 1, sqfeet: 10.7639, acres: 0.000247105, hectares: 0.0001 }},
+      volume: { units: ['liters', 'milliliters', 'gallons', 'cups'], conversions: { liters: 1, milliliters: 1000, gallons: 0.264172, cups: 4.22675 }}
+    };
+    
+    function updateUnits() {
+      const category = document.getElementById('category').value;
+      const units = unitData[category].units;
+      const fromSelect = document.getElementById('from');
+      const toSelect = document.getElementById('to');
+      fromSelect.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+      toSelect.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+      toSelect.selectedIndex = 1;
+    }
+    
+    function convert() {
+      const category = document.getElementById('category').value;
+      const value = parseFloat(document.getElementById('value').value);
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      
+      if (isNaN(value)) { alert('Please enter a valid number'); return; }
+      
+      let converted;
+      if (category === 'temperature') {
+        if (from === 'celsius' && to === 'fahrenheit') converted = (value * 9/5) + 32;
+        else if (from === 'fahrenheit' && to === 'celsius') converted = (value - 32) * 5/9;
+        else if (from === 'celsius' && to === 'kelvin') converted = value + 273.15;
+        else if (from === 'kelvin' && to === 'celsius') converted = value - 273.15;
+        else if (from === 'fahrenheit' && to === 'kelvin') converted = (value - 32) * 5/9 + 273.15;
+        else if (from === 'kelvin' && to === 'fahrenheit') converted = (value - 273.15) * 9/5 + 32;
+        else converted = value;
+      } else {
+        const data = unitData[category];
+        const baseValue = value / data.conversions[from];
+        converted = baseValue * data.conversions[to];
+      }
+      
+      document.getElementById('result').innerHTML = `
+        <div class="result">
+          <div style="color: var(--text-muted); margin-bottom: 10px;">${value} ${from} =</div>
+          <div class="result-value">${converted.toFixed(4)} ${to}</div>
+        </div>
+      `;
+    }
+    
+    updateUnits();
+  </script>
+</body>
+</html>

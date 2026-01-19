@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    input[type="range"] { width: 100%; margin-bottom: 20px; }
+    .options { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+    .option { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 10px; cursor: pointer; }
+    .option input { width: 18px; height: 18px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .password-box { background: rgba(0,0,0,0.4); padding: 25px; border-radius: 16px; margin-top: 25px; text-align: center; }
+    .password { font-family: 'Fira Code', monospace; font-size: 24px; color: #22c55e; word-break: break-all; margin-bottom: 20px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 12px 30px; border-radius: 10px; cursor: pointer; font-size: 15px; }
+    .copy-btn:hover { background: rgba(59,130,246,0.3); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🔑 Password Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Generate secure, random passwords.</p>
+    
+    <label>Length: <span id="lengthVal">16</span> characters</label>
+    <input type="range" id="length" min="8" max="64" value="16" oninput="document.getElementById('lengthVal').textContent = this.value">
+    
+    <div class="options">
+      <label class="option"><input type="checkbox" id="upper" checked> Uppercase (A-Z)</label>
+      <label class="option"><input type="checkbox" id="lower" checked> Lowercase (a-z)</label>
+      <label class="option"><input type="checkbox" id="numbers" checked> Numbers (0-9)</label>
+      <label class="option"><input type="checkbox" id="symbols" checked> Symbols (!@#$)</label>
+    </div>
+    
+    <button class="btn" onclick="generatePassword()">🔑 Generate Password</button>
+    
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let currentPassword = '';
+    
+    function generatePassword() {
+      const length = parseInt(document.getElementById('length').value);
+      const useUpper = document.getElementById('upper').checked;
+      const useLower = document.getElementById('lower').checked;
+      const useNumbers = document.getElementById('numbers').checked;
+      const useSymbols = document.getElementById('symbols').checked;
+      
+      let chars = '';
+      if (useUpper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (useLower) chars += 'abcdefghijklmnopqrstuvwxyz';
+      if (useNumbers) chars += '0123456789';
+      if (useSymbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+      
+      if (!chars) { alert('Select at least one option'); return; }
+      
+      currentPassword = '';
+      for (let i = 0; i < length; i++) {
+        currentPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      
+      document.getElementById('result').innerHTML = `
+        <div class="password-box">
+          <div class="password">${currentPassword}</div>
+          <button class="copy-btn" onclick="copyPassword()">📋 Copy Password</button>
+        </div>
+      `;
+    }
+    
+    function copyPassword() {
+      navigator.clipboard.writeText(currentPassword);
+      alert('Password copied!');
+    }
+  </script>
+</body>
+</html>

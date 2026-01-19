@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hashtag Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 700px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    input, select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .result { margin-top: 25px; }
+    .hashtags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .hashtag { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; padding: 8px 16px; border-radius: 25px; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .hashtag:hover { transform: scale(1.05); }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 12px 25px; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🏷️ Hashtag Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Generate relevant hashtags for social media posts.</p>
+    
+    <label>Topic or Keywords</label>
+    <input type="text" id="topic" placeholder="e.g., fitness, travel, food photography">
+    
+    <label>Platform</label>
+    <select id="platform">
+      <option value="general">General</option>
+      <option value="instagram">Instagram</option>
+      <option value="twitter">Twitter/X</option>
+      <option value="linkedin">LinkedIn</option>
+      <option value="tiktok">TikTok</option>
+    </select>
+    
+    <button class="btn" onclick="generateHashtags()">🏷️ Generate Hashtags</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let allHashtags = [];
+    
+    function generateHashtags() {
+      const topic = document.getElementById('topic').value.trim();
+      const platform = document.getElementById('platform').value;
+      
+      if (!topic) { alert('Please enter a topic'); return; }
+      
+      const words = topic.toLowerCase().split(/[\s,]+/).filter(w => w.length > 2);
+      const hashtags = new Set();
+      
+      words.forEach(word => hashtags.add('#' + word));
+      hashtags.add('#' + words.join(''));
+      
+      const commonTags = {
+        general: ['trending', 'viral', 'explore', 'fyp', 'instagood', 'followme', 'love', 'photooftheday'],
+        instagram: ['instagood', 'photooftheday', 'love', 'instagram', 'instadaily', 'picoftheday', 'instalike', 'follow'],
+        twitter: ['trending', 'viral', 'breaking', 'news', 'today', 'mustread', 'thread', 'opinion'],
+        linkedin: ['business', 'networking', 'career', 'leadership', 'success', 'motivation', 'entrepreneur', 'growth'],
+        tiktok: ['fyp', 'foryou', 'viral', 'trending', 'tiktok', 'foryoupage', 'viralvideo', 'tiktokindia']
+      };
+      
+      (commonTags[platform] || commonTags.general).forEach(tag => hashtags.add('#' + tag));
+      
+      allHashtags = Array.from(hashtags).slice(0, 20);
+      
+      document.getElementById('result').innerHTML = `
+        <div class="hashtags">
+          ${allHashtags.map(tag => `<span class="hashtag" onclick="copyOne('${tag}')">${tag}</span>`).join('')}
+        </div>
+        <button class="copy-btn" onclick="copyAll()">📋 Copy All Hashtags</button>
+      `;
+    }
+    
+    function copyOne(tag) {
+      navigator.clipboard.writeText(tag);
+      alert('Copied: ' + tag);
+    }
+    
+    function copyAll() {
+      navigator.clipboard.writeText(allHashtags.join(' '));
+      alert('All hashtags copied!');
+    }
+  </script>
+</body>
+</html>

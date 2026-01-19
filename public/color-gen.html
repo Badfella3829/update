@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    select, input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .colors { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 25px; }
+    .color-box { width: 100px; height: 100px; border-radius: 16px; cursor: pointer; display: flex; align-items: flex-end; justify-content: center; padding: 10px; transition: transform 0.2s; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+    .color-box:hover { transform: scale(1.05); }
+    .color-box span { background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🎨 Color Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Generate beautiful color palettes for your designs.</p>
+    
+    <label>Palette Type</label>
+    <select id="type">
+      <option value="random">Random Palette</option>
+      <option value="monochromatic">Monochromatic</option>
+      <option value="complementary">Complementary</option>
+      <option value="analogous">Analogous</option>
+      <option value="triadic">Triadic</option>
+    </select>
+    
+    <label>Base Color (optional)</label>
+    <input type="text" id="baseColor" placeholder="#667eea or leave empty for random">
+    
+    <button class="btn" onclick="generateColors()">🎨 Generate Palette</button>
+    
+    <div id="result" class="colors"></div>
+  </div>
+
+  <script>
+    function generateColors() {
+      const type = document.getElementById('type').value;
+      const baseColor = document.getElementById('baseColor').value.trim();
+      const result = document.getElementById('result');
+      
+      const randomHex = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+      const hexToHSL = (hex) => {
+        let r = parseInt(hex.slice(1,3), 16)/255;
+        let g = parseInt(hex.slice(3,5), 16)/255;
+        let b = parseInt(hex.slice(5,7), 16)/255;
+        let max = Math.max(r,g,b), min = Math.min(r,g,b);
+        let h, s, l = (max + min) / 2;
+        if(max === min) { h = s = 0; }
+        else {
+          let d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch(max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+          }
+        }
+        return [h * 360, s * 100, l * 100];
+      };
+      const hslToHex = (h, s, l) => {
+        s /= 100; l /= 100;
+        const a = s * Math.min(l, 1 - l);
+        const f = n => {
+          const k = (n + h / 30) % 12;
+          const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+      };
+      
+      let colors = [];
+      const base = baseColor && /^#[0-9A-Fa-f]{6}$/.test(baseColor) ? baseColor : randomHex();
+      const [h, s, l] = hexToHSL(base);
+      
+      switch(type) {
+        case 'monochromatic': colors = [20, 35, 50, 65, 80].map(lv => hslToHex(h, s, lv)); break;
+        case 'complementary': colors = [base, hslToHex((h + 180) % 360, s, l), hslToHex(h, s, l - 20), hslToHex((h + 180) % 360, s, l - 20), hslToHex(h, s, l + 15)]; break;
+        case 'analogous': colors = [-30, -15, 0, 15, 30].map(offset => hslToHex((h + offset + 360) % 360, s, l)); break;
+        case 'triadic': colors = [0, 120, 240].map(offset => hslToHex((h + offset) % 360, s, l)); colors.push(hslToHex(h, s, l - 15), hslToHex((h + 120) % 360, s, l - 15)); break;
+        default: colors = Array(5).fill(0).map(() => randomHex());
+      }
+      
+      result.innerHTML = colors.map(c => `
+        <div class="color-box" style="background: ${c};" onclick="copyColor('${c}')">
+          <span>${c}</span>
+        </div>
+      `).join('');
+    }
+    
+    function copyColor(color) {
+      navigator.clipboard.writeText(color);
+      alert('Copied: ' + color);
+    }
+  </script>
+</body>
+</html>

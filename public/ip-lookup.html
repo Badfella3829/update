@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Lookup - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); }
+    .result { margin-top: 25px; }
+    .info-card { background: rgba(0,0,0,0.4); border-radius: 16px; padding: 25px; }
+    .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--text-muted); }
+    .info-value { color: var(--text-main); font-weight: 500; }
+    .error { color: #ef4444; background: rgba(239,68,68,0.1); padding: 15px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🌐 IP Lookup</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Find details about any IP address or your own.</p>
+    
+    <input type="text" id="ip" placeholder="Enter IP address (or leave empty for your IP)">
+    
+    <button class="btn" onclick="lookupIP()">🔍 Lookup IP</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    async function lookupIP() {
+      const ip = document.getElementById('ip').value.trim();
+      const result = document.getElementById('result');
+      
+      result.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Looking up...</p>';
+      
+      try {
+        const url = ip ? `https://ipapi.co/${ip}/json/` : 'https://ipapi.co/json/';
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.error) throw new Error(data.reason || 'IP not found');
+        
+        result.innerHTML = `
+          <div class="info-card">
+            <div class="info-row"><span class="info-label">🌐 IP Address</span><span class="info-value">${data.ip}</span></div>
+            <div class="info-row"><span class="info-label">🏙️ City</span><span class="info-value">${data.city || 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">📍 Region</span><span class="info-value">${data.region || 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">🌍 Country</span><span class="info-value">${data.country_name || 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">📮 Postal Code</span><span class="info-value">${data.postal || 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">🏢 ISP</span><span class="info-value">${data.org || 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">🕐 Timezone</span><span class="info-value">${data.timezone || 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">📍 Coordinates</span><span class="info-value">${data.latitude}, ${data.longitude}</span></div>
+          </div>
+        `;
+      } catch(e) {
+        result.innerHTML = `<div class="error">❌ Error: ${e.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>

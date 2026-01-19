@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTM Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 700px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .required { color: #ef4444; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); }
+    .result { margin-top: 25px; }
+    .url-box { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: #22c55e; word-break: break-all; font-family: 'Fira Code', monospace; font-size: 14px; margin-bottom: 15px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 12px 25px; border-radius: 10px; cursor: pointer; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>📍 UTM Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Create UTM tracking links for your marketing campaigns.</p>
+    
+    <label>Website URL <span class="required">*</span></label>
+    <input type="text" id="url" placeholder="https://example.com">
+    
+    <label>Campaign Source <span class="required">*</span></label>
+    <input type="text" id="source" placeholder="e.g., google, facebook, newsletter">
+    
+    <label>Campaign Medium <span class="required">*</span></label>
+    <input type="text" id="medium" placeholder="e.g., cpc, email, social">
+    
+    <label>Campaign Name <span class="required">*</span></label>
+    <input type="text" id="campaign" placeholder="e.g., summer_sale, product_launch">
+    
+    <label>Campaign Term (optional)</label>
+    <input type="text" id="term" placeholder="e.g., running+shoes">
+    
+    <label>Campaign Content (optional)</label>
+    <input type="text" id="content" placeholder="e.g., banner_ad, text_link">
+    
+    <button class="btn" onclick="generateUTM()">📍 Generate UTM Link</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let utmUrl = '';
+    
+    function generateUTM() {
+      const url = document.getElementById('url').value.trim();
+      const source = document.getElementById('source').value.trim();
+      const medium = document.getElementById('medium').value.trim();
+      const campaign = document.getElementById('campaign').value.trim();
+      const term = document.getElementById('term').value.trim();
+      const content = document.getElementById('content').value.trim();
+      
+      if (!url || !source || !medium || !campaign) {
+        alert('Please fill all required fields');
+        return;
+      }
+      
+      let params = [];
+      params.push(`utm_source=${encodeURIComponent(source)}`);
+      params.push(`utm_medium=${encodeURIComponent(medium)}`);
+      params.push(`utm_campaign=${encodeURIComponent(campaign)}`);
+      if (term) params.push(`utm_term=${encodeURIComponent(term)}`);
+      if (content) params.push(`utm_content=${encodeURIComponent(content)}`);
+      
+      utmUrl = `${url}${url.includes('?') ? '&' : '?'}${params.join('&')}`;
+      
+      document.getElementById('result').innerHTML = `
+        <div class="url-box">${utmUrl}</div>
+        <button class="copy-btn" onclick="copyURL()">📋 Copy UTM Link</button>
+      `;
+    }
+    
+    function copyURL() {
+      navigator.clipboard.writeText(utmUrl);
+      alert('UTM link copied!');
+    }
+  </script>
+</body>
+</html>

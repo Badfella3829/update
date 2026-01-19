@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content AI - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <style>
+    :root { --bg-dark: #020617; --card-bg: rgba(20, 26, 46, 0.6); --blue: #3b82f6; --purple: #a855f7; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .premium-badge { background: linear-gradient(135deg, #a855f7, #6366f1); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea, input, select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    textarea { resize: none; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .btn { background: linear-gradient(135deg, #a855f7, #6366f1); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(168,85,247,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result { margin-top: 25px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; white-space: pre-wrap; line-height: 1.7; }
+    .copy-btn { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+    .error { color: #ef4444; padding: 15px; background: rgba(239,68,68,0.1); border-radius: 10px; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>📝 Content AI</h1>
+    <span class="premium-badge">Premium</span>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Generate blog posts, articles, and marketing content.</p>
+    
+    <label>Topic</label>
+    <input type="text" id="topic" placeholder="e.g., Benefits of AI in Healthcare">
+    
+    <label>Content Type</label>
+    <select id="type">
+      <option value="blog">Blog Post</option>
+      <option value="article">Article</option>
+      <option value="social">Social Media Post</option>
+      <option value="ad">Ad Copy</option>
+      <option value="email">Email Newsletter</option>
+    </select>
+    
+    <label>Tone</label>
+    <select id="tone">
+      <option value="professional">Professional</option>
+      <option value="casual">Casual</option>
+      <option value="humorous">Humorous</option>
+      <option value="formal">Formal</option>
+    </select>
+    
+    <button class="btn" id="generateBtn" onclick="generateContent()">
+      <span>📝 Generate Content</span>
+    </button>
+    
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let lastContent = '';
+    async function generateContent() {
+      const topic = document.getElementById('topic').value.trim();
+      const type = document.getElementById('type').value;
+      const tone = document.getElementById('tone').value;
+      const btn = document.getElementById('generateBtn');
+      const result = document.getElementById('result');
+      
+      if (!topic) { alert('Please enter a topic'); return; }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Writing...</span>';
+      result.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Generating content...</div>';
+      
+      try {
+        const response = await fetch('/api/content-ai', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-User-Plan': localStorage.getItem('userPlan') || 'free'
+          },
+          body: JSON.stringify({ topic, type, tone })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.content) {
+          lastContent = data.content;
+          result.innerHTML = `
+            <div class="result">${data.content}</div>
+            <button class="copy-btn" onclick="copyContent()">📋 Copy Content</button>
+          `;
+        } else {
+          result.innerHTML = `<div class="error">${data.error || 'Failed to generate content'}</div>`;
+        }
+      } catch (error) {
+        result.innerHTML = `<div class="error">Error: Could not connect to server</div>`;
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = '<span>📝 Generate Content</span>';
+    }
+    
+    function copyContent() {
+      navigator.clipboard.writeText(lastContent);
+      alert('Content copied!');
+    }
+  </script>
+</body>
+</html>

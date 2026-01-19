@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; resize: vertical; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .result { margin-top: 30px; text-align: center; }
+    .result img { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .download-btn { display: inline-block; background: #22c55e; color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>📦 QR Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Create QR codes for URLs, text, or any data.</p>
+    
+    <textarea id="input" rows="4" placeholder="Enter URL or text to encode..."></textarea>
+    
+    <button class="btn" onclick="generateQR()">📦 Generate QR Code</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    function generateQR() {
+      const text = document.getElementById('input').value.trim();
+      if (!text) { alert('Please enter text or URL'); return; }
+      
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(text)}`;
+      
+      document.getElementById('result').innerHTML = `
+        <img src="${qrUrl}" alt="QR Code">
+        <br>
+        <a href="${qrUrl}" download="qrcode.png" class="download-btn">⬇️ Download QR Code</a>
+      `;
+    }
+  </script>
+</body>
+</html>

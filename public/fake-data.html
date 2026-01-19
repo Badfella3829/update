@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Data Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    select, input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); }
+    .result { margin-top: 25px; }
+    pre { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: #22c55e; overflow-x: auto; white-space: pre-wrap; font-family: 'Fira Code', monospace; font-size: 13px; max-height: 400px; overflow-y: auto; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 12px 25px; border-radius: 10px; cursor: pointer; margin-top: 15px; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>👤 Fake Data Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Generate fake data for testing and development.</p>
+    
+    <label>Data Type</label>
+    <select id="type">
+      <option value="user">Users (Name, Email, Phone)</option>
+      <option value="address">Addresses</option>
+      <option value="company">Companies</option>
+      <option value="creditcard">Credit Cards (Fake)</option>
+      <option value="email">Emails Only</option>
+      <option value="phone">Phone Numbers Only</option>
+    </select>
+    
+    <label>Count</label>
+    <input type="number" id="count" value="5" min="1" max="50">
+    
+    <button class="btn" onclick="generateData()">🎲 Generate Data</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let lastData = [];
+    
+    function generateData() {
+      const type = document.getElementById('type').value;
+      const count = Math.min(50, Math.max(1, parseInt(document.getElementById('count').value) || 5));
+      
+      const firstNames = ['John', 'Jane', 'Alex', 'Emily', 'Michael', 'Sarah', 'David', 'Emma', 'Chris', 'Lisa', 'James', 'Anna'];
+      const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Wilson', 'Taylor'];
+      const domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'example.com', 'mail.com'];
+      const streets = ['Main St', 'Oak Ave', 'Pine Rd', 'Maple Dr', 'Cedar Ln', 'Park Blvd'];
+      const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio'];
+      const companies = ['TechCorp', 'GlobalSoft', 'InnovateTech', 'DataDynamics', 'CloudNine', 'NextGen', 'FutureTech'];
+      
+      const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
+      const randomNum = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+      
+      const generators = {
+        user: () => {
+          const fn = random(firstNames), ln = random(lastNames);
+          return { name: `${fn} ${ln}`, email: `${fn.toLowerCase()}.${ln.toLowerCase()}@${random(domains)}`, phone: `+1-${randomNum(200,999)}-${randomNum(100,999)}-${randomNum(1000,9999)}` };
+        },
+        address: () => ({ street: `${randomNum(100,9999)} ${random(streets)}`, city: random(cities), state: ['CA','TX','NY','FL','IL'][randomNum(0,4)], zip: randomNum(10000, 99999).toString(), country: 'USA' }),
+        company: () => ({ name: random(companies) + ' ' + ['Inc', 'LLC', 'Corp'][randomNum(0,2)], industry: ['Technology', 'Finance', 'Healthcare', 'Retail', 'Manufacturing'][randomNum(0,4)], employees: randomNum(50, 5000), revenue: '$' + randomNum(1,500) + 'M' }),
+        creditcard: () => ({ number: `4${randomNum(100,999)} ${randomNum(1000,9999)} ${randomNum(1000,9999)} ${randomNum(1000,9999)}`, expiry: `${randomNum(1,12).toString().padStart(2,'0')}/${randomNum(25,30)}`, cvv: randomNum(100,999).toString(), type: ['Visa', 'Mastercard', 'Amex'][randomNum(0,2)] }),
+        email: () => `${random(firstNames).toLowerCase()}${randomNum(1,99)}@${random(domains)}`,
+        phone: () => `+1-${randomNum(200,999)}-${randomNum(100,999)}-${randomNum(1000,9999)}`
+      };
+      
+      lastData = Array(count).fill(0).map(() => generators[type]());
+      
+      document.getElementById('result').innerHTML = `
+        <pre>${JSON.stringify(lastData, null, 2)}</pre>
+        <button class="copy-btn" onclick="copyData()">📋 Copy JSON</button>
+      `;
+    }
+    
+    function copyData() {
+      navigator.clipboard.writeText(JSON.stringify(lastData, null, 2));
+      alert('Data copied!');
+    }
+  </script>
+</body>
+</html>

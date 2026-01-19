@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Maker - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <style>
+    :root { --bg-dark: #020617; --card-bg: rgba(20, 26, 46, 0.6); --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea, input[type="text"], select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    textarea { resize: none; }
+    textarea:focus, input:focus, select:focus { outline: none; border-color: var(--blue); }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result { margin-top: 25px; text-align: center; }
+    .result img { max-width: 300px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    .error { color: #ef4444; padding: 15px; background: rgba(239,68,68,0.1); border-radius: 10px; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🎨 Logo Maker</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Create professional logos for your brand using AI.</p>
+    
+    <label>Brand/Company Name</label>
+    <input type="text" id="brandName" placeholder="e.g., TechVyro">
+    
+    <label>Industry/Type</label>
+    <input type="text" id="industry" placeholder="e.g., Technology, Restaurant, Fashion">
+    
+    <label>Style Preferences</label>
+    <select id="style">
+      <option value="modern minimal">Modern & Minimal</option>
+      <option value="bold colorful">Bold & Colorful</option>
+      <option value="elegant luxury">Elegant & Luxury</option>
+      <option value="playful fun">Playful & Fun</option>
+      <option value="professional corporate">Professional & Corporate</option>
+    </select>
+    
+    <button class="btn" id="generateBtn" onclick="generateLogo()">
+      <span>🎨 Generate Logo</span>
+    </button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    async function generateLogo() {
+      const brandName = document.getElementById('brandName').value.trim();
+      const industry = document.getElementById('industry').value.trim();
+      const style = document.getElementById('style').value;
+      const btn = document.getElementById('generateBtn');
+      const result = document.getElementById('result');
+      
+      if (!brandName) { alert('Please enter a brand name'); return; }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Creating Logo...</span>';
+      result.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Designing your logo...</div>';
+      
+      try {
+        const response = await fetch('/api/logo-generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brandName, industry, style })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.imageUrl) {
+          result.innerHTML = `
+            <img src="${data.imageUrl}" alt="Generated logo">
+            <p style="margin-top: 15px; color: var(--text-muted);">Right-click to save the logo</p>
+          `;
+        } else {
+          result.innerHTML = `<div class="error">${data.error || 'Failed to generate logo'}</div>`;
+        }
+      } catch (error) {
+        result.innerHTML = `<div class="error">Error: Could not connect to server</div>`;
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = '<span>🎨 Generate Logo</span>';
+    }
+  </script>
+</body>
+</html>

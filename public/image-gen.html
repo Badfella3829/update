@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --card-bg: rgba(20, 26, 46, 0.6);
+      --blue: #3b82f6;
+      --text-main: #e5e7eb;
+      --text-muted: #9aa0b4;
+      --border: rgba(255,255,255,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea, input[type="text"] { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: none; }
+    textarea:focus, input:focus { outline: none; border-color: var(--blue); }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; margin-top: 15px; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result { margin-top: 25px; text-align: center; }
+    .result img { max-width: 100%; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    .error { color: #ef4444; padding: 15px; background: rgba(239,68,68,0.1); border-radius: 10px; margin-top: 15px; }
+    .loading { color: var(--text-muted); padding: 20px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🖼️ Image Generator</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Enter a description and AI will generate an image for you.</p>
+    
+    <textarea id="prompt" rows="4" placeholder="Describe the image you want... (e.g., 'A futuristic city at sunset with flying cars')"></textarea>
+    
+    <button class="btn" id="generateBtn" onclick="generateImage()">
+      <span>✨ Generate Image</span>
+    </button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    async function generateImage() {
+      const prompt = document.getElementById('prompt').value.trim();
+      const btn = document.getElementById('generateBtn');
+      const result = document.getElementById('result');
+      
+      if (!prompt) { alert('Please enter a description'); return; }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Generating...</span>';
+      result.innerHTML = '<div class="loading">Creating your image... This may take a moment.</div>';
+      
+      try {
+        const response = await fetch('/api/image-generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.imageUrl) {
+          result.innerHTML = `
+            <img src="${data.imageUrl}" alt="Generated image">
+            <p style="margin-top: 15px; color: var(--text-muted);">Right-click to save the image</p>
+          `;
+        } else {
+          result.innerHTML = `<div class="error">${data.error || 'Failed to generate image'}</div>`;
+        }
+      } catch (error) {
+        result.innerHTML = `<div class="error">Error: Could not connect to server</div>`;
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = '<span>✨ Generate Image</span>';
+    }
+  </script>
+</body>
+</html>

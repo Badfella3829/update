@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Format - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; font-family: 'Fira Code', monospace; resize: vertical; }
+    .btn-group { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+    .btn { background: var(--blue); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.secondary { background: rgba(255,255,255,0.1); }
+    .result { margin-top: 20px; }
+    pre { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: #22c55e; overflow-x: auto; white-space: pre-wrap; font-family: 'Fira Code', monospace; font-size: 13px; }
+    .error { color: #ef4444; background: rgba(239,68,68,0.1); padding: 15px; border-radius: 10px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🧩 JSON Format</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Format, validate, and minify JSON data.</p>
+    
+    <textarea id="input" rows="12" placeholder="Paste your JSON here..."></textarea>
+    
+    <div class="btn-group">
+      <button class="btn" onclick="formatJSON()">✨ Format</button>
+      <button class="btn secondary" onclick="minifyJSON()">🗜️ Minify</button>
+      <button class="btn secondary" onclick="validateJSON()">✅ Validate</button>
+    </div>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let lastOutput = '';
+    
+    function formatJSON() {
+      const input = document.getElementById('input').value.trim();
+      const result = document.getElementById('result');
+      try {
+        const parsed = JSON.parse(input);
+        lastOutput = JSON.stringify(parsed, null, 2);
+        result.innerHTML = `<pre>${escapeHtml(lastOutput)}</pre><button class="copy-btn" onclick="copyOutput()">📋 Copy</button>`;
+      } catch(e) {
+        result.innerHTML = `<div class="error">❌ Invalid JSON: ${e.message}</div>`;
+      }
+    }
+    
+    function minifyJSON() {
+      const input = document.getElementById('input').value.trim();
+      const result = document.getElementById('result');
+      try {
+        lastOutput = JSON.stringify(JSON.parse(input));
+        result.innerHTML = `<pre>${escapeHtml(lastOutput)}</pre><button class="copy-btn" onclick="copyOutput()">📋 Copy</button>`;
+      } catch(e) {
+        result.innerHTML = `<div class="error">❌ Invalid JSON: ${e.message}</div>`;
+      }
+    }
+    
+    function validateJSON() {
+      const input = document.getElementById('input').value.trim();
+      const result = document.getElementById('result');
+      try {
+        JSON.parse(input);
+        result.innerHTML = `<div style="color: #22c55e; background: rgba(34,197,94,0.1); padding: 15px; border-radius: 10px;">✅ Valid JSON!</div>`;
+      } catch(e) {
+        result.innerHTML = `<div class="error">❌ Invalid JSON: ${e.message}</div>`;
+      }
+    }
+    
+    function escapeHtml(text) {
+      return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    
+    function copyOutput() {
+      navigator.clipboard.writeText(lastOutput);
+      alert('Copied!');
+    }
+  </script>
+</body>
+</html>

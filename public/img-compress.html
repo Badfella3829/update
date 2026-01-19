@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compress - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    .upload-area { border: 2px dashed var(--border); border-radius: 16px; padding: 40px; text-align: center; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
+    .upload-area:hover { border-color: var(--blue); background: rgba(59,130,246,0.05); }
+    input[type="file"] { display: none; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    input[type="range"] { width: 100%; margin-bottom: 20px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .result { margin-top: 25px; text-align: center; }
+    .result img { max-width: 100%; max-height: 400px; border-radius: 12px; margin: 15px 0; }
+    .stats { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+    .download-btn { display: inline-block; background: #22c55e; color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🖼️ Image Compress</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Compress images without losing quality.</p>
+    
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+      <p style="font-size: 40px; margin-bottom: 10px;">📁</p>
+      <p>Click to select an image</p>
+      <p style="font-size: 12px; margin-top: 10px; color: var(--text-muted);">Supports JPG, PNG, WebP</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" onchange="handleFile(this)">
+    
+    <label>Quality: <span id="qualityVal">80</span>%</label>
+    <input type="range" id="quality" min="10" max="100" value="80" oninput="document.getElementById('qualityVal').textContent = this.value">
+    
+    <button class="btn" onclick="compressImage()">🗜️ Compress Image</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let selectedFile = null;
+    
+    function handleFile(input) {
+      if (input.files[0]) {
+        selectedFile = input.files[0];
+        document.querySelector('.upload-area p:first-child').textContent = '✅';
+        document.querySelector('.upload-area p:nth-child(2)').textContent = selectedFile.name;
+      }
+    }
+    
+    function compressImage() {
+      if (!selectedFile) { alert('Please select an image first'); return; }
+      
+      const quality = parseInt(document.getElementById('quality').value) / 100;
+      const result = document.getElementById('result');
+      result.innerHTML = '<p style="color: var(--text-muted);">Compressing...</p>';
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          
+          canvas.toBlob((blob) => {
+            const originalSize = (selectedFile.size / 1024).toFixed(2);
+            const compressedSize = (blob.size / 1024).toFixed(2);
+            const savings = ((1 - blob.size / selectedFile.size) * 100).toFixed(1);
+            const url = URL.createObjectURL(blob);
+            
+            result.innerHTML = `
+              <div class="stats">
+                <p>📊 Original: <strong>${originalSize} KB</strong></p>
+                <p>📦 Compressed: <strong>${compressedSize} KB</strong></p>
+                <p>✨ Saved: <strong>${savings}%</strong></p>
+              </div>
+              <img src="${url}" alt="Compressed">
+              <br>
+              <a href="${url}" download="compressed-image.jpg" class="download-btn">⬇️ Download</a>
+            `;
+          }, 'image/jpeg', quality);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  </script>
+</body>
+</html>

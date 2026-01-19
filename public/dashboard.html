@@ -2704,60 +2704,61 @@
         return;
       }
       
-      // AI Chat redirects to dedicated page
-      if (toolType === 'chat') {
-        window.location.href = 'chat.html';
-        return;
-      }
-      
+      // Deduct credits and update UI
       credits -= 5;
       updateCreditUI();
       
-      const titles = { 
-        chat: 'AI Chat', 
-        image: 'Image Generator', 
-        content: 'Content AI',
-        code: 'Code AI',
-        email: 'Email AI',
-        voice: 'Voice AI',
-        resume: 'Resume AI',
-        data: 'Data AI',
-        logo: 'Logo Maker',
-        color: 'Color Generator',
-        gradient: 'Gradient Generator',
-        imgcompress: 'Image Compress',
-        json: 'JSON Format',
-        minify: 'Code Minify',
-        jwt: 'JWT Decode',
-        urlencode: 'URL Encode',
-        regex: 'Regex Test',
-        passgen: 'Password Generator',
-        qr: 'QR Generator',
-        hashtag: 'Hashtag Generator',
-        utm: 'UTM Generator',
-        case: 'Case Convert',
-        unit: 'Unit Convert',
-        imgconvert: 'Image Convert',
-        ip: 'IP Lookup',
-        fakedata: 'Fake Data'
+      // Track tool usage
+      const toolNames = {
+        chat: 'AI Chat', image: 'Image Generator', logo: 'Logo Maker',
+        content: 'Content AI', code: 'Code AI', email: 'Email AI',
+        voice: 'Voice AI', resume: 'Resume AI', data: 'Data AI',
+        color: 'Color Generator', gradient: 'Gradient Generator',
+        imgcompress: 'Image Compress', json: 'JSON Format', minify: 'Code Minify',
+        jwt: 'JWT Decode', urlencode: 'URL Encode', regex: 'Regex Test',
+        passgen: 'Password Generator', qr: 'QR Generator', hashtag: 'Hashtag Generator',
+        utm: 'UTM Generator', case: 'Case Convert', unit: 'Unit Convert',
+        imgconvert: 'Image Convert', ip: 'IP Lookup', fakedata: 'Fake Data'
       };
-      
-      // Hide all tool contents
-      document.querySelectorAll('.tool-content').forEach(el => el.style.display = 'none');
-      
-      // Show specific tool
-      const toolElement = document.getElementById(`${toolType}-tool`);
-      if (toolElement) {
-        toolElement.style.display = 'block';
-      } else {
-        document.getElementById('generic-tool').style.display = 'block';
+      if (window.trackToolUsage) {
+        window.trackToolUsage(toolNames[toolType] || toolType);
       }
       
-      document.getElementById('tool-title').innerText = titles[toolType] || toolType;
-      document.getElementById('tool-interface').classList.add('active');
+      // Tool page mappings - redirect to dedicated HTML pages
+      const toolPages = {
+        chat: 'chat.html',
+        image: 'image-gen.html',
+        logo: 'logo-gen.html',
+        content: 'content-ai.html',
+        code: 'code-ai.html',
+        email: 'email-ai.html',
+        voice: 'voice-ai.html',
+        resume: 'resume-ai.html',
+        data: 'data-ai.html',
+        color: 'color-gen.html',
+        gradient: 'gradient-gen.html',
+        imgcompress: 'img-compress.html',
+        json: 'json-format.html',
+        minify: 'code-minify.html',
+        jwt: 'jwt-decode.html',
+        urlencode: 'url-encode.html',
+        regex: 'regex-test.html',
+        passgen: 'pass-gen.html',
+        qr: 'qr-gen.html',
+        hashtag: 'hashtag-gen.html',
+        utm: 'utm-gen.html',
+        case: 'case-convert.html',
+        unit: 'unit-convert.html',
+        imgconvert: 'img-convert.html',
+        ip: 'ip-lookup.html',
+        fakedata: 'fake-data.html'
+      };
       
-      if (window.trackToolUsage) {
-        window.trackToolUsage(titles[toolType] || toolType);
+      const page = toolPages[toolType];
+      if (page) {
+        window.location.href = page;
+      } else {
+        alert('Tool not found');
       }
     };
     

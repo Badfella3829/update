@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Convert - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .tool-container { flex: 1; max-width: 700px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 20px; resize: vertical; }
+    .btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+    .btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 14px; border-radius: 10px; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: rgba(59,130,246,0.3); transform: translateY(-2px); }
+    .result { margin-top: 20px; }
+    .output { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; color: var(--text-main); white-space: pre-wrap; margin-bottom: 15px; min-height: 100px; }
+    .copy-btn { background: var(--blue); color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🔠 Case Convert</h1>
+  </div>
+  
+  <div class="tool-container">
+    <p class="tool-description">Convert text between different cases.</p>
+    
+    <textarea id="input" rows="5" placeholder="Enter your text here..."></textarea>
+    
+    <div class="btn-grid">
+      <button class="btn" onclick="convert('upper')">UPPERCASE</button>
+      <button class="btn" onclick="convert('lower')">lowercase</button>
+      <button class="btn" onclick="convert('title')">Title Case</button>
+      <button class="btn" onclick="convert('sentence')">Sentence case</button>
+      <button class="btn" onclick="convert('camel')">camelCase</button>
+      <button class="btn" onclick="convert('snake')">snake_case</button>
+    </div>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    let lastOutput = '';
+    
+    function convert(type) {
+      const input = document.getElementById('input').value;
+      
+      switch(type) {
+        case 'upper': lastOutput = input.toUpperCase(); break;
+        case 'lower': lastOutput = input.toLowerCase(); break;
+        case 'title': lastOutput = input.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); break;
+        case 'sentence': lastOutput = input.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase()); break;
+        case 'camel': lastOutput = input.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, c) => c.toUpperCase()); break;
+        case 'snake': lastOutput = input.toLowerCase().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, ''); break;
+      }
+      
+      document.getElementById('result').innerHTML = `
+        <div class="output">${lastOutput}</div>
+        <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+      `;
+    }
+    
+    function copyOutput() {
+      navigator.clipboard.writeText(lastOutput);
+      alert('Copied!');
+    }
+  </script>
+</body>
+</html>
