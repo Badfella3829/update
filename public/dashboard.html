@@ -786,10 +786,14 @@
 
   /* ================= TOOLS INTERFACE (Glassy Modal) ================= */
   .tool-box {
-    display: none; position: fixed; inset: 0; background: var(--tool-box-bg); backdrop-filter: blur(10px); z-index: 200;
-    flex-direction: column; padding: 40px; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: none; position: fixed; inset: 0; background: var(--bg-main); z-index: 200;
+    flex-direction: column; padding: 20px 40px 40px; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
   }
   .tool-box.active { display: flex; }
+  .tool-box .tb-header { position: sticky; top: 0; background: var(--bg-main); padding: 15px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; z-index: 10; }
+  .tool-box .tb-header button:first-child:hover { background: rgba(255,255,255,0.2) !important; }
+  .tool-box .tb-header button:last-child:hover { background: rgba(239,68,68,0.4) !important; }
   @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
   .tb-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
@@ -2292,9 +2296,12 @@
   </div>
 
   <div id="tool-interface" class="tool-box">
-    <div class="tb-header">
-      <h3 id="tool-title">Tool</h3>
-      <button onclick="closeTool()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+    <div class="tb-header" style="display: flex; align-items: center; gap: 20px;">
+      <button onclick="closeTool()" style="background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: white; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 16px; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
+        ← Back
+      </button>
+      <h3 id="tool-title" style="flex: 1; margin: 0;">Tool</h3>
+      <button onclick="closeTool()" style="background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.5); color: #ef4444; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center;">✕</button>
     </div>
     
     <div id="image-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
