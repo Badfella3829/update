@@ -752,6 +752,11 @@
     color: #a855f7;
     border: 1px solid rgba(168, 85, 247, 0.2);
   }
+  .card-status.coming {
+    background: rgba(251, 191, 36, 0.12);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+  }
 
   .card-btn {
     background: linear-gradient(135deg, var(--blue), #4f46e5);
@@ -1889,8 +1894,8 @@
           <h3>BG Remover</h3>
           <p class="card-description">Remove backgrounds from images</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('BG Remover')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -1900,8 +1905,8 @@
           <h3>Mockup Gen</h3>
           <p class="card-description">Generate product mockups</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('Mockup Gen')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -1911,8 +1916,8 @@
           <h3>Font Pair</h3>
           <p class="card-description">Find perfect font combinations</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="showComingSoon()">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('Font Pair')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2038,8 +2043,8 @@
           <h3>API Tester</h3>
           <p class="card-description">Test and debug API endpoints</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="window.location.href='pricing.html'">Upgrade</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('API Tester')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2064,8 +2069,8 @@
           <h3>SEO Check</h3>
           <p class="card-description">Analyze website SEO performance</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="showComingSoon()">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('SEO Check')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2075,8 +2080,8 @@
           <h3>Keyword Tool</h3>
           <p class="card-description">Research keywords for content</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="showComingSoon()">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('Keyword Tool')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2097,8 +2102,8 @@
           <h3>Link Short</h3>
           <p class="card-description">Shorten URLs for sharing</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="checkCreditAndOpen('urlshort')">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('Link Short')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2145,8 +2150,8 @@
           <h3>SSL Check</h3>
           <p class="card-description">Verify SSL certificate status</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="showComingSoon()">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('SSL Check')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2182,8 +2187,8 @@
           <h3>PDF Tools</h3>
           <p class="card-description">Manage and manipulate PDF files</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="showComingSoon()">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('PDF Tools')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2204,8 +2209,8 @@
           <h3>File Convert</h3>
           <p class="card-description">Convert files between different formats</p>
           <div class="card-footer">
-            <span class="card-status free">🟢 Free</span>
-            <button class="card-btn" onclick="showComingSoon()">Open</button>
+            <span class="card-status coming">🔜 Coming Soon</span>
+            <button class="card-btn" onclick="showComingSoon('File Convert')">Coming Soon</button>
           </div>
         </div>
       </div>
@@ -2271,6 +2276,20 @@
 
     <div style="height:100px"></div>
   </main>
+
+  <!-- Coming Soon Popup Modal -->
+  <div id="coming-soon-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 20px; padding: 40px; max-width: 400px; width: 90%; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+      <div style="font-size: 60px; margin-bottom: 20px;">🚀</div>
+      <h2 id="coming-soon-title" style="color: #fff; font-size: 24px; margin-bottom: 10px;">Coming Soon!</h2>
+      <p style="color: rgba(255,255,255,0.7); font-size: 16px; margin-bottom: 25px;">We're working hard to bring this feature to you. Stay tuned for updates!</p>
+      <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 25px;">
+        <p style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 0;">Want to be notified when it's ready?</p>
+        <p style="color: #4da6ff; font-size: 14px; margin: 5px 0 0 0;">Follow us for updates!</p>
+      </div>
+      <button onclick="closeComingSoon()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-size: 16px; cursor: pointer; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 30px rgba(102,126,234,0.4)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">Got it!</button>
+    </div>
+  </div>
 
   <div id="tool-interface" class="tool-box">
     <div class="tb-header">
@@ -2826,15 +2845,19 @@
       btn.textContent = 'Generate Logo';
     };
 
-    window.showComingSoon = (toolName) => {
-      const toast = document.getElementById('toast');
-      toast.innerText = "🚀 Feature Coming Soon!";
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
+    window.showComingSoon = (toolName = 'This Feature') => {
+      const modal = document.getElementById('coming-soon-modal');
+      const title = document.getElementById('coming-soon-title');
+      title.textContent = toolName + ' - Coming Soon!';
+      modal.style.display = 'flex';
       
       if (toolName && window.trackToolUsage) {
         window.trackToolUsage(toolName);
       }
+    };
+    
+    window.closeComingSoon = () => {
+      document.getElementById('coming-soon-modal').style.display = 'none';
     };
     
     // Premium tool access - checks user plan
