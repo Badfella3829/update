@@ -2665,7 +2665,7 @@
     import './js/auth-check.js';
     import './js/dashboard.js';
     import './js/ux-enhancements.js';
-    import './js/notifications.js';
+    try { await import('./js/notifications.js'); } catch(e) { console.warn('Notifications module failed:', e); }
 
     // --- 3D TILT LOGIC ---
     document.querySelectorAll('.js-tilt').forEach(card => {
@@ -3665,9 +3665,13 @@
     };
 
     // --- NOTIFICATIONS ---
-    // Initialize notifications system
-    window.notifications.initNotifications();
-    window.notifications.initNotificationUI();
+    // Initialize notifications system (skip if module failed to load)
+    if (window.notifications) {
+      try {
+        window.notifications.initNotifications();
+        window.notifications.initNotificationUI();
+      } catch(e) { console.warn('Notifications init failed:', e); }
+    }
 
     // Load notifications from Firebase
     async function loadNotifications() {
