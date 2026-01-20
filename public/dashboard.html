@@ -1162,6 +1162,26 @@
     color: #fbbf24;
     border: 1px solid rgba(251, 191, 36, 0.2);
   }
+  .card-status.external {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  
+  .external-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .external-card:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+  .external-card .card-content {
+    text-decoration: none;
+  }
+  .external-card h3 {
+    color: var(--text-main);
+  }
 
   .card-btn {
     background: linear-gradient(135deg, var(--blue), #4f46e5);
@@ -2659,6 +2679,190 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- EXTERNAL AI TOOLS DIRECTORY -->
+    <div id="section-directory" class="section-header">🌐 AI Tools Directory</div>
+    
+    <!-- AI Chatbots -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣ AI Chatbots / LLMs</div>
+    <div class="grid">
+      <a href="https://chat.openai.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💬</div><h3>ChatGPT</h3><p class="card-description">OpenAI's powerful AI assistant</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://claude.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🤖</div><h3>Claude</h3><p class="card-description">Anthropic's helpful AI assistant</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://gemini.google.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">✨</div><h3>Gemini</h3><p class="card-description">Google's multimodal AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://perplexity.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔍</div><h3>Perplexity</h3><p class="card-description">AI-powered search engine</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://deepseek.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🧠</div><h3>DeepSeek</h3><p class="card-description">Advanced reasoning AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://poe.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">⚡</div><h3>Poe</h3><p class="card-description">Multi-bot AI platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Image Generation -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">2️⃣ AI Image Generation</div>
+    <div class="grid">
+      <a href="https://stability.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎨</div><h3>Stable Diffusion</h3><p class="card-description">Open-source image generation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://midjourney.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖼️</div><h3>Midjourney</h3><p class="card-description">Premium AI art generator</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://leonardo.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎭</div><h3>Leonardo AI</h3><p class="card-description">Creative AI image platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://playground.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎪</div><h3>Playground AI</h3><p class="card-description">Free AI image creation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://craiyon.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖍️</div><h3>Craiyon</h3><p class="card-description">Free AI art generator</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://ideogram.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💡</div><h3>Ideogram</h3><p class="card-description">AI with text rendering</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Video Generation -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">3️⃣ AI Video Generation</div>
+    <div class="grid">
+      <a href="https://runwayml.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎬</div><h3>Runway ML</h3><p class="card-description">AI video generation & editing</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://pika.art" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎥</div><h3>Pika Labs</h3><p class="card-description">Text to video AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://invideo.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📹</div><h3>InVideo AI</h3><p class="card-description">AI video maker</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://pictory.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎞️</div><h3>Pictory</h3><p class="card-description">Blog to video AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://lumen5.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💫</div><h3>Lumen5</h3><p class="card-description">AI video creation platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Audio/Voice -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">4️⃣ AI Audio / Voice</div>
+    <div class="grid">
+      <a href="https://elevenlabs.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎙️</div><h3>ElevenLabs</h3><p class="card-description">Realistic AI voice generation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://murf.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔊</div><h3>Murf AI</h3><p class="card-description">AI voiceover studio</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://play.ht" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">▶️</div><h3>Play.ht</h3><p class="card-description">AI text to speech</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://coqui.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🐸</div><h3>Coqui TTS</h3><p class="card-description">Open-source voice AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://openai.com/whisper" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">👂</div><h3>Whisper</h3><p class="card-description">Speech recognition AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Music -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">5️⃣ AI Music Generation</div>
+    <div class="grid">
+      <a href="https://suno.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎵</div><h3>Suno</h3><p class="card-description">AI music creation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://huggingface.co/facebook/musicgen-large" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎼</div><h3>MusicGen</h3><p class="card-description">Meta's music AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://boomy.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎸</div><h3>Boomy</h3><p class="card-description">Create & monetize music</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://beatoven.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🥁</div><h3>Beatoven</h3><p class="card-description">Royalty-free music AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Writing -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">6️⃣ AI Writing / Content</div>
+    <div class="grid">
+      <a href="https://jasper.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">✍️</div><h3>Jasper</h3><p class="card-description">AI marketing content</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://copy.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📝</div><h3>Copy.ai</h3><p class="card-description">AI copywriting tool</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://rytr.me" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖊️</div><h3>Rytr</h3><p class="card-description">AI writing assistant</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://writesonic.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">⚡</div><h3>Writesonic</h3><p class="card-description">AI content writer</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://sudowrite.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📖</div><h3>Sudowrite</h3><p class="card-description">AI for fiction writing</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI SEO -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">7️⃣ AI SEO Tools</div>
+    <div class="grid">
+      <a href="https://surferseo.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🏄</div><h3>Surfer SEO</h3><p class="card-description">AI SEO optimization</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://neuronwriter.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🧠</div><h3>NeuronWriter</h3><p class="card-description">AI content optimization</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://scalenut.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🥜</div><h3>Scalenut</h3><p class="card-description">AI SEO content platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://frase.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📊</div><h3>Frase</h3><p class="card-description">SEO content research AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Coding -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">8️⃣ AI Coding Tools</div>
+    <div class="grid">
+      <a href="https://codeium.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💻</div><h3>Codeium</h3><p class="card-description">Free AI code completion</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://cursor.sh" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖱️</div><h3>Cursor</h3><p class="card-description">AI-first code editor</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://tabnine.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">⌨️</div><h3>Tabnine</h3><p class="card-description">AI code assistant</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://blackbox.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📦</div><h3>Blackbox AI</h3><p class="card-description">AI coding assistant</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://replit.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔄</div><h3>Replit AI</h3><p class="card-description">AI-powered IDE</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Website Builder -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">9️⃣ AI Website Builder</div>
+    <div class="grid">
+      <a href="https://durable.co" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🌐</div><h3>Durable AI</h3><p class="card-description">Build website in 30 seconds</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://framer.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖼️</div><h3>Framer AI</h3><p class="card-description">AI website design</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://10web.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔟</div><h3>10Web</h3><p class="card-description">AI WordPress builder</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://wix.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">✨</div><h3>Wix ADI</h3><p class="card-description">AI website creator</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Chatbot Builder -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">🔟 AI Chatbot Builder</div>
+    <div class="grid">
+      <a href="https://botpress.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🤖</div><h3>Botpress</h3><p class="card-description">Open-source chatbot builder</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://rasa.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💬</div><h3>Rasa</h3><p class="card-description">Conversational AI platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://tidio.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💭</div><h3>Tidio</h3><p class="card-description">AI customer service</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://manychat.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📱</div><h3>ManyChat</h3><p class="card-description">Chat marketing automation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Automation -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣1️⃣ AI Automation</div>
+    <div class="grid">
+      <a href="https://zapier.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">⚡</div><h3>Zapier AI</h3><p class="card-description">AI workflow automation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://make.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔧</div><h3>Make</h3><p class="card-description">Visual automation platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://bardeen.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎯</div><h3>Bardeen</h3><p class="card-description">Browser automation AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://ifttt.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔗</div><h3>IFTTT</h3><p class="card-description">Connect apps & devices</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Productivity -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣2️⃣ AI Productivity</div>
+    <div class="grid">
+      <a href="https://notion.so" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📓</div><h3>Notion AI</h3><p class="card-description">AI-powered workspace</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://taskade.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">✅</div><h3>Taskade</h3><p class="card-description">AI task management</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://usemotion.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📅</div><h3>Motion</h3><p class="card-description">AI calendar assistant</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://mem.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🧠</div><h3>Mem</h3><p class="card-description">AI note-taking app</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Presentation -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣3️⃣ AI Presentation</div>
+    <div class="grid">
+      <a href="https://tome.app" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📊</div><h3>Tome</h3><p class="card-description">AI presentation builder</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://slidesai.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📑</div><h3>SlidesAI</h3><p class="card-description">Text to slides AI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://beautiful.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">✨</div><h3>Beautiful.ai</h3><p class="card-description">Smart presentations</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Design -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣4️⃣ AI Design</div>
+    <div class="grid">
+      <a href="https://canva.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎨</div><h3>Canva AI</h3><p class="card-description">AI design tools</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://figma.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖌️</div><h3>Figma AI</h3><p class="card-description">AI design features</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://uizard.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📱</div><h3>Uizard</h3><p class="card-description">AI UI design tool</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Marketing -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣5️⃣ AI Marketing</div>
+    <div class="grid">
+      <a href="https://adcreative.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📢</div><h3>AdCreative.ai</h3><p class="card-description">AI ad generation</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://ocoya.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📣</div><h3>Ocoya</h3><p class="card-description">AI social media marketing</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://hoppycopy.co" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📧</div><h3>Hoppy Copy</h3><p class="card-description">AI email marketing copy</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI E-Commerce -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣6️⃣ AI E-Commerce</div>
+    <div class="grid">
+      <a href="https://photoroom.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📸</div><h3>PhotoRoom</h3><p class="card-description">AI product photos</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://zyro.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🛒</div><h3>Zyro AI</h3><p class="card-description">AI ecommerce builder</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://shopify.com/magic" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">✨</div><h3>Shopify Magic</h3><p class="card-description">AI for Shopify</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI HR/Resume -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣7️⃣ AI HR / Resume</div>
+    <div class="grid">
+      <a href="https://kickresume.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📄</div><h3>Kickresume</h3><p class="card-description">AI resume builder</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://resumeworded.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📋</div><h3>Resume Worded</h3><p class="card-description">AI resume optimizer</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://hirevue.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">👔</div><h3>HireVue</h3><p class="card-description">AI hiring platform</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Education -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣8️⃣ AI Education</div>
+    <div class="grid">
+      <a href="https://khanacademy.org/khan-labs" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎓</div><h3>Khanmigo</h3><p class="card-description">AI tutor by Khan Academy</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://socratic.org" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">📚</div><h3>Socratic</h3><p class="card-description">AI homework helper</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://magicschool.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🏫</div><h3>MagicSchool</h3><p class="card-description">AI for teachers</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- AI Search -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">1️⃣9️⃣ AI Search</div>
+    <div class="grid">
+      <a href="https://you.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🔍</div><h3>You.com</h3><p class="card-description">AI search engine</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://phind.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">💡</div><h3>Phind</h3><p class="card-description">AI search for developers</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://andisearch.com" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🌟</div><h3>Andi</h3><p class="card-description">AI assistant search</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+    </div>
+
+    <!-- Open Source AI -->
+    <div class="section-header" style="font-size: 18px; margin-top: 10px;">2️⃣0️⃣ Open-Source / Local AI</div>
+    <div class="grid">
+      <a href="https://ollama.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🦙</div><h3>Ollama</h3><p class="card-description">Run LLMs locally</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://lmstudio.ai" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🖥️</div><h3>LM Studio</h3><p class="card-description">Local LLM interface</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://gpt4all.io" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🌍</div><h3>GPT4All</h3><p class="card-description">Open-source GPT</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
+      <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" class="card external-card js-tilt"><div class="card-content"><div class="card-icon">🎨</div><h3>SD WebUI</h3><p class="card-description">Stable Diffusion GUI</p><div class="card-footer"><span class="card-status external">🔗 External</span></div></div></a>
     </div>
 
     <!-- PREMIUM HIGHLIGHT SECTION -->
