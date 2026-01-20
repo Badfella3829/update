@@ -1783,6 +1783,380 @@
       scroll-behavior: smooth;
     }
 
+    /* ============ PAGE LOADER ============ */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(59, 130, 246, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ============ THEME TOGGLE ============ */
+    .theme-toggle {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 50px;
+      height: 50px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      border-color: var(--accent);
+    }
+
+    body.light-mode {
+      --bg-dark: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-mode .page-loader,
+    body.light-mode .animated-bg {
+      background: #f8fafc;
+    }
+
+    /* ============ BACK TO TOP ============ */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 20px;
+      color: white;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+    }
+
+    /* ============ PRICING SECTION ============ */
+    .pricing-section {
+      padding: 100px 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.03) 50%, transparent 100%);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 900px) {
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .pricing-card.popular {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .pricing-card.popular::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      color: white;
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .pricing-plan {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .pricing-price {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .pricing-price span {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 30px 0;
+      text-align: left;
+    }
+
+    .pricing-features li {
+      padding: 10px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+    .pricing-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-btn.primary {
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      border: none;
+      color: white;
+    }
+
+    .pricing-btn.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .pricing-btn:hover {
+      transform: scale(1.02);
+    }
+
+    /* ============ LIVE USERS BADGE ============ */
+    .live-users-badge {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 30px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      font-size: 13px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* ============ FEATURED TOOLS PREVIEW ============ */
+    .featured-preview {
+      padding: 80px 0;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 900px) {
+      .preview-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 500px) {
+      .preview-grid { grid-template-columns: 1fr; }
+    }
+
+    .preview-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .preview-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .preview-card h4 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .preview-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ============ AS SEEN IN SECTION ============ */
+    .as-seen-in {
+      padding: 60px 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .as-seen-in h3 {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+    }
+
+    .partner-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+      flex-wrap: wrap;
+      opacity: 0.6;
+    }
+
+    .partner-logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .partner-logo:hover {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    /* ============ SECURITY BADGES ============ */
+    .security-badges {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 40px 0;
+      flex-wrap: wrap;
+    }
+
+    .security-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 30px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .security-badge svg {
+      width: 18px;
+      height: 18px;
+      fill: #22c55e;
+    }
+
     /* ============ BRAND LOGOS CAROUSEL ============ */
     .brands-section {
       padding: 60px 0;
@@ -1831,11 +2205,28 @@
   </style>
 </head>
 <body>
+  <!-- PAGE LOADER -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-spinner"></div>
+  </div>
+
   <!-- ANIMATED BACKGROUND -->
   <div class="animated-bg"></div>
   
   <!-- FLOATING PARTICLES -->
   <div class="particles" id="particles"></div>
+
+  <!-- THEME TOGGLE -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+  <!-- LIVE USERS BADGE -->
+  <div class="live-users-badge">
+    <div class="live-dot"></div>
+    <span><strong id="liveCount">127</strong> users online now</span>
+  </div>
 
   <!-- HEADER -->
   <header class="main-header">
@@ -2209,6 +2600,114 @@
             </div>
           </div>
           <p class="testimonial-text">The Code AI tool is incredible. It understands context and generates production-ready code.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AS SEEN IN -->
+  <section class="as-seen-in">
+    <h3>Featured In</h3>
+    <div class="partner-logos">
+      <span class="partner-logo">ProductHunt</span>
+      <span class="partner-logo">TechCrunch</span>
+      <span class="partner-logo">YourStory</span>
+      <span class="partner-logo">Inc42</span>
+      <span class="partner-logo">Entrepreneur</span>
+    </div>
+    <div class="security-badges">
+      <div class="security-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        <span>SSL Secured</span>
+      </div>
+      <div class="security-badge">
+        <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        <span>Data Protected</span>
+      </div>
+      <div class="security-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span>99.9% Uptime</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED TOOLS PREVIEW -->
+  <section class="featured-preview">
+    <div class="container">
+      <div class="section-header">
+        <h2>Popular <span class="gradient-text">AI Tools</span></h2>
+        <p>Try our most-used tools instantly</p>
+      </div>
+      <div class="preview-grid">
+        <a href="./chat.html" class="preview-card card-3d">
+          <div class="preview-icon">💬</div>
+          <h4>AI Chat</h4>
+          <p>Chat with GPT-4 powered AI</p>
+        </a>
+        <a href="./image-gen.html" class="preview-card card-3d">
+          <div class="preview-icon">🎨</div>
+          <h4>Image Generator</h4>
+          <p>Create stunning images</p>
+        </a>
+        <a href="./code-ai.html" class="preview-card card-3d">
+          <div class="preview-icon">💻</div>
+          <h4>Code AI</h4>
+          <p>Generate & debug code</p>
+        </a>
+        <a href="./content-ai.html" class="preview-card card-3d">
+          <div class="preview-icon">✍️</div>
+          <h4>Content AI</h4>
+          <p>Write blogs & articles</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2>Simple <span class="gradient-text">Pricing</span></h2>
+        <p>Choose the plan that works for you</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-plan">Free</div>
+          <div class="pricing-desc">Perfect for getting started</div>
+          <div class="pricing-price">₹0<span>/month</span></div>
+          <ul class="pricing-features">
+            <li>50 credits daily</li>
+            <li>Basic AI tools access</li>
+            <li>Standard response speed</li>
+            <li>Community support</li>
+          </ul>
+          <a href="./signup.html" class="pricing-btn secondary">Get Started</a>
+        </div>
+        <div class="pricing-card popular">
+          <div class="pricing-plan">Pro</div>
+          <div class="pricing-desc">Best for professionals</div>
+          <div class="pricing-price">₹299<span>/month</span></div>
+          <ul class="pricing-features">
+            <li>500 credits daily</li>
+            <li>All AI tools access</li>
+            <li>Priority response speed</li>
+            <li>Email support</li>
+            <li>API access</li>
+          </ul>
+          <a href="./signup.html" class="pricing-btn primary ripple-btn">Upgrade to Pro</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-plan">Premium</div>
+          <div class="pricing-desc">For power users</div>
+          <div class="pricing-price">₹499<span>/month</span></div>
+          <ul class="pricing-features">
+            <li>Unlimited credits</li>
+            <li>All AI tools + Premium</li>
+            <li>Fastest response speed</li>
+            <li>Priority support</li>
+            <li>Custom integrations</li>
+          </ul>
+          <a href="./signup.html" class="pricing-btn secondary">Go Premium</a>
         </div>
       </div>
     </div>
@@ -2593,6 +3092,53 @@
       }
     }
     createFloatingIcons();
+
+    // ============ PAGE LOADER ============
+    setTimeout(() => {
+      document.getElementById('pageLoader').classList.add('hidden');
+    }, 500);
+
+    // ============ THEME TOGGLE ============
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      themeToggle.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+
+    // ============ BACK TO TOP ============
+    const backToTop = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ============ LIVE USERS COUNTER ============
+    function updateLiveCount() {
+      const liveCount = document.getElementById('liveCount');
+      const base = 120;
+      const variation = Math.floor(Math.random() * 50);
+      liveCount.textContent = base + variation;
+    }
+    
+    setInterval(updateLiveCount, 5000);
+    updateLiveCount();
   </script>
 </body>
 </html>
