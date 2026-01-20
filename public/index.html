@@ -67,15 +67,12 @@
     .logo-icon {
       width: 42px;
       height: 42px;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 18px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
+    .logo-text { font-size: 24px; font-weight: 800; }
     .logo-text span { color: var(--accent); }
 
     .nav-menu {
@@ -851,13 +848,9 @@
     .footer-logo-icon {
       width: 42px;
       height: 42px;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 18px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .footer-desc {
@@ -1012,7 +1005,7 @@
   <header class="header">
     <div class="header-inner">
       <a href="./" class="logo">
-        <div class="logo-icon">TV</div>
+        <img src="./logo.jpg" alt="TechVyro" class="logo-icon">
         <div class="logo-text">Tech<span>Vyro</span></div>
       </a>
 
@@ -1363,7 +1356,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo">
-            <div class="footer-logo-icon">TV</div>
+            <img src="./logo.jpg" alt="TechVyro" class="footer-logo-icon">
             <span>Tech<span style="color: var(--accent);">Vyro</span></span>
           </div>
           <p class="footer-desc">
