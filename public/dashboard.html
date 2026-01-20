@@ -499,6 +499,182 @@
     z-index: -1; pointer-events: none;
   }
 
+  /* ============ PREMIUM FLOATING ICONS ============ */
+  .floating-icons-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .floating-icon {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.08;
+    animation: floatIcon 20s infinite ease-in-out;
+  }
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(100vh) rotate(0deg); }
+    50% { transform: translateY(-100vh) rotate(360deg); }
+  }
+
+  /* ============ GRADIENT TEXT ============ */
+  .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============ PREMIUM SECTION HEADERS ============ */
+  .section-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 2px;
+  }
+
+  /* ============ PREMIUM WELCOME SECTION ============ */
+  .welcome-section {
+    background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(139,92,246,0.1) 100%);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 20px;
+    padding: 24px 30px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  }
+  .welcome-message .welcome-text {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .welcome-message #userName {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .time-greeting {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ============ PREMIUM CARD STYLES ============ */
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: linear-gradient(180deg, rgba(59,130,246,0.15) 0%, transparent 100%);
+    transition: height 0.3s ease;
+  }
+  .card:hover::before {
+    height: 100%;
+  }
+  .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(59,130,246,0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(59,130,246,0.2);
+  }
+  .card .card-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .card:hover .card-icon {
+    transform: scale(1.2) rotate(-5deg);
+  }
+
+  /* ============ CREDITS PROGRESS ============ */
+  .credits-progress-container {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(59,130,246,0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+  .credits-progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .credits-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .credits-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ============ QUICK SEARCH BAR ============ */
+  .quick-search-bar {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 24px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .quick-search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 16px;
+  }
+  .quick-search-bar input::placeholder {
+    color: var(--text-muted);
+  }
+  .quick-search-bar .search-icon {
+    font-size: 20px;
+    opacity: 0.6;
+  }
+
   .sidebar {
     width: var(--sidebar-width);
     background: linear-gradient(180deg, rgba(2, 6, 23, 0.98), rgba(15, 23, 42, 0.95));
@@ -1825,6 +2001,9 @@
   <div class="hero-glow"></div>
   <div class="grid-pattern"></div>
   
+  <!-- Floating Icons Background -->
+  <div class="floating-icons-bg" id="floatingIconsBg"></div>
+  
   <!-- Sidebar Overlay for Mobile -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
@@ -2049,11 +2228,22 @@
         <div class="welcome-left">
           <div class="welcome-message">
             <span class="welcome-emoji">👋</span>
-            <span class="welcome-text">Welcome back, <span id="userName">User</span>!</span>
+            <span class="welcome-text"><span id="timeGreeting">Welcome back</span>, <span id="userName">User</span>!</span>
           </div>
+          <div class="time-greeting" id="timeMessage">Let's create something amazing today</div>
           <div class="user-details">
             <span class="plan-badge" id="userPlan">Free Plan</span>
             <span class="member-since" id="memberSince">Member since...</span>
+          </div>
+          <!-- Credits Progress -->
+          <div class="credits-progress-container">
+            <div class="credits-label">
+              <span>Credits Used Today</span>
+              <span id="creditsUsedLabel">0 / 50</span>
+            </div>
+            <div class="credits-progress-bar">
+              <div class="credits-progress-fill" id="creditsProgressFill" style="width: 0%"></div>
+            </div>
           </div>
         </div>
         <div class="welcome-right">
@@ -4801,6 +4991,70 @@
       });
       
       console.log('🎨 Animation system initialized!');
+      
+      // ============ FLOATING ICONS ============
+      function createFloatingIcons() {
+        const container = document.getElementById('floatingIconsBg');
+        if (!container) return;
+        const icons = ['🤖', '🎨', '💻', '📊', '🔧', '📈', '🎯', '⚡', '🚀', '✨', '💡', '🔐'];
+        for (let i = 0; i < 15; i++) {
+          const icon = document.createElement('span');
+          icon.className = 'floating-icon';
+          icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+          icon.style.left = Math.random() * 100 + '%';
+          icon.style.top = Math.random() * 100 + '%';
+          icon.style.animationDelay = Math.random() * 20 + 's';
+          icon.style.animationDuration = (15 + Math.random() * 10) + 's';
+          container.appendChild(icon);
+        }
+      }
+      createFloatingIcons();
+      
+      // ============ TIME-BASED GREETING ============
+      function updateTimeGreeting() {
+        const hour = new Date().getHours();
+        const greetingEl = document.getElementById('timeGreeting');
+        const messageEl = document.getElementById('timeMessage');
+        
+        let greeting, message;
+        if (hour >= 5 && hour < 12) {
+          greeting = 'Good Morning';
+          message = '☀️ Start your day with some creativity!';
+        } else if (hour >= 12 && hour < 17) {
+          greeting = 'Good Afternoon';
+          message = '🌤️ Keep up the great work!';
+        } else if (hour >= 17 && hour < 21) {
+          greeting = 'Good Evening';
+          message = '🌅 Wind down with some cool tools!';
+        } else {
+          greeting = 'Good Night';
+          message = '🌙 Working late? We got you covered!';
+        }
+        
+        if (greetingEl) greetingEl.textContent = greeting;
+        if (messageEl) messageEl.textContent = message;
+      }
+      updateTimeGreeting();
+      
+      // ============ CREDITS PROGRESS ============
+      function updateCreditsProgress() {
+        const creditsText = document.getElementById('creditText');
+        if (!creditsText) return;
+        
+        const match = creditsText.textContent.match(/(\d+)/);
+        if (match) {
+          const credits = parseInt(match[1]);
+          const maxCredits = 200; // Default max
+          const percentage = Math.min((credits / maxCredits) * 100, 100);
+          
+          const fill = document.getElementById('creditsProgressFill');
+          const label = document.getElementById('creditsUsedLabel');
+          
+          if (fill) fill.style.width = percentage + '%';
+          if (label) label.textContent = credits + ' / ' + maxCredits;
+        }
+      }
+      setTimeout(updateCreditsProgress, 1000);
     });
   </script>
 
