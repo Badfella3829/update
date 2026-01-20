@@ -43,6 +43,22 @@ Preferred communication style: Simple, everyday language.
 - **Credit Cost Display**: Each tool card shows its credit cost
 - **Dashboard Enhancements Module**: `public/js/dashboard-enhancements.js` handles favorites and recent tools
 
+### Premium UI System (January 2026)
+- **Shared Premium CSS**: `public/css/premium-common.css` - consistent styling across 50+ pages
+- **Shared Premium JS**: `public/js/premium-common.js` - common interactive elements
+- **Live Users Badge**: Bottom-left dynamic counter showing random 100-200 users
+- **Theme Toggle**: Bottom-right dark/light mode switch with moon/sun icons
+- **Back-to-Top Button**: Appears after scrolling 300px, smooth scroll to top
+- **Page Loader**: Premium loading animation shown during page initialization
+
+### Dashboard Premium Features
+- **Floating Icons Background**: Animated tool-related emojis floating in background
+- **Time-Based Greeting**: Good Morning/Afternoon/Evening/Night based on user's local time
+- **Gradient Text**: Blue-to-purple gradient on section headers and username
+- **3D Card Effects**: Tool cards with scale+lift transform and glow on hover
+- **Credits Progress Bar**: Visual progress indicator for credits usage
+- **Premium Welcome Section**: Gradient border with decorative top stripe
+
 ### User Plans & Credits
 - **Plan Tiers**: free, pro, premium, admin
 - **Credits System**: Users have credits (called "miles") that are consumed by AI tools
