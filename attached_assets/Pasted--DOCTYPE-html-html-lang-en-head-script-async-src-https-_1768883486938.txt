@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>TechVyro — Premium AI SaaS Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+  /* ================= BRAND ================= */
+  :root{
+    --blue:#3b82f6;
+    --blue-soft:rgba(59,130,246,.12);
+    --blue-glow:rgba(59,130,246,.35);
+  }
+
+  /* ================= RESET ================= */
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    background:#020617;
+    color:#e5e7eb;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+    overflow-x:hidden;
+    position: relative;
+  }
+
+  /* ================= IMPROVED BACKGROUND EFFECTS ================= */
+  /* Blue Spotlight (Shifted up to blend with header) */
+  .hero-glow {
+    position: absolute; 
+    top: -120px; /* Moved up */
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 90%; 
+    height: 700px;
+    background: radial-gradient(circle at center, rgba(59,130,246,0.18) 0%, transparent 60%);
+    z-index: -2; 
+    pointer-events: none;
+  }
+
+  /* Tech Grid Pattern */
+  .grid-pattern {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+    -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ================= IMPROVED HEADER ================= */
+  .main-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 40px; /* Thoda compact kiya */
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    background:rgba(2,6,23,0.9); /* Thoda dark kiya */
+    backdrop-filter:blur(16px); /* Blur badhaya */
+    z-index:1000;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  }
+
+  .nav-left,.nav-right{
+    display:flex;
+    align-items:center;
+    gap:26px;
+  }
+
+  .nav-left a { 
+    display: flex; align-items: center; gap: 10px; text-decoration: none; 
+  }
+  .nav-left .brand-name { 
+    font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 0.5px;
+  }
+
+  /* Brand Logo Style */
+  .brand-logo {
+    height: 40px; width: auto; display: block;
+  }
+  .brand-name {
+    font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: 0.5px;
+  }
+  .brand-name span { color: var(--blue); }
+
+  .nav-link{
+    color:#9aa0b4;
+    font-weight:500;
+    text-decoration:none;
+    position:relative;
+    padding:6px 0;
+    font-size: 14px;
+    transition:.3s;
+  }
+
+  .nav-right .nav-link:nth-child(1){animation-delay:.15s}
+  .nav-right .nav-link:nth-child(2){animation-delay:.25s}
+  .nav-right .nav-link:nth-child(3){animation-delay:.35s}
+
+  .nav-link::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    width:0;
+    height:2px;
+    background:#38bdf8;
+    transition:.25s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active{color:#fff}
+
+  .nav-link:hover::after,
+  .nav-link.active::after{width:100%}
+
+  @keyframes navFade{
+    to{opacity:1;transform:none}
+  }
+
+  /* ================= SOCIAL BUTTONS ================= */
+  .social-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+  }
+
+  .social-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .social-icon-box svg {
+    width: 24px; height: 24px; fill: #94a3b8; transition: 0.3s;
+  }
+
+  .social-icon-box:hover { transform: translateY(-5px); }
+  .social-icon-box:hover svg { fill: #fff; }
+
+  .social-icon-box.ig:hover { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); border-color: transparent; box-shadow: 0 10px 20px rgba(225, 48, 108, 0.4); }
+  .social-icon-box.tg:hover { background: #229ED9; border-color: transparent; box-shadow: 0 10px 20px rgba(34, 158, 217, 0.4); }
+  .social-icon-box.yt:hover { background: #ff0000; border-color: transparent; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.4); }
+
+
+  /* ================= PAGE ================= */
+  .page{
+    max-width:1200px;
+    margin:130px auto 90px;
+    padding:0 24px;
+  }
+
+  /* ================= REVEAL ================= */
+  .reveal{
+    opacity:0;
+    transform:translateY(40px);
+    animation:reveal .9s ease forwards;
+  }
+  .delay-1{animation-delay:.15s}
+  .delay-2{animation-delay:.3s}
+  .delay-3{animation-delay:.45s}
+  .delay-4{animation-delay:.6s}
+
+  @keyframes reveal{
+    to{opacity:1;transform:none}
+  }
+
+  /* ================= IMPROVED HERO ================= */
+  .hero{
+    text-align:center;
+    margin-bottom:120px;
+    position: relative;
+  }
+
+  /* Announcement Pill */
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 50px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    animation: fadeIn 1s ease forwards;
+  }
+
+  .hero-brand-name{
+    font-size:72px;
+    font-weight:900;
+    letter-spacing:-1px;
+    margin-bottom:20px;
+    line-height: 1.1;
+    animation: heroBrandGlow 2.5s ease-in-out infinite alternate;
+  }
+
+  .hero-brand-name .brand-tech{ color:#fff; }
+  .hero-brand-name .brand-vyro{ 
+    background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  @keyframes heroBrandGlow{
+    0%{ text-shadow:0 0 10px rgba(59,130,246,0.2); }
+    100%{ text-shadow:0 0 30px rgba(59,130,246,0.5); }
+  }
+
+  .hero p{
+    max-width:700px;
+    margin:0 auto 32px;
+    font-size:18px;
+    color:#9aa0b4;
+    line-height:1.7;
+  }
+
+  /* ================= BUTTONS ================= */
+  .actions{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    padding:14px 32px;
+    border-radius:12px;
+    background:var(--blue);
+    color:#020617;
+    text-decoration:none;
+    font-weight:700;
+    transition:.3s;
+    font-size: 15px;
+  }
+  .btn.secondary{
+    background:rgba(255,255,255,0.05);
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.1);
+  }
+  .btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(59,130,246,0.4);
+  }
+  .btn.secondary:hover {
+    background: rgba(255,255,255,0.1);
+    box-shadow: none;
+  }
+
+  /* ================= SECTION ================= */
+  .section{margin-bottom:130px}
+  .section h2{font-size:36px;margin-bottom:16px; color:#fff;}
+  .section p{
+    max-width:860px;
+    font-size:17px;
+    line-height:1.8;
+    color:#9aa0b4;
+  }
+
+  /* ================= GRID ================= */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:28px;
+    margin-top:40px;
+  }
+
+  /* ================= CARD ================= */
+  .card{
+    background:#141a2e;
+    padding:34px;
+    border-radius:20px;
+    transition:.35s ease;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 60px -10px rgba(59,130,246,0.25);
+    border-color: rgba(59,130,246,0.3);
+  }
+  .card h3{margin-bottom:10px; color:#fff; font-size: 20px;}
+  .card p{ font-size:15px; color:#9aa0b4; margin-bottom:10px; line-height: 1.6; }
+  .card ul{ padding-left:18px; color:#cbd5f5; font-size: 14px; }
+  .card li{ margin-bottom:8px }
+
+  /* ================= CONTACT ================= */
+  .contact-box{
+    margin-top:40px;
+    padding:40px;
+    background:linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    border-radius:20px;
+    text-align:center;
+    max-width:900px;
+    margin-left:auto;
+    margin-right:auto;
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+  .contact-box h3{ font-size:24px; margin-bottom:12px; }
+  .contact-box p{ color:#9aa0b4; line-height:1.7; margin-bottom:22px; }
+
+  /* ================= PRICING ================= */
+  .pricing{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:28px;
+    margin-top:40px;
+  }
+  .plan{
+    background:#141a2e;
+    padding:40px;
+    border-radius:24px;
+    transition:.35s ease;
+    position:relative;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .plan:hover{
+    transform:translateY(-10px);
+    box-shadow:0 30px 90px var(--blue-glow);
+  }
+  .plan h3{font-size:24px; color:#fff;}
+  .plan .price{
+    font-size:36px;
+    font-weight:900;
+    color:var(--blue);
+    margin-bottom:18px;
+  }
+  .plan ul{list-style:none;margin-bottom:22px; color:#9aa0b4; font-size:15px;}
+  .plan li{margin-bottom:10px}
+
+  .plan.premium{
+    background:linear-gradient(135deg,#020617,#0f172a);
+    box-shadow:0 20px 60px rgba(59,130,246,0.15);
+    border: 1px solid var(--blue);
+  }
+  .badge{
+    position:absolute;
+    top:-12px;
+    right:24px;
+    padding:4px 12px;
+    font-size:11px;
+    font-weight:800;
+    border-radius:999px;
+    background:var(--blue);
+    color:#020617;
+  }
+
+  /* ================= FOOTER ================= */
+  .footer{
+    margin-top:80px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    text-align:center;
+    color:#64748b;
+    font-size:14px;
+  }
+  .footer-links {
+    display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;
+  }
+  .footer-links a {
+    color: #9aa0b4; text-decoration: none; transition: 0.3s;
+  }
+  .footer-links a:hover {
+    color: #3b82f6;
+  }
+
+  /* ===== BOTTOM BRAND (HIDDEN INITIALLY) ===== */
+  .bottom-brand{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    background:rgba(2,6,23,.85);
+    backdrop-filter:blur(10px);
+    border-radius:14px;
+    text-decoration:none;
+    z-index:999;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(20px) scale(.95);
+    transition:.4s ease;
+    box-shadow:0 20px 60px rgba(59,130,246,.35);
+  }
+
+  .bottom-brand.show{
+    opacity:1;
+    pointer-events:auto;
+    transform:none;
+  }
+
+  .bottom-brand img{ height:34px; border-radius:8px; }
+
+  .brand-name{ font-size:18px; font-weight:900; letter-spacing:.6px; color:#fff; }
+  .brand-tech{color:#e5e7eb}
+  .brand-vyro{color:#3b82f6}
+
+  /* mobile */
+  @media(max-width:768px){
+    .main-header{padding:15px 20px}
+    .hero-brand-name{font-size:42px}
+    .page{margin:100px auto 60px}
+    .bottom-brand{ left:14px; bottom:14px; padding:8px 12px; }
+    .bottom-brand img{height:28px}
+    .brand-name{font-size:16px}
+    .footer-links { flex-direction: column; gap: 10px; }
+  }
+  </style>
+  <link rel="icon" href="./logo-192.png">
+  <link rel="apple-touch-icon" href="./logo-192.png">
+  <link rel="manifest" href="./manifest.json">
+</head>
+
+<body>
+
+  <div class="hero-glow"></div>
+  <div class="grid-pattern"></div>
+
+  <header class="main-header">
+    <div class="nav-left">
+      <a href="index.html">
+        <img src="./logo.jpg?v=2" alt="TechVyro" class="brand-logo" style="height:40px; width:40px; border-radius:8px; object-fit:cover;">
+        <span class="brand-name">Tech<span style="color: var(--blue);">Vyro</span></span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <a href="about.html" class="nav-link">About</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <div class="hero reveal">
+      <div class="hero-badge">✨ New: AI Video Generator Live</div>
+
+      <h1 class="hero-brand-name">
+        <span class="brand-tech">Tech</span><span class="brand-vyro">Vyro</span>
+      </h1>
+      <p>
+        A premium AI-powered SaaS platform built for creators, founders, and brands who want to automate smarter and scale faster.
+      </p>
+      <div class="actions">
+        <a href="signup.html" class="btn">Get Started Free</a>
+        <a href="login.html" class="btn secondary">Login</a>
+      </div>
+    </div>
+
+    <div class="section reveal delay-1">
+      <h2>Why Create an Account?</h2>
+      <p>Unlock the full potential of TechVyro. Login now to access 30+ premium tools.</p>
+
+      <div class="grid">
+        <div class="card reveal">
+          <div style="font-size:32px; margin-bottom:15px">⚡</div>
+          <h3>200 Free Credits</h3>
+          <p>Instant Bonus! Login karte hi 200 Credits muft milenge to use AI Chat & Image Gen immediately.</p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size:32px; margin-bottom:15px">🧠</div>
+          <h3>All-in-One Powerhouse</h3>
+          <p>ChatGPT, Image Gen, Voice AI, Video AI, and Code Assistant—all in one place. Stop switching tabs.</p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size:32px; margin-bottom:15px">🛠️</div>
+          <h3>30+ Professional Tools</h3>
+          <p>Access tools for Designers (Logo Maker), Developers (JSON/Code), and Marketers (SEO/Hashtags).</p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size:32px; margin-bottom:15px">💎</div>
+          <h3>Premium Experience</h3>
+          <p>Ultra-Modern Dark Mode dashboard that feels like premium software and is easy on the eyes.</p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size:32px; margin-bottom:15px">🤝</div>
+          <h3>Exclusive Community</h3>
+          <p>Join the TechVyro Instagram & Telegram community directly from the dashboard for premium tips.</p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size:32px; margin-bottom:15px">🔒</div>
+          <h3>Secure & Private</h3>
+          <p>Your data and history are secure. Save your work and resume anytime from where you left off.</p>
+        </div>
+      </div>
+
+      <div class="contact-box reveal delay-3">
+        <div style="position:relative; z-index:1;">
+          <h3 style="color:var(--blue)">💡 Quick Summary</h3>
+          <p style="font-size:17px; color:#e5e7eb; font-style:italic; line-height:1.8;">
+            "Bhai, bas login karo aur 200 Free Credits le jao! Yahan tumhe Writing, Coding, Design aur SEO ke liye 30 se zyada AI tools milenge ek hi dashboard par. Sab kuch free mein try karne ke liye abhi account banao!"
+          </p>
+          <a href="signup.html" class="btn" style="margin-top:10px;">Create Free Account</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal delay-2">
+      <h2>What You Get</h2>
+      <p>TechVyro combines AI tools, automation, analytics, and premium workflows into one powerful platform.</p>
+
+      <div class="grid">
+        <div class="card reveal"><h3>AI Chat & Tools</h3><p>Daily-use AI features.</p></div>
+        <div class="card reveal"><h3>Automation System</h3><p>Save time with workflows.</p></div>
+        <div class="card reveal"><h3>Analytics Dashboard</h3><p>Track growth in real time.</p></div>
+        <div class="card reveal"><h3>Admin Controls</h3><p>Manage users & credits.</p></div>
+      </div>
+    </div>
+
+    <div class="section reveal delay-3">
+      <h2>Simple & Premium Pricing</h2>
+      <p>Start free. Upgrade anytime as you grow.</p>
+
+      <div class="pricing">
+        <div class="plan reveal">
+          <h3>Free</h3>
+          <div class="price">₹0</div>
+          <ul>
+            <li>200 AI credits</li>
+            <li>Basic AI tools</li>
+            <li>Limited usage</li>
+          </ul>
+          <a href="signup.html" class="btn secondary" style="width:100%; text-align:center">Start Free</a>
+        </div>
+
+        <div class="plan reveal">
+          <h3>Pro</h3>
+          <div class="price">₹299 / month</div>
+          <ul>
+            <li>Unlimited AI credits</li>
+            <li>All premium tools</li>
+            <li>Priority access</li>
+          </ul>
+          <a href="dashboard.html" class="btn" style="width:100%; text-align:center">Upgrade</a>
+        </div>
+
+        <div class="plan premium reveal">
+          <div class="badge">MOST POPULAR</div>
+          <h3>Premium</h3>
+          <div class="price">₹499 / month</div>
+          <ul>
+            <li>Unlimited AI credits</li>
+            <li>All premium tools</li>
+            <li>Priority access</li>
+            <li>Future updates</li>
+          </ul>
+          <a href="dashboard.html" class="btn" style="width:100%; text-align:center">Go Premium</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal delay-4">
+      <h2>Paid Collaborations & Brand Partnerships</h2>
+      <p>
+        I’m open to paid collaborations for pre-launch campaigns, product promotions,
+        and brand awareness initiatives. I work selectively with brands that align
+        with my audience and content style.
+      </p>
+
+      <div class="grid">
+        <div class="card reveal">
+          <h3>🎬 Content Formats</h3>
+          <p>I currently offer the following collaboration formats designed for reach, engagement, and conversions:</p>
+          <ul>
+            <li>Instagram Reel (30–45 seconds)</li>
+            <li>Reel + Story bundle</li>
+            <li>Launch campaign bundles (multiple posts)</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <h3>💰 Pricing Structure</h3>
+          <p>Pricing depends on deliverables, timelines, and campaign complexity.</p>
+          <ul>
+            <li>Single Reel – On request</li>
+            <li>Reel + Stories – On request</li>
+            <li>Custom launch – On demand</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <h3>📊 Insights & Performance</h3>
+          <p>I don’t have a formal media kit at the moment, but I can share:</p>
+          <ul>
+            <li>Recent post & reel insights data</li>
+            <li>Audience engagement data</li>
+            <li>Performance screenshots</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <h3>🤝 How We Collaborate</h3>
+          <p>To ensure smooth collaboration, please share:</p>
+          <ul>
+            <li>Preferred content format</li>
+            <li>Campaign timeline</li>
+            <li>Deliverables & expectations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="contact-box reveal">
+        <h3>Let’s Work Together</h3>
+        <p>
+          If you’re interested in collaborating, feel free to reach out with your campaign details.
+          I’m happy to discuss ideas and create high-impact content tailored to your goals.
+        </p>
+        <a href="mailto:techvyro@gmail.com?subject=Paid%20Collaboration%20Inquiry" class="btn">
+          Contact for Collaboration
+        </a>
+      </div>
+    </div>
+
+    <div class="section reveal" style="text-align: center;">
+      <h2>Join Community</h2>
+      <p style="margin: 0 auto;">Connect with us on social media for premium updates.</p>
+      
+      <div class="social-container">
+        <a href="https://www.instagram.com/techvyro" target="_blank" class="social-icon-box ig"><svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg></a>
+        <a href="https://t.me/techvyro_x" target="_blank" class="social-icon-box tg"><svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.8 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/></svg></a>
+        <a href="https://youtube.com/@techvyro" target="_blank" class="social-icon-box yt"><svg viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="footer reveal">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="contact.html">Support</a>
+      </div>
+      <p>© 2026 TechVyro — Premium AI SaaS Platform</p>
+    </div>
+
+  </div>
+
+  <a href="index.html" class="bottom-brand" id="bottomBrand">
+    <img src="https://image2url.com/images/1765202115120-ca991f21-3464-4ead-a8fd-008fa47edd6a.jpg" alt="TechVyro">
+    <span class="brand-name">
+      <span class="brand-tech">Tech</span><span class="brand-vyro">Vyro</span>
+    </span>
+  </a>
+
+  <script>
+  /* PAGE LOADER */
+  const loader=document.createElement('div');
+  loader.style.cssText='position:fixed;inset:0;background:#020617;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease';
+  loader.innerHTML='<span style="color:#3b82f6;font-size:22px;font-weight:900">TechVyro</span>';
+  window.addEventListener('load',()=>{ document.body.appendChild(loader); loader.style.opacity='0'; setTimeout(()=>loader.remove(),600); });
+
+  /* SCROLL PROGRESS */
+  const progress=document.createElement('div');
+  progress.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;background:#3b82f6;z-index:9998';
+  document.body.appendChild(progress);
+  window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    progress.style.width=(window.scrollY/h)*100+'%';
+  });
+
+  /* REVEAL OBSERVER */
+  const reveals=document.querySelectorAll('.reveal');
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.style.animationPlayState='running'; observer.unobserve(entry.target); }
+    });
+  },{threshold:0.15});
+  reveals.forEach(el=>{ el.style.animationPlayState='paused'; observer.observe(el); });
+
+  /* STAGGER GRID */
+  document.querySelectorAll('.grid, .pricing').forEach(group=>{
+    group.querySelectorAll('.reveal').forEach((el,i)=>{
+      el.classList.add(`delay-${(i%3)+1}`);
+      el.style.transform=`translateX(${i%2?40:-40}px)`;
+    });
+  });
+
+  /* PAGE TRANSITION */
+  document.querySelectorAll('a').forEach(link=>{
+    const href=link.getAttribute('href');
+    if(!href||href.startsWith('#')||href.startsWith('mailto')||link.target=='_blank')return;
+    link.addEventListener('click',e=>{
+      e.preventDefault(); document.body.appendChild(loader); loader.style.opacity='1';
+      setTimeout(()=>location.href=href,400);
+    });
+  });
+
+  /* BOTTOM BRAND SCROLL */
+  const bottomBrand = document.getElementById("bottomBrand");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100) {
+      bottomBrand.classList.add("show");
+    } else { bottomBrand.classList.remove("show"); }
+  });
+
+  /* LOGIN LOGIC */
+  document.addEventListener("DOMContentLoaded", () => {
+    const isLoggedIn = localStorage.getItem("techvyro_user_logged_in") === "true";
+    if (isLoggedIn) {
+      document.querySelectorAll('a[href="login.html"]').forEach(btn => {
+        btn.innerText = "Go to Dashboard"; btn.href = "dashboard.html";
+        btn.style.background = "#10b981"; btn.style.color = "#fff"; btn.style.border = "none";
+      });
+    }
+  });
+
+  /* SERVICE WORKER REGISTRATION */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+  </script>
+
+</body>
+</html>
