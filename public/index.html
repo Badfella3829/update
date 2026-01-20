@@ -40,10 +40,10 @@
       top: 0;
       left: 0;
       right: 0;
-      background: #1a1a1a;
-      border-bottom: 1px solid #333;
+      background: linear-gradient(180deg, #1f1f1f 0%, #171717 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       z-index: 1000;
-      padding: 0 24px;
+      padding: 0 20px;
     }
 
     .header-inner {
@@ -51,29 +51,31 @@
       margin: 0 auto;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      height: 52px;
+      height: 48px;
+      gap: 30px;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
     .logo-icon {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
       object-fit: cover;
+      border: 2px solid #f59e0b;
     }
 
     .logo-text { 
-      font-size: 20px; 
+      font-size: 18px; 
       font-weight: 800; 
       color: #fff;
-      letter-spacing: -0.3px;
+      letter-spacing: 0;
     }
     .logo-text span { 
       color: #f59e0b;
@@ -83,42 +85,45 @@
       display: flex;
       align-items: center;
       gap: 0;
+      flex: 1;
     }
 
     .nav-link {
-      padding: 16px 14px;
-      color: #9ca3af;
+      padding: 14px 12px;
+      color: #b0b0b0;
       font-size: 13px;
       font-weight: 500;
-      transition: color 0.2s ease;
+      transition: color 0.15s ease;
       position: relative;
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      white-space: nowrap;
     }
 
     .nav-link:hover { 
-      color: #f59e0b;
+      color: #fff;
     }
 
     .nav-link .arrow {
-      font-size: 10px;
-      opacity: 0.7;
+      font-size: 8px;
+      opacity: 0.6;
+      margin-left: 2px;
     }
 
     .nav-link.new::after {
-      content: 'New';
+      content: 'NEW';
       position: absolute;
-      top: 8px;
-      right: -2px;
-      font-size: 8px;
-      background: #dc2626;
+      top: 6px;
+      right: -4px;
+      font-size: 7px;
+      background: #b91c1c;
       color: #fff;
-      padding: 2px 5px;
-      border-radius: 3px;
-      font-weight: 600;
-      text-transform: uppercase;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
     .nav-dropdown {
@@ -130,60 +135,64 @@
       position: absolute;
       top: 100%;
       left: 0;
-      background: #252525;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 8px 0;
-      min-width: 180px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      background: #262626;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 6px 0;
+      min-width: 160px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      margin-top: 0;
     }
 
     .nav-dropdown:hover .nav-dropdown-content { display: block; }
 
     .dropdown-item {
       display: block;
-      padding: 10px 16px;
-      font-size: 13px;
-      color: #9ca3af;
-      transition: all 0.2s ease;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #a0a0a0;
+      transition: all 0.15s ease;
       text-decoration: none;
     }
 
     .dropdown-item:hover { 
-      background: #333;
+      background: rgba(255,255,255,0.05);
       color: #f59e0b;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .search-btn, .theme-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: transparent;
-      border: none;
-      color: #9ca3af;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #888;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
-      transition: all 0.2s ease;
+      font-size: 14px;
+      transition: all 0.15s ease;
     }
 
     .search-btn:hover, .theme-btn:hover {
-      color: #f59e0b;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-color: rgba(255,255,255,0.2);
     }
 
     .login-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #f59e0b, #d97706);
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
       color: #000;
       font-weight: 700;
       font-size: 14px;
@@ -191,13 +200,15 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       border: none;
       text-decoration: none;
+      box-shadow: 0 2px 8px rgba(245,158,11,0.3);
     }
 
     .login-btn:hover { 
-      transform: scale(1.1);
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(245,158,11,0.4);
     }
 
     /* ============ HERO ============ */
