@@ -1518,6 +1518,270 @@
       font-size: 15px;
     }
 
+    /* ============ GLOWING TEXT EFFECT ============ */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.5),
+                   0 0 20px rgba(59, 130, 246, 0.3),
+                   0 0 30px rgba(59, 130, 246, 0.2);
+      animation: textGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes textGlow {
+      from { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3); }
+      to { text-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3); }
+    }
+
+    /* ============ GRADIENT TEXT ANIMATION ============ */
+    .gradient-text {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientMove 4s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ============ BUTTON RIPPLE EFFECT ============ */
+    .ripple-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ripple-btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transform: scale(10, 10);
+      opacity: 0;
+      transition: transform 0.5s, opacity 1s;
+    }
+
+    .ripple-btn:active::after {
+      transform: scale(0, 0);
+      opacity: 0.3;
+      transition: 0s;
+    }
+
+    /* ============ 3D CARD EFFECT ============ */
+    .card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .card-3d:hover {
+      transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) translateZ(20px);
+      box-shadow: -10px 10px 30px rgba(59, 130, 246, 0.2);
+    }
+
+    /* ============ FLOATING TOOL ICONS ============ */
+    .floating-icons {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .floating-icon {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0.15;
+      animation: floatIcon 20s linear infinite;
+    }
+
+    @keyframes floatIcon {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* ============ HOW IT WORKS SECTION ============ */
+    .how-it-works {
+      padding: 100px 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.03) 50%, transparent 100%);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 768px) {
+      .steps-grid { grid-template-columns: 1fr; gap: 30px; }
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 40px 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .step-card:hover {
+      background: rgba(59, 130, 246, 0.05);
+      border-color: rgba(59, 130, 246, 0.2);
+      transform: translateY(-10px);
+    }
+
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 auto 20px;
+    }
+
+    .step-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .step-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .step-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ============ FAQ ACCORDION ============ */
+    .faq-section {
+      padding: 100px 0;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .faq-question {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .faq-icon {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+      color: var(--accent);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 0 24px 20px;
+    }
+
+    .faq-answer p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ============ CURSOR SPARKLE ============ */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0;
+      animation: sparkleAnim 0.6s ease-out forwards;
+      z-index: 9999;
+    }
+
+    @keyframes sparkleAnim {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* ============ SMOOTH SCROLL ============ */
+    html {
+      scroll-behavior: smooth;
+    }
 
     /* ============ BRAND LOGOS CAROUSEL ============ */
     .brands-section {
@@ -1597,7 +1861,7 @@
       </div>
       
       <h1 class="hero-title">
-        The Best <span class="typing-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
+        The Best <span class="typing-text glow-text gradient-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
       </h1>
       
       <p class="hero-subtitle">
@@ -1606,11 +1870,11 @@
 
       <!-- CTA Buttons -->
       <div class="hero-cta">
-        <a href="./signup.html" class="cta-btn primary">
+        <a href="./signup.html" class="cta-btn primary ripple-btn">
           <span>Get Started Free</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="./dashboard.html" class="cta-btn secondary">
+        <a href="./dashboard.html" class="cta-btn secondary ripple-btn">
           <span>Explore Tools</span>
         </a>
       </div>
@@ -1950,6 +2214,93 @@
     </div>
   </section>
 
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It <span class="gradient-text">Works</span></h2>
+        <p>Get started with TechVyro in just 3 simple steps</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card card-3d">
+          <div class="step-number">1</div>
+          <div class="step-icon">🔍</div>
+          <h3>Discover Tools</h3>
+          <p>Browse our curated collection of 1000+ AI tools across 100+ categories. Find the perfect tool for your needs.</p>
+        </div>
+        <div class="step-card card-3d">
+          <div class="step-number">2</div>
+          <div class="step-icon">⚡</div>
+          <h3>Try Instantly</h3>
+          <p>Use our built-in AI tools directly - no signup needed for basic features. Test before you commit.</p>
+        </div>
+        <div class="step-card card-3d">
+          <div class="step-number">3</div>
+          <div class="step-icon">🚀</div>
+          <h3>Supercharge Work</h3>
+          <p>Upgrade to unlock premium AI tools and boost your productivity 10x with advanced features.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently Asked <span class="gradient-text">Questions</span></h2>
+        <p>Everything you need to know about TechVyro</p>
+      </div>
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>What is TechVyro?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>TechVyro is India's largest AI tool directory. We help you discover, compare, and use the best AI tools to supercharge your productivity. From AI chat to image generation, code writing to content creation - we have it all.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Is TechVyro free to use?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes! We offer a generous free tier with access to basic AI tools. You get daily credits that refresh every day. For unlimited access and premium tools, check out our Pro and Premium plans.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How do credits work?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Credits are like fuel for AI tools. Each tool uses a certain number of credits per use. Free users get 50 credits daily, Pro users get 500, and Premium users get unlimited credits.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>What AI tools are available?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>We offer 26+ built-in tools including AI Chat, Image Generator, Logo Maker, Content AI, Code AI, Voice AI, Resume Builder, and many utility tools like QR Generator, Password Generator, JSON Formatter, and more.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Can I cancel my subscription anytime?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Absolutely! You can cancel your Pro or Premium subscription anytime. Your access continues until the end of your billing period. No questions asked, no hidden fees.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- BRAND LOGOS CAROUSEL -->
   <section class="brands-section">
     <div class="brands-track">
@@ -2184,9 +2535,64 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    document.querySelectorAll('.scroll-reveal, .testimonial-card, .tool-card').forEach(el => {
+    document.querySelectorAll('.scroll-reveal, .testimonial-card, .tool-card, .step-card').forEach(el => {
       scrollObserver.observe(el);
     });
+
+    // ============ FAQ ACCORDION ============
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Close all other FAQs
+        document.querySelectorAll('.faq-item').forEach(faq => {
+          faq.classList.remove('active');
+        });
+        
+        // Toggle current FAQ
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // ============ CURSOR SPARKLE TRAIL ============
+    let sparkleTimeout;
+    document.addEventListener('mousemove', (e) => {
+      if (sparkleTimeout) return;
+      sparkleTimeout = setTimeout(() => {
+        sparkleTimeout = null;
+      }, 50);
+      
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      sparkle.style.background = Math.random() > 0.5 ? '#3b82f6' : '#8b5cf6';
+      document.body.appendChild(sparkle);
+      
+      setTimeout(() => sparkle.remove(), 600);
+    });
+
+    // ============ FLOATING TOOL ICONS ============
+    function createFloatingIcons() {
+      const icons = ['🤖', '💡', '🎨', '📝', '🔧', '⚡', '🎯', '💻', '🚀', '✨'];
+      const container = document.createElement('div');
+      container.className = 'floating-icons';
+      document.querySelector('.hero').appendChild(container);
+      
+      for (let i = 0; i < 15; i++) {
+        const icon = document.createElement('div');
+        icon.className = 'floating-icon';
+        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+        icon.style.left = Math.random() * 100 + '%';
+        icon.style.animationDelay = Math.random() * 20 + 's';
+        icon.style.animationDuration = (15 + Math.random() * 10) + 's';
+        container.appendChild(icon);
+      }
+    }
+    createFloatingIcons();
   </script>
 </body>
 </html>
