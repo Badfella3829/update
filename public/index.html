@@ -1518,47 +1518,55 @@
       font-size: 15px;
     }
 
-    /* ============ FLOATING BADGES ============ */
-    .floating-badge {
-      position: absolute;
-      padding: 6px 14px;
+    /* ============ TITLE TAGS (Next to AI Tools) ============ */
+    .title-highlight {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-tags {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .title-tag {
+      padding: 4px 10px;
       border-radius: 20px;
       font-size: 11px;
-      font-weight: 600;
-      animation: floatBadge 4s ease-in-out infinite;
-      z-index: 5;
-      opacity: 0.85;
-      pointer-events: none;
+      font-weight: 700;
+      animation: tagPulse 2s ease-in-out infinite;
+      white-space: nowrap;
     }
 
-    .floating-badge.new {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      top: 12%;
-      right: 8%;
-    }
-
-    .floating-badge.hot {
+    .title-tag.hot {
       background: linear-gradient(135deg, #ef4444, #dc2626);
       color: white;
-      top: 45%;
-      left: 5%;
+      animation-delay: 0s;
     }
 
-    .floating-badge.trending {
+    .title-tag.new {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      animation-delay: 0.3s;
+    }
+
+    .title-tag.trending {
       background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       color: white;
-      bottom: 25%;
-      right: 6%;
+      animation-delay: 0.6s;
     }
 
-    @keyframes floatBadge {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-10px) rotate(2deg); }
+    @keyframes tagPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     @media (max-width: 768px) {
-      .floating-badge {
+      .title-tags {
         display: none;
       }
     }
@@ -1635,18 +1643,13 @@
 
   <!-- HERO -->
   <section class="hero">
-    <!-- Floating Badges -->
-    <div class="floating-badge new">🆕 New Tools</div>
-    <div class="floating-badge hot">🔥 Hot</div>
-    <div class="floating-badge trending">📈 Trending</div>
-    
     <div class="container">
       <div class="hero-badge">
         ⚡ Spotlight: Featured AI Tools
       </div>
       
       <h1 class="hero-title">
-        The Best <span class="typing-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
+        The Best <span class="title-highlight"><span class="typing-text" id="typingText">AI Tools</span><span class="cursor"></span><span class="title-tags"><span class="title-tag hot">🔥 Hot</span><span class="title-tag new">New</span><span class="title-tag trending">📈</span></span></span> Directory
       </h1>
       
       <p class="hero-subtitle">
