@@ -1,745 +1,1459 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6111784142192967" crossorigin="anonymous"></script>
-  <meta charset="UTF-8" />
-  <title>TechVyro — Premium AI SaaS Platform</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechVyro — The Best AI Tools Directory</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
   <style>
-  /* ================= BRAND ================= */
-  :root{
-    --blue:#3b82f6;
-    --blue-soft:rgba(59,130,246,.12);
-    --blue-glow:rgba(59,130,246,.35);
-  }
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #151515;
+      --bg-card-hover: #1a1a1a;
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --accent-glow: rgba(245, 158, 11, 0.25);
+      --border: #252525;
+      --blue: #3b82f6;
+      --green: #22c55e;
+    }
 
-  /* ================= RESET ================= */
-  *{box-sizing:border-box;margin:0;padding:0}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body{
-    background:#020617;
-    color:#e5e7eb;
-    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-    overflow-x:hidden;
-    position: relative;
-  }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
 
-  /* ================= IMPROVED BACKGROUND EFFECTS ================= */
-  /* Blue Spotlight (Shifted up to blend with header) */
-  .hero-glow {
-    position: absolute; 
-    top: -120px; /* Moved up */
-    left: 50%; 
-    transform: translateX(-50%);
-    width: 90%; 
-    height: 700px;
-    background: radial-gradient(circle at center, rgba(59,130,246,0.18) 0%, transparent 60%);
-    z-index: -2; 
-    pointer-events: none;
-  }
+    a { text-decoration: none; color: inherit; }
 
-  /* Tech Grid Pattern */
-  .grid-pattern {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
-    background-image: 
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
-    -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
-    z-index: -1; pointer-events: none;
-  }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
 
-  /* ================= IMPROVED HEADER ================= */
-  .main-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:16px 40px; /* Thoda compact kiya */
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    background:rgba(2,6,23,0.9); /* Thoda dark kiya */
-    backdrop-filter:blur(16px); /* Blur badhaya */
-    z-index:1000;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
-  }
+    /* ============ HEADER ============ */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 0 24px;
+    }
 
-  .nav-left,.nav-right{
-    display:flex;
-    align-items:center;
-    gap:26px;
-  }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
 
-  .nav-left a { 
-    display: flex; align-items: center; gap: 10px; text-decoration: none; 
-  }
-  .nav-left .brand-name { 
-    font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 0.5px;
-  }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: 800;
+    }
 
-  /* Brand Logo Style */
-  .brand-logo {
-    height: 40px; width: auto; display: block;
-  }
-  .brand-name {
-    font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: 0.5px;
-  }
-  .brand-name span { color: var(--blue); }
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+    }
 
-  .nav-link{
-    color:#9aa0b4;
-    font-weight:500;
-    text-decoration:none;
-    position:relative;
-    padding:6px 0;
-    font-size: 14px;
-    transition:.3s;
-  }
+    .logo-text span { color: var(--accent); }
 
-  .nav-right .nav-link:nth-child(1){animation-delay:.15s}
-  .nav-right .nav-link:nth-child(2){animation-delay:.25s}
-  .nav-right .nav-link:nth-child(3){animation-delay:.35s}
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  .nav-link::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-4px;
-    width:0;
-    height:2px;
-    background:#38bdf8;
-    transition:.25s;
-  }
+    .nav-link {
+      padding: 10px 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
 
-  .nav-link:hover,
-  .nav-link.active{color:#fff}
+    .nav-link:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
 
-  .nav-link:hover::after,
-  .nav-link.active::after{width:100%}
+    .nav-link.new::after {
+      content: 'New';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 9px;
+      background: var(--green);
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
 
-  @keyframes navFade{
-    to{opacity:1;transform:none}
-  }
+    .nav-dropdown {
+      position: relative;
+    }
 
-  /* ================= SOCIAL BUTTONS ================= */
-  .social-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-  }
+    .nav-dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 200px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
 
-  .social-icon-box {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-    cursor: pointer;
-    text-decoration: none;
-  }
+    .nav-dropdown:hover .nav-dropdown-content { display: block; }
 
-  .social-icon-box svg {
-    width: 24px; height: 24px; fill: #94a3b8; transition: 0.3s;
-  }
+    .dropdown-item {
+      display: block;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
 
-  .social-icon-box:hover { transform: translateY(-5px); }
-  .social-icon-box:hover svg { fill: #fff; }
+    .dropdown-item:hover { background: rgba(255,255,255,0.05); }
 
-  .social-icon-box.ig:hover { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); border-color: transparent; box-shadow: 0 10px 20px rgba(225, 48, 108, 0.4); }
-  .social-icon-box.tg:hover { background: #229ED9; border-color: transparent; box-shadow: 0 10px 20px rgba(34, 158, 217, 0.4); }
-  .social-icon-box.yt:hover { background: #ff0000; border-color: transparent; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.4); }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
+    .search-btn, .theme-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
 
-  /* ================= PAGE ================= */
-  .page{
-    max-width:1200px;
-    margin:130px auto 90px;
-    padding:0 24px;
-  }
+    .search-btn:hover, .theme-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-main);
+    }
 
-  /* ================= REVEAL ================= */
-  .reveal{
-    opacity:0;
-    transform:translateY(40px);
-    animation:reveal .9s ease forwards;
-  }
-  .delay-1{animation-delay:.15s}
-  .delay-2{animation-delay:.3s}
-  .delay-3{animation-delay:.45s}
-  .delay-4{animation-delay:.6s}
+    .login-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
 
-  @keyframes reveal{
-    to{opacity:1;transform:none}
-  }
+    .login-btn:hover { transform: scale(1.1); }
 
-  /* ================= IMPROVED HERO ================= */
-  .hero{
-    text-align:center;
-    margin-bottom:120px;
-    position: relative;
-  }
+    /* ============ HERO ============ */
+    .hero {
+      padding: 140px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-  /* Announcement Pill */
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 16px;
-    border-radius: 50px;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    color: #93c5fd;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 24px;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-    animation: fadeIn 1s ease forwards;
-  }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 600px;
+      background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 50%);
+      pointer-events: none;
+    }
 
-  .hero-brand-name{
-    font-size:72px;
-    font-weight:900;
-    letter-spacing:-1px;
-    margin-bottom:20px;
-    line-height: 1.1;
-    animation: heroBrandGlow 2.5s ease-in-out infinite alternate;
-  }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--accent);
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease;
+    }
 
-  .hero-brand-name .brand-tech{ color:#fff; }
-  .hero-brand-name .brand-vyro{ 
-    background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  @keyframes heroBrandGlow{
-    0%{ text-shadow:0 0 10px rgba(59,130,246,0.2); }
-    100%{ text-shadow:0 0 30px rgba(59,130,246,0.5); }
-  }
+    .hero-title {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      animation: fadeInUp 0.6s ease 0.1s both;
+    }
 
-  .hero p{
-    max-width:700px;
-    margin:0 auto 32px;
-    font-size:18px;
-    color:#9aa0b4;
-    line-height:1.7;
-  }
+    .hero-title span { color: var(--accent); }
 
-  /* ================= BUTTONS ================= */
-  .actions{
-    display:flex;
-    justify-content:center;
-    gap:18px;
-    flex-wrap:wrap;
-  }
-  .btn{
-    padding:14px 32px;
-    border-radius:12px;
-    background:var(--blue);
-    color:#020617;
-    text-decoration:none;
-    font-weight:700;
-    transition:.3s;
-    font-size: 15px;
-  }
-  .btn.secondary{
-    background:rgba(255,255,255,0.05);
-    color:#fff;
-    border:1px solid rgba(255,255,255,0.1);
-  }
-  .btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 30px rgba(59,130,246,0.4);
-  }
-  .btn.secondary:hover {
-    background: rgba(255,255,255,0.1);
-    box-shadow: none;
-  }
+    .hero-subtitle {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 40px;
+      animation: fadeInUp 0.6s ease 0.2s both;
+    }
 
-  /* ================= SECTION ================= */
-  .section{margin-bottom:130px}
-  .section h2{font-size:36px;margin-bottom:16px; color:#fff;}
-  .section p{
-    max-width:860px;
-    font-size:17px;
-    line-height:1.8;
-    color:#9aa0b4;
-  }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 48px;
+      animation: fadeInUp 0.6s ease 0.3s both;
+    }
 
-  /* ================= GRID ================= */
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:28px;
-    margin-top:40px;
-  }
+    .stat-item {
+      text-align: center;
+    }
 
-  /* ================= CARD ================= */
-  .card{
-    background:#141a2e;
-    padding:34px;
-    border-radius:20px;
-    transition:.35s ease;
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-  .card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 20px 60px -10px rgba(59,130,246,0.25);
-    border-color: rgba(59,130,246,0.3);
-  }
-  .card h3{margin-bottom:10px; color:#fff; font-size: 20px;}
-  .card p{ font-size:15px; color:#9aa0b4; margin-bottom:10px; line-height: 1.6; }
-  .card ul{ padding-left:18px; color:#cbd5f5; font-size: 14px; }
-  .card li{ margin-bottom:8px }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+    }
 
-  /* ================= CONTACT ================= */
-  .contact-box{
-    margin-top:40px;
-    padding:40px;
-    background:linear-gradient(180deg, #0f172a 0%, #020617 100%);
-    border-radius:20px;
-    text-align:center;
-    max-width:900px;
-    margin-left:auto;
-    margin-right:auto;
-    border: 1px solid rgba(59,130,246,0.2);
-  }
-  .contact-box h3{ font-size:24px; margin-bottom:12px; }
-  .contact-box p{ color:#9aa0b4; line-height:1.7; margin-bottom:22px; }
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
 
-  /* ================= PRICING ================= */
-  .pricing{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:28px;
-    margin-top:40px;
-  }
-  .plan{
-    background:#141a2e;
-    padding:40px;
-    border-radius:24px;
-    transition:.35s ease;
-    position:relative;
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-  .plan:hover{
-    transform:translateY(-10px);
-    box-shadow:0 30px 90px var(--blue-glow);
-  }
-  .plan h3{font-size:24px; color:#fff;}
-  .plan .price{
-    font-size:36px;
-    font-weight:900;
-    color:var(--blue);
-    margin-bottom:18px;
-  }
-  .plan ul{list-style:none;margin-bottom:22px; color:#9aa0b4; font-size:15px;}
-  .plan li{margin-bottom:10px}
+    .hero-search {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      position: relative;
+      animation: fadeInUp 0.6s ease 0.4s both;
+    }
 
-  .plan.premium{
-    background:linear-gradient(135deg,#020617,#0f172a);
-    box-shadow:0 20px 60px rgba(59,130,246,0.15);
-    border: 1px solid var(--blue);
-  }
-  .badge{
-    position:absolute;
-    top:-12px;
-    right:24px;
-    padding:4px 12px;
-    font-size:11px;
-    font-weight:800;
-    border-radius:999px;
-    background:var(--blue);
-    color:#020617;
-  }
+    .hero-search input {
+      width: 100%;
+      padding: 18px 24px;
+      padding-right: 120px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      color: var(--text-main);
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
 
-  /* ================= FOOTER ================= */
-  .footer{
-    margin-top:80px;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    text-align:center;
-    color:#64748b;
-    font-size:14px;
-  }
-  .footer-links {
-    display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;
-  }
-  .footer-links a {
-    color: #9aa0b4; text-decoration: none; transition: 0.3s;
-  }
-  .footer-links a:hover {
-    color: #3b82f6;
-  }
+    .hero-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
 
-  /* ===== BOTTOM BRAND (HIDDEN INITIALLY) ===== */
-  .bottom-brand{
-    position:fixed;
-    left:20px;
-    bottom:20px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 14px;
-    background:rgba(2,6,23,.85);
-    backdrop-filter:blur(10px);
-    border-radius:14px;
-    text-decoration:none;
-    z-index:999;
-    opacity:0;
-    pointer-events:none;
-    transform:translateY(20px) scale(.95);
-    transition:.4s ease;
-    box-shadow:0 20px 60px rgba(59,130,246,.35);
-  }
+    .hero-search button {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 12px 24px;
+      background: var(--accent);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-  .bottom-brand.show{
-    opacity:1;
-    pointer-events:auto;
-    transform:none;
-  }
+    .hero-search button:hover {
+      background: var(--accent-hover);
+    }
 
-  .bottom-brand img{ height:34px; border-radius:8px; }
+    .as-seen {
+      animation: fadeInUp 0.6s ease 0.5s both;
+    }
 
-  .brand-name{ font-size:18px; font-weight:900; letter-spacing:.6px; color:#fff; }
-  .brand-tech{color:#e5e7eb}
-  .brand-vyro{color:#3b82f6}
+    .as-seen-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-  /* mobile */
-  @media(max-width:768px){
-    .main-header{padding:15px 20px}
-    .hero-brand-name{font-size:42px}
-    .page{margin:100px auto 60px}
-    .bottom-brand{ left:14px; bottom:14px; padding:8px 12px; }
-    .bottom-brand img{height:28px}
-    .brand-name{font-size:16px}
-    .footer-links { flex-direction: column; gap: 10px; }
-  }
+    .as-seen-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      opacity: 0.6;
+    }
+
+    .as-seen-logos span {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* ============ CATEGORY TABS ============ */
+    .category-section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .category-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-tab:hover, .category-tab.active {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .category-tab .icon { font-size: 18px; }
+
+    .trending-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .trend-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .trend-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ============ SECTIONS ============ */
+    .section {
+      padding: 60px 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title .icon {
+      color: var(--accent);
+    }
+
+    .view-all {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .view-all:hover { text-decoration: underline; }
+
+    /* ============ TOOL CARDS ============ */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #f97316);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .tool-card:hover::before { opacity: 1; }
+
+    .tool-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .tool-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .tool-info { flex: 1; }
+
+    .tool-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .tool-category {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .tool-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tool-badge.new {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+    }
+
+    .tool-badge.featured {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+    }
+
+    .tool-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tool-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tool-tag {
+      padding: 4px 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .tool-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tool-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .tool-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tool-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+
+    /* ============ NEWS SECTION ============ */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .news-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .news-image {
+      height: 180px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+
+    .news-content {
+      padding: 20px;
+    }
+
+    .news-date {
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .news-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .news-excerpt {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ============ FEATURED TOOLS GRID ============ */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 1200px) {
+      .featured-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .featured-grid { grid-template-columns: 1fr; }
+    }
+
+    .featured-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    .featured-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .featured-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 16px;
+    }
+
+    .featured-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .featured-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .featured-btn {
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--accent);
+      border-radius: 10px;
+      color: #000;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .featured-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ============ CTA SECTION ============ */
+    .cta-section {
+      padding: 80px 0;
+      text-align: center;
+      background: linear-gradient(180deg, transparent, rgba(245, 158, 11, 0.05));
+    }
+
+    .cta-title {
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .cta-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cta-btn.primary {
+      background: var(--accent);
+      color: #000;
+      border: none;
+    }
+
+    .cta-btn.primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px var(--accent-glow);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .cta-btn.secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ============ TESTIMONIALS ============ */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+    }
+
+    .testimonial-role {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .testimonial-text {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .testimonial-text::before {
+      content: '"';
+      color: var(--accent);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    /* ============ FOOTER ============ */
+    .footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 60px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    .footer-brand {
+      max-width: 300px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .footer-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+    }
+
+    .footer-column h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-newsletter {
+      background: rgba(245, 158, 11, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 40px;
+    }
+
+    .newsletter-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .newsletter-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 12px;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 14px 18px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    .newsletter-form button {
+      padding: 14px 24px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--accent-hover);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 600px) {
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a:hover { color: var(--accent); }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 900px) {
+      .hero-title { font-size: 36px; }
+      .hero-stats { flex-wrap: wrap; gap: 24px; }
+      .nav-menu { display: none; }
+    }
+
+    /* ============ ANIMATIONS ============ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
-  <link rel="icon" href="./logo-192.png">
-  <link rel="apple-touch-icon" href="./logo-192.png">
-  <link rel="manifest" href="./manifest.json">
 </head>
-
 <body>
-
-  <div class="hero-glow"></div>
-  <div class="grid-pattern"></div>
-
-  <header class="main-header">
-    <div class="nav-left">
-      <a href="index.html">
-        <img src="./logo.jpg?v=2" alt="TechVyro" class="brand-logo" style="height:40px; width:40px; border-radius:8px; object-fit:cover;">
-        <span class="brand-name">Tech<span style="color: var(--blue);">Vyro</span></span>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="./" class="logo">
+        <div class="logo-icon">TV</div>
+        <div class="logo-text">Tech<span>Vyro</span></div>
       </a>
-    </div>
-    <div class="nav-right">
-      <a href="about.html" class="nav-link">About</a>
-      <a href="pricing.html" class="nav-link">Pricing</a>
-      <a href="contact.html" class="nav-link">Contact</a>
+
+      <nav class="nav-menu">
+        <a href="./dashboard.html" class="nav-link">AI Tools</a>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link">Categories ▾</a>
+          <div class="nav-dropdown-content">
+            <a href="./dashboard.html#ai-tools" class="dropdown-item">🤖 AI Chat</a>
+            <a href="./dashboard.html#ai-tools" class="dropdown-item">🎨 Image AI</a>
+            <a href="./dashboard.html#ai-tools" class="dropdown-item">✍️ Content AI</a>
+            <a href="./dashboard.html#ai-tools" class="dropdown-item">💻 Code AI</a>
+            <a href="./dashboard.html#utility-tools" class="dropdown-item">🔧 Utility Tools</a>
+          </div>
+        </div>
+        <a href="#news" class="nav-link new">AI News</a>
+        <a href="./submissions.html" class="nav-link">Submit Tool</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-btn">🔍</button>
+        <button class="theme-btn" id="themeToggle">🌙</button>
+        <a href="./login.html" class="login-btn">→</a>
+      </div>
     </div>
   </header>
 
-  <div class="page">
-
-    <div class="hero reveal">
-      <div class="hero-badge">✨ New: AI Video Generator Live</div>
-
-      <h1 class="hero-brand-name">
-        <span class="brand-tech">Tech</span><span class="brand-vyro">Vyro</span>
-      </h1>
-      <p>
-        A premium AI-powered SaaS platform built for creators, founders, and brands who want to automate smarter and scale faster.
-      </p>
-      <div class="actions">
-        <a href="signup.html" class="btn">Get Started Free</a>
-        <a href="login.html" class="btn secondary">Login</a>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        ⚡ Spotlight: Featured AI Tools
       </div>
-    </div>
-
-    <div class="section reveal delay-1">
-      <h2>Why Create an Account?</h2>
-      <p>Unlock the full potential of TechVyro. Login now to access 30+ premium tools.</p>
-
-      <div class="grid">
-        <div class="card reveal">
-          <div style="font-size:32px; margin-bottom:15px">⚡</div>
-          <h3>200 Free Credits</h3>
-          <p>Instant Bonus! Login karte hi 200 Credits muft milenge to use AI Chat & Image Gen immediately.</p>
-        </div>
-
-        <div class="card reveal">
-          <div style="font-size:32px; margin-bottom:15px">🧠</div>
-          <h3>All-in-One Powerhouse</h3>
-          <p>ChatGPT, Image Gen, Voice AI, Video AI, and Code Assistant—all in one place. Stop switching tabs.</p>
-        </div>
-
-        <div class="card reveal">
-          <div style="font-size:32px; margin-bottom:15px">🛠️</div>
-          <h3>30+ Professional Tools</h3>
-          <p>Access tools for Designers (Logo Maker), Developers (JSON/Code), and Marketers (SEO/Hashtags).</p>
-        </div>
-
-        <div class="card reveal">
-          <div style="font-size:32px; margin-bottom:15px">💎</div>
-          <h3>Premium Experience</h3>
-          <p>Ultra-Modern Dark Mode dashboard that feels like premium software and is easy on the eyes.</p>
-        </div>
-
-        <div class="card reveal">
-          <div style="font-size:32px; margin-bottom:15px">🤝</div>
-          <h3>Exclusive Community</h3>
-          <p>Join the TechVyro Instagram & Telegram community directly from the dashboard for premium tips.</p>
-        </div>
-
-        <div class="card reveal">
-          <div style="font-size:32px; margin-bottom:15px">🔒</div>
-          <h3>Secure & Private</h3>
-          <p>Your data and history are secure. Save your work and resume anytime from where you left off.</p>
-        </div>
-      </div>
-
-      <div class="contact-box reveal delay-3">
-        <div style="position:relative; z-index:1;">
-          <h3 style="color:var(--blue)">💡 Quick Summary</h3>
-          <p style="font-size:17px; color:#e5e7eb; font-style:italic; line-height:1.8;">
-            "Bhai, bas login karo aur 200 Free Credits le jao! Yahan tumhe Writing, Coding, Design aur SEO ke liye 30 se zyada AI tools milenge ek hi dashboard par. Sab kuch free mein try karne ke liye abhi account banao!"
-          </p>
-          <a href="signup.html" class="btn" style="margin-top:10px;">Create Free Account</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section reveal delay-2">
-      <h2>What You Get</h2>
-      <p>TechVyro combines AI tools, automation, analytics, and premium workflows into one powerful platform.</p>
-
-      <div class="grid">
-        <div class="card reveal"><h3>AI Chat & Tools</h3><p>Daily-use AI features.</p></div>
-        <div class="card reveal"><h3>Automation System</h3><p>Save time with workflows.</p></div>
-        <div class="card reveal"><h3>Analytics Dashboard</h3><p>Track growth in real time.</p></div>
-        <div class="card reveal"><h3>Admin Controls</h3><p>Manage users & credits.</p></div>
-      </div>
-    </div>
-
-    <div class="section reveal delay-3">
-      <h2>Simple & Premium Pricing</h2>
-      <p>Start free. Upgrade anytime as you grow.</p>
-
-      <div class="pricing">
-        <div class="plan reveal">
-          <h3>Free</h3>
-          <div class="price">₹0</div>
-          <ul>
-            <li>200 AI credits</li>
-            <li>Basic AI tools</li>
-            <li>Limited usage</li>
-          </ul>
-          <a href="signup.html" class="btn secondary" style="width:100%; text-align:center">Start Free</a>
-        </div>
-
-        <div class="plan reveal">
-          <h3>Pro</h3>
-          <div class="price">₹299 / month</div>
-          <ul>
-            <li>Unlimited AI credits</li>
-            <li>All premium tools</li>
-            <li>Priority access</li>
-          </ul>
-          <a href="dashboard.html" class="btn" style="width:100%; text-align:center">Upgrade</a>
-        </div>
-
-        <div class="plan premium reveal">
-          <div class="badge">MOST POPULAR</div>
-          <h3>Premium</h3>
-          <div class="price">₹499 / month</div>
-          <ul>
-            <li>Unlimited AI credits</li>
-            <li>All premium tools</li>
-            <li>Priority access</li>
-            <li>Future updates</li>
-          </ul>
-          <a href="dashboard.html" class="btn" style="width:100%; text-align:center">Go Premium</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section reveal delay-4">
-      <h2>Paid Collaborations & Brand Partnerships</h2>
-      <p>
-        I’m open to paid collaborations for pre-launch campaigns, product promotions,
-        and brand awareness initiatives. I work selectively with brands that align
-        with my audience and content style.
-      </p>
-
-      <div class="grid">
-        <div class="card reveal">
-          <h3>🎬 Content Formats</h3>
-          <p>I currently offer the following collaboration formats designed for reach, engagement, and conversions:</p>
-          <ul>
-            <li>Instagram Reel (30–45 seconds)</li>
-            <li>Reel + Story bundle</li>
-            <li>Launch campaign bundles (multiple posts)</li>
-          </ul>
-        </div>
-
-        <div class="card reveal">
-          <h3>💰 Pricing Structure</h3>
-          <p>Pricing depends on deliverables, timelines, and campaign complexity.</p>
-          <ul>
-            <li>Single Reel – On request</li>
-            <li>Reel + Stories – On request</li>
-            <li>Custom launch – On demand</li>
-          </ul>
-        </div>
-
-        <div class="card reveal">
-          <h3>📊 Insights & Performance</h3>
-          <p>I don’t have a formal media kit at the moment, but I can share:</p>
-          <ul>
-            <li>Recent post & reel insights data</li>
-            <li>Audience engagement data</li>
-            <li>Performance screenshots</li>
-          </ul>
-        </div>
-
-        <div class="card reveal">
-          <h3>🤝 How We Collaborate</h3>
-          <p>To ensure smooth collaboration, please share:</p>
-          <ul>
-            <li>Preferred content format</li>
-            <li>Campaign timeline</li>
-            <li>Deliverables & expectations</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="contact-box reveal">
-        <h3>Let’s Work Together</h3>
-        <p>
-          If you’re interested in collaborating, feel free to reach out with your campaign details.
-          I’m happy to discuss ideas and create high-impact content tailored to your goals.
-        </p>
-        <a href="mailto:techvyro@gmail.com?subject=Paid%20Collaboration%20Inquiry" class="btn">
-          Contact for Collaboration
-        </a>
-      </div>
-    </div>
-
-    <div class="section reveal" style="text-align: center;">
-      <h2>Join Community</h2>
-      <p style="margin: 0 auto;">Connect with us on social media for premium updates.</p>
       
-      <div class="social-container">
-        <a href="https://www.instagram.com/techvyro" target="_blank" class="social-icon-box ig"><svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg></a>
-        <a href="https://t.me/techvyro_x" target="_blank" class="social-icon-box tg"><svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.8 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/></svg></a>
-        <a href="https://youtube.com/@techvyro" target="_blank" class="social-icon-box yt"><svg viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"/></svg></a>
+      <h1 class="hero-title">
+        The Best <span>AI Tools</span> Directory
+      </h1>
+      
+      <p class="hero-subtitle">
+        Discover 1000+ AI Tools and 100+ Categories in India's Best & Largest AI Directory. Find the perfect AI tool for your needs.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value">1000+</div>
+          <div class="stat-label">AI Tools</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">100+</div>
+          <div class="stat-label">Categories</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">50K+</div>
+          <div class="stat-label">Users</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">4.9★</div>
+          <div class="stat-label">Rating</div>
+        </div>
+      </div>
+
+      <div class="hero-search">
+        <input type="text" placeholder="Search AI tools, categories..." id="searchInput">
+        <button onclick="window.location.href='./dashboard.html'">Explore →</button>
+      </div>
+
+      <div class="as-seen">
+        <p class="as-seen-label">As Seen On</p>
+        <div class="as-seen-logos">
+          <span>📺 YourStory</span>
+          <span>🎯 ProductHunt</span>
+          <span>📰 TechCrunch</span>
+          <span>🎬 YouTube</span>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="footer reveal">
-      <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="refund.html">Refund Policy</a>
-        <a href="contact.html">Support</a>
+  <!-- CATEGORIES -->
+  <section class="category-section">
+    <div class="container">
+      <div class="category-tabs">
+        <div class="category-tab active"><span class="icon">🔥</span> All AI Tools</div>
+        <div class="category-tab"><span class="icon">✍️</span> AI Writing</div>
+        <div class="category-tab"><span class="icon">🎨</span> AI Image</div>
+        <div class="category-tab"><span class="icon">💻</span> AI Code</div>
+        <div class="category-tab"><span class="icon">🎤</span> AI Voice</div>
+        <div class="category-tab"><span class="icon">📊</span> AI Data</div>
+        <div class="category-tab"><span class="icon">📧</span> AI Email</div>
+        <div class="category-tab"><span class="icon">🔧</span> Utilities</div>
       </div>
-      <p>© 2026 TechVyro — Premium AI SaaS Platform</p>
+
+      <div class="trending-tags">
+        <span class="trend-tag">🔥 Trending</span>
+        <span class="trend-tag">⭐ Top Rated</span>
+        <span class="trend-tag">🆕 Just Launched</span>
+        <span class="trend-tag">💰 Free Tools</span>
+        <span class="trend-tag">🏆 Editor's Pick</span>
+      </div>
     </div>
+  </section>
 
-  </div>
+  <!-- JUST LAUNCHED -->
+  <section class="section" id="launched">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"><span class="icon">🚀</span> Just Launched</h2>
+        <a href="./dashboard.html" class="view-all">View All →</a>
+      </div>
 
-  <a href="index.html" class="bottom-brand" id="bottomBrand">
-    <img src="https://image2url.com/images/1765202115120-ca991f21-3464-4ead-a8fd-008fa47edd6a.jpg" alt="TechVyro">
-    <span class="brand-name">
-      <span class="brand-tech">Tech</span><span class="brand-vyro">Vyro</span>
-    </span>
-  </a>
+      <div class="tools-grid">
+        <div class="tool-card" onclick="window.location.href='./chat.html'">
+          <span class="tool-badge new">New</span>
+          <div class="tool-header">
+            <div class="tool-icon">💬</div>
+            <div class="tool-info">
+              <div class="tool-name">AI Chat</div>
+              <div class="tool-category">Conversation AI</div>
+            </div>
+          </div>
+          <p class="tool-desc">Advanced AI chatbot powered by GPT-4o for intelligent conversations and assistance.</p>
+          <div class="tool-tags">
+            <span class="tool-tag">Chat</span>
+            <span class="tool-tag">GPT-4o</span>
+            <span class="tool-tag">Free</span>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-rating">⭐ 4.9</span>
+            <button class="tool-btn">Try Now</button>
+          </div>
+        </div>
+
+        <div class="tool-card" onclick="window.location.href='./image-gen.html'">
+          <span class="tool-badge featured">Featured</span>
+          <div class="tool-header">
+            <div class="tool-icon">🎨</div>
+            <div class="tool-info">
+              <div class="tool-name">Image Generator</div>
+              <div class="tool-category">AI Art</div>
+            </div>
+          </div>
+          <p class="tool-desc">Create stunning AI-generated images from text descriptions in seconds.</p>
+          <div class="tool-tags">
+            <span class="tool-tag">Image</span>
+            <span class="tool-tag">Art</span>
+            <span class="tool-tag">Creative</span>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-rating">⭐ 4.8</span>
+            <button class="tool-btn">Try Now</button>
+          </div>
+        </div>
+
+        <div class="tool-card" onclick="window.location.href='./content-ai.html'">
+          <span class="tool-badge new">New</span>
+          <div class="tool-header">
+            <div class="tool-icon">📝</div>
+            <div class="tool-info">
+              <div class="tool-name">Content AI</div>
+              <div class="tool-category">Writing</div>
+            </div>
+          </div>
+          <p class="tool-desc">Generate blog posts, articles, and marketing content with AI assistance.</p>
+          <div class="tool-tags">
+            <span class="tool-tag">Content</span>
+            <span class="tool-tag">Blog</span>
+            <span class="tool-tag">Premium</span>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-rating">⭐ 4.7</span>
+            <button class="tool-btn">Try Now</button>
+          </div>
+        </div>
+
+        <div class="tool-card" onclick="window.location.href='./code-ai.html'">
+          <div class="tool-header">
+            <div class="tool-icon">💻</div>
+            <div class="tool-info">
+              <div class="tool-name">Code AI</div>
+              <div class="tool-category">Development</div>
+            </div>
+          </div>
+          <p class="tool-desc">Generate, debug, and optimize code in any programming language.</p>
+          <div class="tool-tags">
+            <span class="tool-tag">Code</span>
+            <span class="tool-tag">Debug</span>
+            <span class="tool-tag">Premium</span>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-rating">⭐ 4.9</span>
+            <button class="tool-btn">Try Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED AI NEWS -->
+  <section class="section" id="news" style="background: rgba(255,255,255,0.01);">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"><span class="icon">📰</span> Featured AI News</h2>
+        <a href="#" class="view-all">View All →</a>
+      </div>
+
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-image">🤖</div>
+          <div class="news-content">
+            <div class="news-date">January 20, 2026</div>
+            <h3 class="news-title">OpenAI Launches GPT-5: The Next Generation of AI</h3>
+            <p class="news-excerpt">The latest model promises 10x better reasoning and multimodal capabilities...</p>
+          </div>
+        </div>
+
+        <div class="news-card">
+          <div class="news-image">🎨</div>
+          <div class="news-content">
+            <div class="news-date">January 18, 2026</div>
+            <h3 class="news-title">AI Art Revolution: New Tools Transform Creative Industry</h3>
+            <p class="news-excerpt">How AI-powered design tools are changing the way creators work...</p>
+          </div>
+        </div>
+
+        <div class="news-card">
+          <div class="news-image">💼</div>
+          <div class="news-content">
+            <div class="news-date">January 15, 2026</div>
+            <h3 class="news-title">Top 10 AI Tools for Business Productivity in 2026</h3>
+            <p class="news-excerpt">Discover the most impactful AI tools that are revolutionizing workplace efficiency...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED TOOLS -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"><span class="icon">⭐</span> Best AI Tools</h2>
+        <a href="./dashboard.html" class="view-all">View All →</a>
+      </div>
+
+      <div class="featured-grid">
+        <div class="featured-card">
+          <div class="featured-icon">🎨</div>
+          <h3 class="featured-title">Logo Maker</h3>
+          <p class="featured-desc">Create professional logos with AI in seconds</p>
+          <a href="./logo-gen.html" class="featured-btn">Try Free</a>
+        </div>
+
+        <div class="featured-card">
+          <div class="featured-icon">🎤</div>
+          <h3 class="featured-title">Voice AI</h3>
+          <p class="featured-desc">Convert text to natural speech instantly</p>
+          <a href="./voice-ai.html" class="featured-btn">Try Free</a>
+        </div>
+
+        <div class="featured-card">
+          <div class="featured-icon">📧</div>
+          <h3 class="featured-title">Email AI</h3>
+          <p class="featured-desc">Write perfect emails with AI assistance</p>
+          <a href="./email-ai.html" class="featured-btn">Try Free</a>
+        </div>
+
+        <div class="featured-card">
+          <div class="featured-icon">📄</div>
+          <h3 class="featured-title">Resume AI</h3>
+          <p class="featured-desc">Build professional resumes that get hired</p>
+          <a href="./resume-ai.html" class="featured-btn">Try Free</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">TechVyro - India's Largest AI Tool Directory</h2>
+      <p class="cta-subtitle">
+        Join 50,000+ users who trust TechVyro to discover the best AI tools. Start your journey with 100 free credits today.
+      </p>
+      <div class="cta-buttons">
+        <a href="./signup.html" class="cta-btn primary">Get Started Free →</a>
+        <a href="./dashboard.html" class="cta-btn secondary">Explore Tools</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"><span class="icon">💬</span> Trusted By Thousands</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">R</div>
+            <div>
+              <div class="testimonial-name">Rahul Sharma</div>
+              <div class="testimonial-role">Startup Founder</div>
+            </div>
+          </div>
+          <p class="testimonial-text">TechVyro has been a game-changer for our startup. The AI tools saved us hundreds of hours of work.</p>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">P</div>
+            <div>
+              <div class="testimonial-name">Priya Patel</div>
+              <div class="testimonial-role">Content Creator</div>
+            </div>
+          </div>
+          <p class="testimonial-text">Best AI directory I've found. The tools are curated perfectly and always up-to-date.</p>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">A</div>
+            <div>
+              <div class="testimonial-name">Amit Kumar</div>
+              <div class="testimonial-role">Developer</div>
+            </div>
+          </div>
+          <p class="testimonial-text">The Code AI tool is incredible. It understands context and generates production-ready code.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-newsletter">
+        <div class="newsletter-title">🚀 Subscribe to TechVyro Newsletter</div>
+        <p class="newsletter-desc">Get the latest AI tools, tips, and exclusive deals delivered to your inbox.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+          <input type="email" placeholder="Enter your email address" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">TV</div>
+            <span>Tech<span style="color: var(--accent);">Vyro</span></span>
+          </div>
+          <p class="footer-desc">
+            India's largest AI tool directory. Discover, compare, and use the best AI tools to supercharge your productivity.
+          </p>
+          <div class="footer-social">
+            <a href="#" class="social-link">📘</a>
+            <a href="#" class="social-link">🐦</a>
+            <a href="#" class="social-link">📸</a>
+            <a href="#" class="social-link">💼</a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./submissions.html">Submit Tool</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#news">AI News</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>AI Tools</h4>
+          <ul class="footer-links">
+            <li><a href="./chat.html">AI Chat</a></li>
+            <li><a href="./image-gen.html">Image Generator</a></li>
+            <li><a href="./content-ai.html">Content AI</a></li>
+            <li><a href="./code-ai.html">Code AI</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Utilities</h4>
+          <ul class="footer-links">
+            <li><a href="./qr-gen.html">QR Generator</a></li>
+            <li><a href="./pass-gen.html">Password Generator</a></li>
+            <li><a href="./json-format.html">JSON Formatter</a></li>
+            <li><a href="./img-compress.html">Image Compressor</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 TechVyro. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script>
-  /* PAGE LOADER */
-  const loader=document.createElement('div');
-  loader.style.cssText='position:fixed;inset:0;background:#020617;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease';
-  loader.innerHTML='<span style="color:#3b82f6;font-size:22px;font-weight:900">TechVyro</span>';
-  window.addEventListener('load',()=>{ document.body.appendChild(loader); loader.style.opacity='0'; setTimeout(()=>loader.remove(),600); });
-
-  /* SCROLL PROGRESS */
-  const progress=document.createElement('div');
-  progress.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;background:#3b82f6;z-index:9998';
-  document.body.appendChild(progress);
-  window.addEventListener('scroll',()=>{
-    const h=document.documentElement.scrollHeight-window.innerHeight;
-    progress.style.width=(window.scrollY/h)*100+'%';
-  });
-
-  /* REVEAL OBSERVER */
-  const reveals=document.querySelectorAll('.reveal');
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){ entry.target.style.animationPlayState='running'; observer.unobserve(entry.target); }
-    });
-  },{threshold:0.15});
-  reveals.forEach(el=>{ el.style.animationPlayState='paused'; observer.observe(el); });
-
-  /* STAGGER GRID */
-  document.querySelectorAll('.grid, .pricing').forEach(group=>{
-    group.querySelectorAll('.reveal').forEach((el,i)=>{
-      el.classList.add(`delay-${(i%3)+1}`);
-      el.style.transform=`translateX(${i%2?40:-40}px)`;
-    });
-  });
-
-  /* PAGE TRANSITION */
-  document.querySelectorAll('a').forEach(link=>{
-    const href=link.getAttribute('href');
-    if(!href||href.startsWith('#')||href.startsWith('mailto')||link.target=='_blank')return;
-    link.addEventListener('click',e=>{
-      e.preventDefault(); document.body.appendChild(loader); loader.style.opacity='1';
-      setTimeout(()=>location.href=href,400);
-    });
-  });
-
-  /* BOTTOM BRAND SCROLL */
-  const bottomBrand = document.getElementById("bottomBrand");
-  window.addEventListener("scroll", () => {
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100) {
-      bottomBrand.classList.add("show");
-    } else { bottomBrand.classList.remove("show"); }
-  });
-
-  /* LOGIN LOGIC */
-  document.addEventListener("DOMContentLoaded", () => {
-    const isLoggedIn = localStorage.getItem("techvyro_user_logged_in") === "true";
-    if (isLoggedIn) {
-      document.querySelectorAll('a[href="login.html"]').forEach(btn => {
-        btn.innerText = "Go to Dashboard"; btn.href = "dashboard.html";
-        btn.style.background = "#10b981"; btn.style.color = "#fff"; btn.style.border = "none";
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
       });
-    }
-  });
-
-  /* SERVICE WORKER REGISTRATION */
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(registration => {
-          console.log('Service Worker registered successfully:', registration.scope);
-        })
-        .catch(error => {
-          console.log('Service Worker registration failed:', error);
-        });
     });
-  }
-  </script>
 
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        window.location.href = './dashboard.html';
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section').forEach(el => {
+      el.classList.add('fade-in');
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
