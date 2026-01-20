@@ -1798,8 +1798,10 @@
   }
 }
   </style>
+  <link rel="stylesheet" href="css/premium-common.css">
 </head>
 <body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
   <!-- 🚨 CRITICAL SECURITY: Auth Guard must run immediately -->
   <script type="module" src="./js/auth-guard.js"></script>
 
@@ -4834,5 +4836,9 @@
       }
     });
   </script>
+    <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
 </body>
 </html>
