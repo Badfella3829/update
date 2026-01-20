@@ -34,19 +34,16 @@
 
     .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
 
-    /* ============ PREMIUM HEADER ============ */
+    /* ============ CHIEF-STYLE HEADER ============ */
     .header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(180deg, rgba(2, 6, 23, 0.98) 0%, rgba(2, 6, 23, 0.95) 100%);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
       z-index: 1000;
-      padding: 0 32px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+      padding: 0 24px;
     }
 
     .header-inner {
@@ -55,95 +52,73 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 72px;
+      height: 52px;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       text-decoration: none;
-      transition: transform 0.3s ease;
     }
-
-    .logo:hover { transform: translateY(-2px); }
 
     .logo-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
       object-fit: cover;
-      border: 2px solid rgba(59, 130, 246, 0.3);
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .logo:hover .logo-icon {
-      border-color: var(--accent);
-      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
     }
 
     .logo-text { 
-      font-size: 26px; 
+      font-size: 20px; 
       font-weight: 800; 
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #fff;
+      letter-spacing: -0.3px;
     }
     .logo-text span { 
-      background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #f59e0b;
     }
 
     .nav-menu {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 6px 8px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      gap: 0;
     }
 
     .nav-link {
-      padding: 10px 18px;
-      color: var(--text-muted);
-      font-size: 14px;
+      padding: 16px 14px;
+      color: #9ca3af;
+      font-size: 13px;
       font-weight: 500;
-      border-radius: 10px;
-      transition: all 0.3s ease;
+      transition: color 0.2s ease;
       position: relative;
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .nav-link:hover { 
-      color: var(--text-main); 
-      background: rgba(59, 130, 246, 0.1);
+      color: #f59e0b;
     }
 
-    .nav-link.active {
-      color: var(--accent);
-      background: rgba(59, 130, 246, 0.15);
+    .nav-link .arrow {
+      font-size: 10px;
+      opacity: 0.7;
     }
 
     .nav-link.new::after {
       content: 'New';
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 8px;
+      right: -2px;
       font-size: 8px;
-      background: linear-gradient(135deg, var(--green), #10b981);
-      color: #000;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-weight: 700;
+      background: #dc2626;
+      color: #fff;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
     }
 
     .nav-dropdown {
@@ -153,93 +128,76 @@
     .nav-dropdown-content {
       display: none;
       position: absolute;
-      top: calc(100% + 12px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.95));
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(59, 130, 246, 0.15);
-      border-radius: 16px;
-      padding: 12px;
-      min-width: 220px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(59, 130, 246, 0.1);
-      animation: dropdownFade 0.2s ease;
-    }
-
-    @keyframes dropdownFade {
-      from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+      top: 100%;
+      left: 0;
+      background: #252525;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 180px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
 
     .nav-dropdown:hover .nav-dropdown-content { display: block; }
 
     .dropdown-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      color: var(--text-muted);
+      display: block;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: #9ca3af;
       transition: all 0.2s ease;
       text-decoration: none;
     }
 
     .dropdown-item:hover { 
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--text-main);
-      transform: translateX(4px);
+      background: #333;
+      color: #f59e0b;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
     .search-btn, .theme-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: #9ca3af;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      transition: all 0.3s ease;
+      font-size: 16px;
+      transition: all 0.2s ease;
     }
 
     .search-btn:hover, .theme-btn:hover {
-      background: rgba(59, 130, 246, 0.1);
-      border-color: rgba(59, 130, 246, 0.3);
-      color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+      color: #f59e0b;
     }
 
     .login-btn {
-      padding: 10px 24px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
-      color: #fff;
-      font-weight: 600;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 700;
       font-size: 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       border: none;
       text-decoration: none;
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     }
 
     .login-btn:hover { 
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+      transform: scale(1.1);
     }
 
     /* ============ HERO ============ */
@@ -1078,24 +1036,47 @@
       <nav class="nav-menu">
         <a href="./dashboard.html" class="nav-link">AI Tools</a>
         <div class="nav-dropdown">
-          <a href="#" class="nav-link">Categories ▾</a>
+          <a href="#" class="nav-link">Categories <span class="arrow">▼</span></a>
           <div class="nav-dropdown-content">
-            <a href="./dashboard.html#ai-tools" class="dropdown-item">🤖 AI Chat</a>
-            <a href="./dashboard.html#ai-tools" class="dropdown-item">🎨 Image AI</a>
-            <a href="./dashboard.html#ai-tools" class="dropdown-item">✍️ Content AI</a>
-            <a href="./dashboard.html#ai-tools" class="dropdown-item">💻 Code AI</a>
-            <a href="./dashboard.html#utility-tools" class="dropdown-item">🔧 Utility Tools</a>
+            <a href="./dashboard.html#section-ai" class="dropdown-item">AI Chat</a>
+            <a href="./dashboard.html#section-ai" class="dropdown-item">Image AI</a>
+            <a href="./dashboard.html#section-ai" class="dropdown-item">Content AI</a>
+            <a href="./dashboard.html#section-ai" class="dropdown-item">Code AI</a>
+            <a href="./dashboard.html#section-utility" class="dropdown-item">Utility Tools</a>
           </div>
         </div>
-        <a href="#news" class="nav-link new">AI News</a>
-        <a href="./submissions.html" class="nav-link">Submit Tool</a>
-        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#courses" class="nav-link">AI Courses</a>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link new">AI Insights <span class="arrow">▼</span></a>
+          <div class="nav-dropdown-content">
+            <a href="#news" class="dropdown-item">AI News</a>
+            <a href="#" class="dropdown-item">AI Tutorials</a>
+            <a href="#" class="dropdown-item">AI Trends</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link">Submit/Advertise <span class="arrow">▼</span></a>
+          <div class="nav-dropdown-content">
+            <a href="./submissions.html" class="dropdown-item">Submit Tool</a>
+            <a href="./contact.html" class="dropdown-item">Advertise</a>
+            <a href="./contact.html" class="dropdown-item">Partner With Us</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link">Resources <span class="arrow">▼</span></a>
+          <div class="nav-dropdown-content">
+            <a href="#pricing" class="dropdown-item">Pricing</a>
+            <a href="./contact.html" class="dropdown-item">Contact</a>
+            <a href="#" class="dropdown-item">Blog</a>
+          </div>
+        </div>
+        <a href="./dashboard.html#section-directory" class="nav-link new">AI Agents</a>
       </nav>
 
       <div class="header-actions">
         <button class="search-btn" title="Search">🔍</button>
-        <button class="theme-btn" id="themeToggle" title="Toggle Theme">🌙</button>
-        <a href="./login.html" class="login-btn">Login <span>→</span></a>
+        <button class="theme-btn" id="themeToggle" title="Toggle Theme">☀️</button>
+        <a href="./login.html" class="login-btn" title="Login">👤</a>
       </div>
     </div>
   </header>
