@@ -1801,6 +1801,7 @@
     .page-loader.hidden {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
     }
 
     .loader-spinner {
@@ -3094,9 +3095,7 @@
     createFloatingIcons();
 
     // ============ PAGE LOADER ============
-    setTimeout(() => {
-      document.getElementById('pageLoader').classList.add('hidden');
-    }, 500);
+    document.getElementById('pageLoader').classList.add('hidden');
 
     // ============ THEME TOGGLE ============
     const themeToggle = document.getElementById('themeToggle');
