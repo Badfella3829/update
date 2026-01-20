@@ -975,6 +975,70 @@
 
     .footer-bottom-links a:hover { color: var(--accent); }
 
+    /* ============ DIRECTORY SECTION ============ */
+    .directory-category {
+      margin-bottom: 30px;
+    }
+
+    .category-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    .directory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .dir-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .dir-card:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .dir-icon {
+      font-size: 20px;
+    }
+
+    .dir-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .dir-card:hover .dir-name {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .directory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+      }
+      .dir-card {
+        padding: 10px 12px;
+      }
+      .dir-name {
+        font-size: 12px;
+      }
+    }
+
     /* ============ RESPONSIVE ============ */
     @media (max-width: 900px) {
       .hero-title { font-size: 36px; }
@@ -1285,6 +1349,238 @@
         <a href="./signup.html" class="cta-btn primary">Get Started Free →</a>
         <a href="./dashboard.html" class="cta-btn secondary">Explore Tools</a>
       </div>
+    </div>
+  </section>
+
+  <!-- AI TOOLS DIRECTORY -->
+  <section class="section" id="directory">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title"><span class="icon">🌐</span> AI Tools Directory</h2>
+        <a href="./dashboard.html#section-directory" class="view-all">View All 70+ Tools →</a>
+      </div>
+
+      <!-- AI Chatbots -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣ AI Chatbots / LLMs</h3>
+        <div class="directory-grid">
+          <a href="https://chat.openai.com" target="_blank" class="dir-card"><span class="dir-icon">💬</span><span class="dir-name">ChatGPT</span></a>
+          <a href="https://claude.ai" target="_blank" class="dir-card"><span class="dir-icon">🤖</span><span class="dir-name">Claude</span></a>
+          <a href="https://gemini.google.com" target="_blank" class="dir-card"><span class="dir-icon">✨</span><span class="dir-name">Gemini</span></a>
+          <a href="https://perplexity.ai" target="_blank" class="dir-card"><span class="dir-icon">🔍</span><span class="dir-name">Perplexity</span></a>
+          <a href="https://deepseek.com" target="_blank" class="dir-card"><span class="dir-icon">🧠</span><span class="dir-name">DeepSeek</span></a>
+          <a href="https://poe.com" target="_blank" class="dir-card"><span class="dir-icon">⚡</span><span class="dir-name">Poe</span></a>
+        </div>
+      </div>
+
+      <!-- AI Image -->
+      <div class="directory-category">
+        <h3 class="category-title">2️⃣ AI Image Generation</h3>
+        <div class="directory-grid">
+          <a href="https://stability.ai" target="_blank" class="dir-card"><span class="dir-icon">🎨</span><span class="dir-name">Stable Diffusion</span></a>
+          <a href="https://midjourney.com" target="_blank" class="dir-card"><span class="dir-icon">🖼️</span><span class="dir-name">Midjourney</span></a>
+          <a href="https://leonardo.ai" target="_blank" class="dir-card"><span class="dir-icon">🎭</span><span class="dir-name">Leonardo AI</span></a>
+          <a href="https://playground.com" target="_blank" class="dir-card"><span class="dir-icon">🎪</span><span class="dir-name">Playground AI</span></a>
+          <a href="https://craiyon.com" target="_blank" class="dir-card"><span class="dir-icon">🖍️</span><span class="dir-name">Craiyon</span></a>
+          <a href="https://ideogram.ai" target="_blank" class="dir-card"><span class="dir-icon">💡</span><span class="dir-name">Ideogram</span></a>
+        </div>
+      </div>
+
+      <!-- AI Video -->
+      <div class="directory-category">
+        <h3 class="category-title">3️⃣ AI Video Generation</h3>
+        <div class="directory-grid">
+          <a href="https://runwayml.com" target="_blank" class="dir-card"><span class="dir-icon">🎬</span><span class="dir-name">Runway ML</span></a>
+          <a href="https://pika.art" target="_blank" class="dir-card"><span class="dir-icon">🎥</span><span class="dir-name">Pika Labs</span></a>
+          <a href="https://invideo.io" target="_blank" class="dir-card"><span class="dir-icon">📹</span><span class="dir-name">InVideo AI</span></a>
+          <a href="https://pictory.ai" target="_blank" class="dir-card"><span class="dir-icon">🎞️</span><span class="dir-name">Pictory</span></a>
+          <a href="https://lumen5.com" target="_blank" class="dir-card"><span class="dir-icon">💫</span><span class="dir-name">Lumen5</span></a>
+        </div>
+      </div>
+
+      <!-- AI Audio -->
+      <div class="directory-category">
+        <h3 class="category-title">4️⃣ AI Audio / Voice</h3>
+        <div class="directory-grid">
+          <a href="https://elevenlabs.io" target="_blank" class="dir-card"><span class="dir-icon">🎙️</span><span class="dir-name">ElevenLabs</span></a>
+          <a href="https://murf.ai" target="_blank" class="dir-card"><span class="dir-icon">🔊</span><span class="dir-name">Murf AI</span></a>
+          <a href="https://play.ht" target="_blank" class="dir-card"><span class="dir-icon">▶️</span><span class="dir-name">Play.ht</span></a>
+          <a href="https://coqui.ai" target="_blank" class="dir-card"><span class="dir-icon">🐸</span><span class="dir-name">Coqui TTS</span></a>
+          <a href="https://openai.com/whisper" target="_blank" class="dir-card"><span class="dir-icon">👂</span><span class="dir-name">Whisper</span></a>
+        </div>
+      </div>
+
+      <!-- AI Music -->
+      <div class="directory-category">
+        <h3 class="category-title">5️⃣ AI Music Generation</h3>
+        <div class="directory-grid">
+          <a href="https://suno.ai" target="_blank" class="dir-card"><span class="dir-icon">🎵</span><span class="dir-name">Suno</span></a>
+          <a href="https://huggingface.co/facebook/musicgen-large" target="_blank" class="dir-card"><span class="dir-icon">🎼</span><span class="dir-name">MusicGen</span></a>
+          <a href="https://boomy.com" target="_blank" class="dir-card"><span class="dir-icon">🎸</span><span class="dir-name">Boomy</span></a>
+          <a href="https://beatoven.ai" target="_blank" class="dir-card"><span class="dir-icon">🥁</span><span class="dir-name">Beatoven</span></a>
+        </div>
+      </div>
+
+      <!-- AI Writing -->
+      <div class="directory-category">
+        <h3 class="category-title">6️⃣ AI Writing / Content</h3>
+        <div class="directory-grid">
+          <a href="https://jasper.ai" target="_blank" class="dir-card"><span class="dir-icon">✍️</span><span class="dir-name">Jasper</span></a>
+          <a href="https://copy.ai" target="_blank" class="dir-card"><span class="dir-icon">📝</span><span class="dir-name">Copy.ai</span></a>
+          <a href="https://rytr.me" target="_blank" class="dir-card"><span class="dir-icon">🖊️</span><span class="dir-name">Rytr</span></a>
+          <a href="https://writesonic.com" target="_blank" class="dir-card"><span class="dir-icon">⚡</span><span class="dir-name">Writesonic</span></a>
+          <a href="https://sudowrite.com" target="_blank" class="dir-card"><span class="dir-icon">📖</span><span class="dir-name">Sudowrite</span></a>
+        </div>
+      </div>
+
+      <!-- AI SEO -->
+      <div class="directory-category">
+        <h3 class="category-title">7️⃣ AI SEO Tools</h3>
+        <div class="directory-grid">
+          <a href="https://surferseo.com" target="_blank" class="dir-card"><span class="dir-icon">🏄</span><span class="dir-name">Surfer SEO</span></a>
+          <a href="https://neuronwriter.com" target="_blank" class="dir-card"><span class="dir-icon">🧠</span><span class="dir-name">NeuronWriter</span></a>
+          <a href="https://scalenut.com" target="_blank" class="dir-card"><span class="dir-icon">🥜</span><span class="dir-name">Scalenut</span></a>
+          <a href="https://frase.io" target="_blank" class="dir-card"><span class="dir-icon">📊</span><span class="dir-name">Frase</span></a>
+        </div>
+      </div>
+
+      <!-- AI Coding -->
+      <div class="directory-category">
+        <h3 class="category-title">8️⃣ AI Coding Tools</h3>
+        <div class="directory-grid">
+          <a href="https://codeium.com" target="_blank" class="dir-card"><span class="dir-icon">💻</span><span class="dir-name">Codeium</span></a>
+          <a href="https://cursor.sh" target="_blank" class="dir-card"><span class="dir-icon">🖱️</span><span class="dir-name">Cursor</span></a>
+          <a href="https://tabnine.com" target="_blank" class="dir-card"><span class="dir-icon">⌨️</span><span class="dir-name">Tabnine</span></a>
+          <a href="https://blackbox.ai" target="_blank" class="dir-card"><span class="dir-icon">📦</span><span class="dir-name">Blackbox AI</span></a>
+          <a href="https://replit.com" target="_blank" class="dir-card"><span class="dir-icon">🔄</span><span class="dir-name">Replit AI</span></a>
+        </div>
+      </div>
+
+      <!-- AI Website -->
+      <div class="directory-category">
+        <h3 class="category-title">9️⃣ AI Website Builder</h3>
+        <div class="directory-grid">
+          <a href="https://durable.co" target="_blank" class="dir-card"><span class="dir-icon">🌐</span><span class="dir-name">Durable AI</span></a>
+          <a href="https://framer.com" target="_blank" class="dir-card"><span class="dir-icon">🖼️</span><span class="dir-name">Framer AI</span></a>
+          <a href="https://10web.io" target="_blank" class="dir-card"><span class="dir-icon">🔟</span><span class="dir-name">10Web</span></a>
+          <a href="https://wix.com" target="_blank" class="dir-card"><span class="dir-icon">✨</span><span class="dir-name">Wix ADI</span></a>
+        </div>
+      </div>
+
+      <!-- AI Chatbot Builder -->
+      <div class="directory-category">
+        <h3 class="category-title">🔟 AI Chatbot Builder</h3>
+        <div class="directory-grid">
+          <a href="https://botpress.com" target="_blank" class="dir-card"><span class="dir-icon">🤖</span><span class="dir-name">Botpress</span></a>
+          <a href="https://rasa.com" target="_blank" class="dir-card"><span class="dir-icon">💬</span><span class="dir-name">Rasa</span></a>
+          <a href="https://tidio.com" target="_blank" class="dir-card"><span class="dir-icon">💭</span><span class="dir-name">Tidio</span></a>
+          <a href="https://manychat.com" target="_blank" class="dir-card"><span class="dir-icon">📱</span><span class="dir-name">ManyChat</span></a>
+        </div>
+      </div>
+
+      <!-- AI Automation -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣1️⃣ AI Automation</h3>
+        <div class="directory-grid">
+          <a href="https://zapier.com" target="_blank" class="dir-card"><span class="dir-icon">⚡</span><span class="dir-name">Zapier AI</span></a>
+          <a href="https://make.com" target="_blank" class="dir-card"><span class="dir-icon">🔧</span><span class="dir-name">Make</span></a>
+          <a href="https://bardeen.ai" target="_blank" class="dir-card"><span class="dir-icon">🎯</span><span class="dir-name">Bardeen</span></a>
+          <a href="https://ifttt.com" target="_blank" class="dir-card"><span class="dir-icon">🔗</span><span class="dir-name">IFTTT</span></a>
+        </div>
+      </div>
+
+      <!-- AI Productivity -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣2️⃣ AI Productivity</h3>
+        <div class="directory-grid">
+          <a href="https://notion.so" target="_blank" class="dir-card"><span class="dir-icon">📓</span><span class="dir-name">Notion AI</span></a>
+          <a href="https://taskade.com" target="_blank" class="dir-card"><span class="dir-icon">✅</span><span class="dir-name">Taskade</span></a>
+          <a href="https://usemotion.com" target="_blank" class="dir-card"><span class="dir-icon">📅</span><span class="dir-name">Motion</span></a>
+          <a href="https://mem.ai" target="_blank" class="dir-card"><span class="dir-icon">🧠</span><span class="dir-name">Mem</span></a>
+        </div>
+      </div>
+
+      <!-- AI Presentation -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣3️⃣ AI Presentation</h3>
+        <div class="directory-grid">
+          <a href="https://tome.app" target="_blank" class="dir-card"><span class="dir-icon">📊</span><span class="dir-name">Tome</span></a>
+          <a href="https://slidesai.io" target="_blank" class="dir-card"><span class="dir-icon">📑</span><span class="dir-name">SlidesAI</span></a>
+          <a href="https://beautiful.ai" target="_blank" class="dir-card"><span class="dir-icon">✨</span><span class="dir-name">Beautiful.ai</span></a>
+        </div>
+      </div>
+
+      <!-- AI Design -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣4️⃣ AI Design</h3>
+        <div class="directory-grid">
+          <a href="https://canva.com" target="_blank" class="dir-card"><span class="dir-icon">🎨</span><span class="dir-name">Canva AI</span></a>
+          <a href="https://figma.com" target="_blank" class="dir-card"><span class="dir-icon">🖌️</span><span class="dir-name">Figma AI</span></a>
+          <a href="https://uizard.io" target="_blank" class="dir-card"><span class="dir-icon">📱</span><span class="dir-name">Uizard</span></a>
+        </div>
+      </div>
+
+      <!-- AI Marketing -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣5️⃣ AI Marketing</h3>
+        <div class="directory-grid">
+          <a href="https://adcreative.ai" target="_blank" class="dir-card"><span class="dir-icon">📢</span><span class="dir-name">AdCreative.ai</span></a>
+          <a href="https://ocoya.com" target="_blank" class="dir-card"><span class="dir-icon">📣</span><span class="dir-name">Ocoya</span></a>
+          <a href="https://hoppycopy.co" target="_blank" class="dir-card"><span class="dir-icon">📧</span><span class="dir-name">Hoppy Copy</span></a>
+        </div>
+      </div>
+
+      <!-- AI E-Commerce -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣6️⃣ AI E-Commerce</h3>
+        <div class="directory-grid">
+          <a href="https://photoroom.com" target="_blank" class="dir-card"><span class="dir-icon">📸</span><span class="dir-name">PhotoRoom</span></a>
+          <a href="https://zyro.com" target="_blank" class="dir-card"><span class="dir-icon">🛒</span><span class="dir-name">Zyro AI</span></a>
+          <a href="https://shopify.com/magic" target="_blank" class="dir-card"><span class="dir-icon">✨</span><span class="dir-name">Shopify Magic</span></a>
+        </div>
+      </div>
+
+      <!-- AI HR/Resume -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣7️⃣ AI HR / Resume</h3>
+        <div class="directory-grid">
+          <a href="https://kickresume.com" target="_blank" class="dir-card"><span class="dir-icon">📄</span><span class="dir-name">Kickresume</span></a>
+          <a href="https://resumeworded.com" target="_blank" class="dir-card"><span class="dir-icon">📋</span><span class="dir-name">Resume Worded</span></a>
+          <a href="https://hirevue.com" target="_blank" class="dir-card"><span class="dir-icon">👔</span><span class="dir-name">HireVue</span></a>
+        </div>
+      </div>
+
+      <!-- AI Education -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣8️⃣ AI Education</h3>
+        <div class="directory-grid">
+          <a href="https://khanacademy.org/khan-labs" target="_blank" class="dir-card"><span class="dir-icon">🎓</span><span class="dir-name">Khanmigo</span></a>
+          <a href="https://socratic.org" target="_blank" class="dir-card"><span class="dir-icon">📚</span><span class="dir-name">Socratic</span></a>
+          <a href="https://magicschool.ai" target="_blank" class="dir-card"><span class="dir-icon">🏫</span><span class="dir-name">MagicSchool</span></a>
+        </div>
+      </div>
+
+      <!-- AI Search -->
+      <div class="directory-category">
+        <h3 class="category-title">1️⃣9️⃣ AI Search</h3>
+        <div class="directory-grid">
+          <a href="https://you.com" target="_blank" class="dir-card"><span class="dir-icon">🔍</span><span class="dir-name">You.com</span></a>
+          <a href="https://phind.com" target="_blank" class="dir-card"><span class="dir-icon">💡</span><span class="dir-name">Phind</span></a>
+          <a href="https://andisearch.com" target="_blank" class="dir-card"><span class="dir-icon">🌟</span><span class="dir-name">Andi</span></a>
+        </div>
+      </div>
+
+      <!-- Open Source AI -->
+      <div class="directory-category">
+        <h3 class="category-title">2️⃣0️⃣ Open-Source / Local AI</h3>
+        <div class="directory-grid">
+          <a href="https://ollama.ai" target="_blank" class="dir-card"><span class="dir-icon">🦙</span><span class="dir-name">Ollama</span></a>
+          <a href="https://lmstudio.ai" target="_blank" class="dir-card"><span class="dir-icon">🖥️</span><span class="dir-name">LM Studio</span></a>
+          <a href="https://gpt4all.io" target="_blank" class="dir-card"><span class="dir-icon">🌍</span><span class="dir-name">GPT4All</span></a>
+          <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" class="dir-card"><span class="dir-icon">🎨</span><span class="dir-name">SD WebUI</span></a>
+        </div>
+      </div>
+
     </div>
   </section>
 
