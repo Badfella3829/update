@@ -105,7 +105,7 @@
             'Content-Type': 'application/json',
             'X-User-Plan': userPlan
           },
-          body: JSON.stringify({ name, role, experience, industry })
+          body: JSON.stringify({ name, jobTitle: role, experience, skills: '', education: '', summary: industry })
         });
         
         const data = await response.json();

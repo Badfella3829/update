@@ -101,7 +101,7 @@
             'Content-Type': 'application/json',
             'X-User-Plan': userPlan
           },
-          body: JSON.stringify({ type, data })
+          body: JSON.stringify({ task: type, data })
         });
         
         const responseData = await response.json();
