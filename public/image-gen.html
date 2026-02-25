@@ -105,13 +105,13 @@
         
         const data = await response.json();
         
-        if (data.success && data.imageUrl) {
+        if (data.success && data.image) {
           const newCredits = await deductCredits(CREDIT_COST, TOOL_NAME);
           document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
           await logToolUsage(TOOL_NAME);
           
           result.innerHTML = `
-            <img src="${data.imageUrl}" alt="Generated image">
+            <img src="${data.image}" alt="Generated image">
             <p style="margin-top: 15px; color: var(--text-muted);">Right-click to save the image</p>
           `;
         } else {

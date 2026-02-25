@@ -106,21 +106,20 @@
           body: JSON.stringify({ text, voice })
         });
         
-        if (response.ok) {
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          
+        const data = await response.json();
+        
+        if (data.success && data.audio) {
           const newCredits = await deductCredits(5);
           document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
           await logToolUsage('Voice AI');
           
           result.innerHTML = `
-            <audio controls src="${url}"></audio>
+            <audio controls src="${data.audio}"></audio>
             <p style="margin-top: 15px; color: var(--text-muted);">Click play to listen</p>
           `;
         } else {
-          const data = await response.json();
-          result.innerHTML = `<div class="error">${data.error || 'Failed to generate voice'}</div>`;
+          const errorMsg = (data && data.error) ? data.error : 'Failed to generate voice';
+          result.innerHTML = `<div class="error">${errorMsg}</div>`;
         }
       } catch (error) {
         result.innerHTML = `<div class="error">Error: Could not connect to server</div>`;

@@ -143,7 +143,9 @@ app.post('/api/content-ai', requirePremium, async (req, res) => {
       'article': 'Write an informative article about',
       'social': 'Write engaging social media posts about',
       'marketing': 'Write marketing copy about',
-      'description': 'Write a product description for'
+      'description': 'Write a product description for',
+      'ad': 'Write compelling ad copy about',
+      'email': 'Write an email newsletter about'
     };
 
     const contentPrompt = contentTypes[type] || contentTypes['blog'];

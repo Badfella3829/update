@@ -97,6 +97,10 @@
       
       if (!context) { alert('Please describe the purpose'); return; }
       
+      const typeMap = { professional: 'business', followup: 'follow-up', apology: 'apology', request: 'request', thank: 'thank-you', introduction: 'introduction' };
+      const mappedType = typeMap[type] || type;
+      const subject = recipient ? `${recipient}: ${context.substring(0, 100)}` : context.substring(0, 150);
+
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Writing...</span>';
       result.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Composing email...</div>';
@@ -108,7 +112,7 @@
             'Content-Type': 'application/json',
             'X-User-Plan': userPlan
           },
-          body: JSON.stringify({ type, recipient, context })
+          body: JSON.stringify({ type: mappedType, subject, details: context })
         });
         
         const data = await response.json();

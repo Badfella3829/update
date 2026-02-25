@@ -108,19 +108,24 @@
       result.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Working on it...</div>';
       
       try {
+        const taskDesc = action === 'generate'
+          ? `Generate ${language} code for: ${input}`
+          : `${action.charAt(0).toUpperCase() + action.slice(1)} this ${language} code`;
+        const codePayload = action !== 'generate' ? input : '';
+
         const response = await fetch('/api/code-ai', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
             'X-User-Plan': userPlan
           },
-          body: JSON.stringify({ action, language, input })
+          body: JSON.stringify({ task: taskDesc, language, code: codePayload })
         });
         
         const data = await response.json();
         
-        if (data.success && data.code) {
-          lastCode = data.code;
+        if (data.success && data.result) {
+          lastCode = data.result;
           
           const newCredits = await deductCredits(5);
           document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
@@ -128,7 +133,7 @@
           
           result.innerHTML = `
             <div class="result">
-              <pre>${escapeHtml(data.code)}</pre>
+              <pre>${escapeHtml(data.result)}</pre>
               <button class="copy-btn" onclick="copyCode()">📋 Copy Code</button>
             </div>
           `;
