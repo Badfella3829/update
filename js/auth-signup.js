@@ -56,6 +56,22 @@ async function processReferral(referralCode, newUserId) {
       }
 
       logAuthEvent('referral_processed', { referrerId, referredId: newUserId, creditsRewarded: 50 });
+
+      // Create in-app notification for referrer
+      try {
+        await addDoc(collection(db, 'notifications'), {
+          userId: referrerId,
+          type: 'in_app',
+          title: '🎉 Referral Reward!',
+          message: 'Someone signed up using your referral code. You earned 50 credits!',
+          priority: 'high',
+          isRead: false,
+          shown: false,
+          createdAt: new Date()
+        });
+      } catch (notifError) {
+        // Don't fail referral for notification error
+      }
     }
   } catch (error) {
     logError(error, { context: 'referral_processing', referralCode, newUserId });
@@ -106,14 +122,17 @@ window.signup = async function () {
       referralCode: referralCode
     });
 
-    // Send welcome email (non-blocking)
+    // Send welcome email (non-blocking) with status indicator
+    let emailStatusText = '';
     try {
+      if (msg) { msg.style.color = "#60a5fa"; msg.innerText = "✉️ Sending welcome email..."; }
       const sendWelcomeEmail = httpsCallable('sendWelcomeEmail');
       await sendWelcomeEmail({
         email: email,
         userName: email.split('@')[0], // Use email prefix as name for now
         userId: res.user.uid
       });
+      emailStatusText = ' A welcome email has been sent.';
       logAuthEvent('welcome_email_sent', { userId: res.user.uid, email });
     } catch (emailError) {
       // Log but don't fail signup if email fails
@@ -129,7 +148,7 @@ window.signup = async function () {
 
     // ✅ SUCCESS MESSAGE (GUARANTEED VISIBLE)
     msg.style.color = "green";
-    msg.innerText = "Signup successful! Please check your email and verify your account before logging in.";
+    msg.innerText = "Signup successful! Please check your email and verify your account before logging in." + emailStatusText;
 
     setTimeout(() => {
       location.href = "login.html";

@@ -1824,6 +1824,19 @@
     .footer-content { flex-direction: column; gap: 10px; text-align: center; }
   }
 
+  @media(max-width:375px){
+    .main-content { padding: 8px; }
+    .grid { grid-template-columns: 1fr; gap: 8px; }
+    .card { padding: 10px; }
+    .recent-activity-content { grid-template-columns: 1fr; gap: 8px; }
+    .header { padding: 6px 8px; gap: 6px; }
+    .search-container { display: none; }
+    .notification-dropdown { width: 280px; right: -60px; }
+    .settings-dropdown { width: 220px; }
+    .page-title h1 { font-size: 13px; }
+    .credit-box { font-size: 10px; padding: 4px 7px; }
+  }
+
   @media(max-width:600px){
     :root {
       --sidebar-width: 160px;
@@ -2036,7 +2049,7 @@
 
     <div class="sidebar-footer">
       <!-- Premium Upgrade CTA -->
-      <a href="pricing.html" class="sidebar-upgrade-btn">
+      <a href="pricing.html" class="sidebar-upgrade-btn" data-tooltip="Upgrade to Pro for unlimited access">
         <div class="upgrade-glow"></div>
         <span class="upgrade-icon">✨</span>
         <span class="upgrade-text">Upgrade to Pro</span>
@@ -2056,7 +2069,7 @@
     <!-- HEADER -->
     <header class="header">
       <div class="header-left">
-        <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Menu">☰</button>
+        <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Menu" data-tooltip="Toggle Sidebar">☰</button>
         <img src="logo.jpg" alt="TechVyro" class="header-logo">
         <div class="page-title">
           <h1>Dashboard</h1>
@@ -2066,16 +2079,16 @@
 
       <div class="header-right">
         <div class="search-container">
-          <input type="text" id="globalSearch" class="search-input" placeholder="Search tools...">
+          <input type="text" id="globalSearch" class="search-input" placeholder="Search tools..." data-tooltip="Search all tools">
         </div>
 
-        <div class="credit-box">
+        <div class="credit-box" data-tooltip="Your AI credits balance">
           ⚡ <span id="creditText">200 Credits</span>
         </div>
 
         <!-- SETTINGS DROPDOWN -->
         <div class="settings-container">
-          <button class="settings-btn" id="settingsBtn" title="Settings & Profile">
+          <button class="settings-btn" id="settingsBtn" title="Settings & Profile" data-tooltip="Account settings & profile">
             <span class="settings-gear">⚙️</span>
             <span class="user-name" id="headerUserName">Settings</span>
             <span class="dropdown-arrow">▼</span>
@@ -2247,7 +2260,7 @@
           </div>
         </div>
         <div class="welcome-right">
-          <button class="notification-icon-small" onclick="toggleNotifications()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
+          <button class="notification-icon-small" onclick="toggleNotifications()" data-tooltip="View notifications" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #fff; transition: all 0.3s ease; position: relative;">
             🔔
             <div class="notification-badge" id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: none; align-items: center; justify-content: center; border: 2px solid #0f172a;"></div>
           </button>

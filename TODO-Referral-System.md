@@ -15,6 +15,6 @@
 - [x] public/dashboard.html: Add referral UI
 
 ## Followup Steps
-- [ ] Test referral flow end-to-end
-- [ ] Add notifications for rewards
-- [ ] Update analytics for referral tracking
+- [x] Test referral flow end-to-end
+- [x] Add notifications for rewards (in-app notification created when credits are awarded)
+- [x] Update analytics for referral tracking

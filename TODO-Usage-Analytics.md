@@ -13,13 +13,15 @@
 - [x] Update admin dashboard HTML to include usage analytics sections (mostUsedTools, dropOffReasons, upgradeBehavior)
 
 ## Testing & Verification
-- [ ] Test logging in various scenarios (tool use, drop-off, upgrade)
-- [ ] Verify data collection in Firestore usage_logs collection
-- [ ] Check admin dashboard displays usage metrics correctly
-- [ ] Monitor for performance impact of additional logging
+- [x] Test logging in various scenarios (tool use, drop-off, upgrade)
+- [x] Verify data collection in Firestore usage_logs collection
+- [x] Check admin dashboard displays usage metrics correctly
+- [x] Monitor for performance impact of additional logging
 
-## Future Enhancements
-- [ ] Add time-based analytics (daily/weekly usage trends)
-- [ ] Implement user segmentation analytics (free vs paid behavior)
-- [ ] Add conversion funnel analysis (free -> pro -> premium)
+## Advanced Analytics
+- [x] Add time-based analytics (daily/weekly usage trends) — `loadTimeBasedAnalytics()` in analytics.js
+- [x] Implement user segmentation analytics (free vs paid behaviour) — `loadUserSegmentationAnalytics()` in analytics.js
+- [x] Add daily chart (Chart.js bar) and weekly summary in analytics.html
+- [x] Add segmentation doughnut chart with active/inactive breakdown
+- [ ] Add conversion funnel analysis (free → pro → premium)
 - [ ] Create automated reports for usage insights
