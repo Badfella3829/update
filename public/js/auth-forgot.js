@@ -3,6 +3,7 @@ import { sendPasswordResetEmail } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 import { logAuthEvent, logError } from "./logger.js";
+import { showError } from "./error-handler.js";
 
 window.resetPassword = function () {
   const resetBtn = document.querySelector('button[type="submit"], button[id="resetBtn"], input[type="submit"]');
