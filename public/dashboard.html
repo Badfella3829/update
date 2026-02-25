@@ -4689,17 +4689,186 @@
         }
       }
 
+      async function loadRecentActivity() {
+        try {
+          const { auth, db } = await import("./js/firebase.js");
+          const { doc, getDoc, collection, query, where, orderBy, limit, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+          auth.onAuthStateChanged(async (user) => {
+            if (!user) return;
+
+            try {
+              // Fetch user document
+              const userDoc = await getDoc(doc(db, "users", user.uid));
+              const userData = userDoc.exists() ? userDoc.data() : {};
+              const plan = userData.plan || "free";
+
+              // Update last login time
+              const lastLoginEl = document.getElementById("lastLoginTime");
+              if (lastLoginEl && userData.lastLogin) {
+                const loginDate = userData.lastLogin.toDate ? userData.lastLogin.toDate() : new Date(userData.lastLogin);
+                const now = new Date();
+                const diff = now - loginDate;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(diff / 3600000);
+                const days = Math.floor(diff / 86400000);
+                let timeStr;
+                if (minutes < 1) timeStr = "Just now";
+                else if (minutes < 60) timeStr = `${minutes}m ago`;
+                else if (hours < 24) timeStr = `${hours}h ago`;
+                else timeStr = `${days}d ago`;
+                lastLoginEl.innerText = timeStr;
+              }
+
+              // Compute remaining limit
+              const remainingLimitEl = document.getElementById("remainingLimit");
+              if (remainingLimitEl) {
+                if (plan !== "free") {
+                  remainingLimitEl.innerText = "Unlimited";
+                } else {
+                  // Count today's usage_logs for this user
+                  const todayStart = new Date();
+                  todayStart.setHours(0, 0, 0, 0);
+                  const usageSnap = await getDocs(query(
+                    collection(db, "usage_logs"),
+                    where("userId", "==", user.uid),
+                    where("event", "==", "tool_usage"),
+                    orderBy("timestamp", "desc"),
+                    limit(50)
+                  ));
+
+                  let todayCount = 0;
+                  let lastTool = null;
+                  let lastActivityDate = null;
+
+                  usageSnap.forEach(d => {
+                    const entry = d.data();
+                    const ts = entry.timestamp?.toDate ? entry.timestamp.toDate() : (entry.data?.timestamp ? new Date(entry.data.timestamp) : null);
+                    if (ts && ts >= todayStart) todayCount++;
+                    if (!lastTool && entry.data?.tool) lastTool = entry.data.tool;
+                    if (!lastActivityDate && ts) lastActivityDate = ts;
+                  });
+
+                  const dailyLimit = 5;
+                  const remaining = Math.max(0, dailyLimit - todayCount);
+                  remainingLimitEl.innerText = `${remaining} / ${dailyLimit}`;
+
+                  // Update today's usage
+                  const todayUsageEl = document.getElementById("todayUsage");
+                  if (todayUsageEl) todayUsageEl.innerText = todayCount;
+
+                  // Update last used tool
+                  const lastUsedToolEl = document.getElementById("lastUsedTool");
+                  if (lastUsedToolEl && lastTool) lastUsedToolEl.innerText = lastTool;
+
+                  // Update last activity
+                  const lastActivityEl = document.getElementById("lastActivity");
+                  if (lastActivityEl && lastActivityDate) {
+                    const now = new Date();
+                    const diff = now - lastActivityDate;
+                    const minutes = Math.floor(diff / 60000);
+                    const hours = Math.floor(diff / 3600000);
+                    const days = Math.floor(diff / 86400000);
+                    if (minutes < 1) lastActivityEl.innerText = "Just now";
+                    else if (minutes < 60) lastActivityEl.innerText = `${minutes}m ago`;
+                    else if (hours < 24) lastActivityEl.innerText = `${hours}h ago`;
+                    else lastActivityEl.innerText = `${days}d ago`;
+                  }
+                }
+
+                if (plan !== "free") {
+                  // For premium: fetch recent tool usage
+                  const usageSnap2 = await getDocs(query(
+                    collection(db, "usage_logs"),
+                    where("userId", "==", user.uid),
+                    where("event", "==", "tool_usage"),
+                    orderBy("timestamp", "desc"),
+                    limit(10)
+                  ));
+
+                  let todayCount2 = 0;
+                  const todayStart2 = new Date(); todayStart2.setHours(0, 0, 0, 0);
+                  let lastTool2 = null;
+                  let lastActivityDate2 = null;
+
+                  usageSnap2.forEach(d => {
+                    const entry = d.data();
+                    const ts = entry.timestamp?.toDate ? entry.timestamp.toDate() : (entry.data?.timestamp ? new Date(entry.data.timestamp) : null);
+                    if (ts && ts >= todayStart2) todayCount2++;
+                    if (!lastTool2 && entry.data?.tool) lastTool2 = entry.data.tool;
+                    if (!lastActivityDate2 && ts) lastActivityDate2 = ts;
+                  });
+
+                  const todayUsageEl = document.getElementById("todayUsage");
+                  if (todayUsageEl) todayUsageEl.innerText = todayCount2;
+
+                  const lastUsedToolEl = document.getElementById("lastUsedTool");
+                  if (lastUsedToolEl && lastTool2) lastUsedToolEl.innerText = lastTool2;
+
+                  const lastActivityEl = document.getElementById("lastActivity");
+                  if (lastActivityEl && lastActivityDate2) {
+                    const now = new Date();
+                    const diff = now - lastActivityDate2;
+                    const minutes = Math.floor(diff / 60000);
+                    const hours = Math.floor(diff / 3600000);
+                    const days = Math.floor(diff / 86400000);
+                    if (minutes < 1) lastActivityEl.innerText = "Just now";
+                    else if (minutes < 60) lastActivityEl.innerText = `${minutes}m ago`;
+                    else if (hours < 24) lastActivityEl.innerText = `${hours}h ago`;
+                    else lastActivityEl.innerText = `${days}d ago`;
+                  }
+                }
+              }
+
+              // Fetch last upgrade attempt from payment_logs
+              const upgradeEl = document.getElementById("lastUpgradeAttempt");
+              if (upgradeEl) {
+                try {
+                  const upgradeSnap = await getDocs(query(
+                    collection(db, "payment_logs"),
+                    where("userId", "==", user.uid),
+                    orderBy("timestamp", "desc"),
+                    limit(1)
+                  ));
+                  if (!upgradeSnap.empty) {
+                    const upgradeEntry = upgradeSnap.docs[0].data();
+                    const ts = upgradeEntry.timestamp?.toDate ? upgradeEntry.timestamp.toDate() : (upgradeEntry.data?.timestamp ? new Date(upgradeEntry.data.timestamp) : null);
+                    if (ts) {
+                      const now = new Date();
+                      const diff = now - ts;
+                      const days = Math.floor(diff / 86400000);
+                      const hours = Math.floor(diff / 3600000);
+                      const minutes = Math.floor(diff / 60000);
+                      if (minutes < 1) upgradeEl.innerText = "Just now";
+                      else if (minutes < 60) upgradeEl.innerText = `${minutes}m ago`;
+                      else if (hours < 24) upgradeEl.innerText = `${hours}h ago`;
+                      else upgradeEl.innerText = `${days}d ago`;
+                    }
+                  }
+                } catch (e) { /* payment_logs query may fail silently */ }
+              }
+
+            } catch (err) {
+              console.warn("Recent activity load error:", err);
+            }
+          });
+        } catch (err) {
+          console.warn("Recent activity init error:", err);
+        }
+      }
+
       await loadNotifications();
       await loadUserProfile();
+      loadRecentActivity();
 
         // Example: Show a welcome notification after 2 seconds
         setTimeout(() => {
           if (window.notifications && typeof window.notifications.showInAppNotification === 'function') {
-            window.notifications.showInAppNotification(
-              "Welcome Back!",
-              "You have new updates in your dashboard. Check out the latest AI tools!",
-              "high"
-            );
+            window.notifications.showInAppNotification({
+              title: "Welcome Back!",
+              message: "You have new updates in your dashboard. Check out the latest AI tools!",
+              priority: "high"
+            });
           }
         }, 2000);
       });
