@@ -105,13 +105,13 @@
         
         const data = await response.json();
         
-        if (data.success && data.imageUrl) {
+        if (data.success && data.image) {
           const newCredits = await deductCredits(5);
           document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
           await logToolUsage('Logo Maker');
           
           result.innerHTML = `
-            <img src="${data.imageUrl}" alt="Generated logo">
+            <img src="${data.image}" alt="Generated logo">
             <p style="margin-top: 15px; color: var(--text-muted);">Right-click to save the logo</p>
           `;
         } else {

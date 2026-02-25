@@ -124,6 +124,8 @@ onAuthStateChanged(auth, async (user) => {
       planEl.innerText = planText;
       planEl.className = `plan-badge ${userPlan}`;
     }
+    // Store user plan in localStorage for use by openPremiumTool and getUserPlan
+    localStorage.setItem('userPlan', userPlan);
 
     // Update Member Since Date
     const memberSinceEl = document.getElementById("memberSince");

@@ -3526,17 +3526,24 @@
     let credits = 200;
     const maxCredits = 200;
 
+    // Helper to get current credits from UI (set by dashboard.js from Firebase)
+    function getCurrentCredits() {
+      const creditText = document.getElementById('creditText');
+      if (creditText) {
+        const match = creditText.textContent.match(/(\d+)/);
+        if (match) return parseInt(match[1]);
+      }
+      return credits;
+    }
+
     window.checkCreditAndOpen = (toolType) => {
-      if(credits < 5) {
+      const currentCredits = getCurrentCredits();
+      if(currentCredits < 5) {
         document.getElementById('premiumModal').style.display = 'flex';
         return;
       }
       
-      // Deduct credits and update UI
-      credits -= 5;
-      updateCreditUI();
-      
-      // Track tool usage
+      // Track tool usage (credit deduction happens on the tool page)
       const toolNames = {
         chat: 'AI Chat', image: 'Image Generator', logo: 'Logo Maker',
         content: 'Content AI', code: 'Code AI', email: 'Email AI',
@@ -3632,7 +3639,10 @@
     };
     
     // Get user plan for premium API calls
-    const getUserPlan = () => localStorage.getItem('userPlan') || 'free';
+    const getUserPlan = () => {
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      return localStorage.getItem('userPlan') || storedUser.plan || 'free';
+    };
     
     // Content AI
     window.generateContent = async () => {
@@ -4459,7 +4469,8 @@
     // Premium tool access - checks user plan
     window.openPremiumTool = async (toolType) => {
       // Check if user is premium (from localStorage or Firebase)
-      const userPlan = localStorage.getItem('userPlan') || 'free';
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      const userPlan = localStorage.getItem('userPlan') || storedUser.plan || 'free';
       const isPremium = ['pro', 'premium', 'admin'].includes(userPlan.toLowerCase());
       
       if (!isPremium) {
@@ -4689,6 +4700,7 @@
                   localStorage.setItem('userName', name);
                 }
                 plan = data.plan || "free";
+                localStorage.setItem('userPlan', plan);
                 
                 const updatedUser = { ...storedUser, name, displayName: name, plan };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
