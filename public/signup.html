@@ -242,7 +242,7 @@
     // --- FIREBASE IMPORTS ---
     import { auth, db } from './js/firebase.js';
     import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { doc, setDoc, getDoc, updateDoc, serverTimestamp, collection, query, where, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     const btn = document.getElementById("signupBtn");
     const toast = document.getElementById("toast");
@@ -264,7 +264,8 @@
       const fullName = document.getElementById("fullName").value.trim();
       const u = document.getElementById("username").value.trim();
       const p = document.getElementById("password").value;
-      const referralCode = document.getElementById("referralCode").value.trim();
+      const referralCode = (document.getElementById("referralCode").value.trim() ||
+        new URLSearchParams(window.location.search).get('ref') || '').toUpperCase();
 
       if (!fullName || !u || !p) return showToast("Please fill in all fields", "error");
       if (!u.includes("@") || !u.includes(".")) return showToast("Please enter a valid email address", "error");
@@ -308,9 +309,46 @@
         // Handle referral if provided
         if (referralCode) {
           try {
-            // Find referrer by code
-            const usersRef = await getDoc(doc(db, "users", referralCode));
-            // Add referral record (simplified)
+            // Find referrer by referral code field
+            const referrerQuery = query(
+              collection(db, "users"),
+              where("referralCode", "==", referralCode)
+            );
+            const referrerSnap = await getDocs(referrerQuery);
+            if (!referrerSnap.empty) {
+              const referrerDoc = referrerSnap.docs[0];
+              const referrerId = referrerDoc.id;
+
+              // Add referral record
+              const referralDocRef = await addDoc(collection(db, "referrals"), {
+                referrerId: referrerId,
+                referredId: user.uid,
+                referralCode: referralCode,
+                timestamp: new Date(),
+                rewarded: false
+              });
+
+              // Reward referrer with 50 credits
+              const currentCredits = referrerDoc.data().credits || 0;
+              await updateDoc(doc(db, "users", referrerId), {
+                credits: currentCredits + 50
+              });
+
+              // Mark referral as rewarded
+              await updateDoc(referralDocRef, { rewarded: true });
+
+              // Create in-app notification for referrer
+              await addDoc(collection(db, "notifications"), {
+                userId: referrerId,
+                type: 'in_app',
+                title: '🎉 Referral Reward!',
+                message: 'Someone signed up using your referral code. You earned 50 credits!',
+                priority: 'high',
+                isRead: false,
+                shown: false,
+                createdAt: new Date()
+              });
+            }
           } catch (refErr) {
             console.log("Referral processing error:", refErr);
           }
