@@ -3,9 +3,9 @@ import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailA
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, addDoc, query, where, getDocs, updateDoc } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
+import { httpsCallable, getFunctions } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 import { showError, withErrorHandling } from "./error-handler.js";
-import { logAuthEvent, logError } from "./logger.js";
+import { logAuthEvent, logError, setCurrentUser } from "./logger.js";
 const db = getFirestore(app);
 
 // Generate unique referral code
@@ -108,7 +108,7 @@ window.signup = async function () {
 
     // Send welcome email (non-blocking)
     try {
-      const sendWelcomeEmail = httpsCallable('sendWelcomeEmail');
+      const sendWelcomeEmail = httpsCallable(getFunctions(), 'sendWelcomeEmail');
       await sendWelcomeEmail({
         email: email,
         userName: email.split('@')[0], // Use email prefix as name for now

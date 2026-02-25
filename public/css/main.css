@@ -82,3 +82,15 @@ body.light-mode .card {
   height:20px;
   fill:#6c5ce7;
 }
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+    margin-top: 60px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+}
