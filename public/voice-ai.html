@@ -117,6 +117,19 @@
             <audio controls src="${data.audio}"></audio>
             <p style="margin-top: 15px; color: var(--text-muted);">Click play to listen</p>
           `;
+        } else if (data.success && data.text) {
+          // Fallback: text-to-speech not available, use browser TTS
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Voice AI');
+          const utterance = new SpeechSynthesisUtterance(data.text);
+          window.speechSynthesis.speak(utterance);
+          result.innerHTML = `
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px;">
+              <p style="color: var(--text-main); margin-bottom: 12px;">${data.text}</p>
+              <button onclick="window.speechSynthesis.speak(new SpeechSynthesisUtterance(${JSON.stringify(data.text)}))" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">🔊 Play Again</button>
+            </div>
+          `;
         } else {
           const errorMsg = (data && data.error) ? data.error : 'Failed to generate voice';
           result.innerHTML = `<div class="error">${errorMsg}</div>`;
