@@ -75,8 +75,8 @@ window.openProfile = () => {
 };
 
 window.openHelp = () => {
-  // Navigate to help page
-  window.location.href = "help.html";
+  // Navigate to support/contact page
+  window.location.href = "contact.html";
 };
 
 // --- AUTHENTICATION CHECK ---
