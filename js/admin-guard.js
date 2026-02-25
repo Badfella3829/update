@@ -1,3 +1,5 @@
+import { showError } from "./error-handler.js";
+
 /* ================================
    ADMIN GUARD SYSTEM
    Protects admin-only pages

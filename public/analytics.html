@@ -182,6 +182,28 @@
     <a href="pricing.html">Upgrade now</a> to unlock full insights 🚀
   </div>
 
+  <!-- Usage Analytics Sections (populated by analytics.js) -->
+  <h3 style="margin-top:24px">🔧 Most Used Tools</h3>
+  <ul id="mostUsedTools"><li>Loading...</li></ul>
+
+  <h3 style="margin-top:24px">📉 Drop-off Reasons</h3>
+  <ul id="dropOffReasons"><li>Loading...</li></ul>
+
+  <h3 style="margin-top:24px">🚀 Upgrade Behaviour</h3>
+  <ul id="upgradeBehavior"><li>Loading...</li></ul>
+
+  <!-- Time-Based Analytics -->
+  <h3 style="margin-top:28px">📅 Daily Tool Usage (Last 7 Days)</h3>
+  <canvas id="dailyChart" height="120"></canvas>
+
+  <h3 style="margin-top:24px">📆 Weekly Usage Summary</h3>
+  <ul id="weeklyStats"><li>Loading...</li></ul>
+
+  <!-- User Segmentation -->
+  <h3 style="margin-top:28px">👥 User Segmentation</h3>
+  <canvas id="segmentationChart" width="300" height="300" style="max-width:300px"></canvas>
+  <ul id="segmentationSummary" style="margin-top:12px"><li>Loading...</li></ul>
+
 </div>
 <!-- 🔥 END PREMIUM WRAPPER -->
 
@@ -224,7 +246,7 @@
     upgradeBox.style.display = "block";
 
     // Mask numbers for classic users
-    ["totalUsers","freeUsers","proUsers","premiumUsers","revenue","mostUsedTools","dropOffReasons","upgradeBehavior"]
+    ["totalUsers","freeUsers","proUsers","premiumUsers","revenue","mostUsedTools","dropOffReasons","upgradeBehavior","weeklyStats","segmentationSummary"]
       .forEach(id => {
         const el = document.getElementById(id);
         if (el) el.innerText = "—";

@@ -20,22 +20,46 @@ class WelcomeTour {
         position: 'bottom'
       },
       {
-        element: '#section-ai .grid .card:first-child',
+        element: '#globalSearch',
+        title: 'Search Tools',
+        content: 'Quickly find any tool by typing its name or description. All 30+ tools are searchable!',
+        position: 'bottom'
+      },
+      {
+        element: '.notification-icon-small',
+        title: 'Notifications',
+        content: 'Stay updated with plan expiry reminders, new feature alerts, and referral rewards right here.',
+        position: 'bottom'
+      },
+      {
+        element: '.recent-activity-section',
+        title: 'Recent Activity',
+        content: 'Track your daily usage, remaining credits, last login time, and last tool used at a glance.',
+        position: 'top'
+      },
+      {
+        element: '#section-ai',
         title: 'AI Tools Section',
-        content: 'Start with our powerful AI tools. AI Chat and Image Generation are ready to use!',
-        position: 'top'
+        content: 'Start with our powerful AI tools. AI Chat, Image Generation, and Code AI are ready to use!',
+        position: 'bottom'
       },
       {
-        element: '#section-design .grid .card:first-child',
+        element: '#section-design',
         title: 'Design Tools',
-        content: 'Create stunning designs with our design tools. More features coming soon!',
-        position: 'top'
+        content: 'Create logos, gradients, colour palettes, and QR codes with our design toolkit.',
+        position: 'bottom'
       },
       {
-        element: '#section-dev .grid .card:first-child',
+        element: '#section-dev',
         title: 'Developer Tools',
-        content: 'Essential tools for developers - JSON formatting, code minification, and more.',
-        position: 'top'
+        content: 'JSON formatter, regex tester, JWT decoder, code minifier — essential dev utilities.',
+        position: 'bottom'
+      },
+      {
+        element: '.settings-btn',
+        title: 'Your Account',
+        content: 'Manage your profile, switch themes, invite friends with your referral code, or logout from here.',
+        position: 'bottom'
       },
       {
         element: '.sidebar-upgrade-btn',

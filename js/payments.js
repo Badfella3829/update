@@ -1,8 +1,8 @@
 import { auth, db } from "./firebase.js";
 import { doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
+import { httpsCallable, getFunctions } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 import { showError } from "./error-handler.js";
-import { logPaymentEvent, logError } from "./logger.js";
+import { logPaymentEvent, logError, setCurrentUser } from "./logger.js";
 
 console.log("payments.js loaded");
 
@@ -111,7 +111,7 @@ window.buyPlan = async function (plan) {
                     });
 
                     // Verify payment with Razorpay before proceeding
-                    const verifyPayment = httpsCallable('verifyPayment');
+                    const verifyPayment = httpsCallable(getFunctions(), 'verifyPayment');
                     const verificationResult = await verifyPayment({
                         paymentId: response.razorpay_payment_id
                     });
@@ -160,9 +160,11 @@ window.buyPlan = async function (plan) {
                         paymentId: response.razorpay_payment_id
                     });
 
-                    // Send upgrade confirmation email (non-blocking)
+                    // Send upgrade confirmation email (non-blocking) with status indicator
+                    let upgradeEmailStatus = '';
                     try {
-                        const sendUpgradeEmail = httpsCallable('sendUpgradeEmail');
+                        showError("✉️ Sending upgrade confirmation email...", { type: 'info', showRetry: false });
+                        const sendUpgradeEmail = httpsCallable(getFunctions(), 'sendUpgradeEmail');
                         await sendUpgradeEmail({
                             email: user.email,
                             userName: user.email.split('@')[0], // Use email prefix as name for now
@@ -171,6 +173,7 @@ window.buyPlan = async function (plan) {
                             toPlan: plan,
                             planTitle: planTitle
                         });
+                        upgradeEmailStatus = ' Confirmation email sent to ' + user.email + '.';
                         logPaymentEvent('upgrade_email_sent', {
                             userId: user.uid,
                             email: user.email,
@@ -187,7 +190,7 @@ window.buyPlan = async function (plan) {
                     }
 
                     // Success Action
-                    showError("Payment Successful! ID: " + response.razorpay_payment_id + ". Plan upgraded to " + planTitle, { type: 'info', showRetry: false });
+                    showError("Payment Successful! ID: " + response.razorpay_payment_id + ". Plan upgraded to " + planTitle + "." + upgradeEmailStatus, { type: 'info', showRetry: false });
 
                     // Redirect
                     setTimeout(() => window.location.href = "dashboard.html", 2000);
