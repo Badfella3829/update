@@ -1,8 +1,8 @@
 import { auth, db } from "./firebase.js";
 import { doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
+import { httpsCallable, getFunctions } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 import { showError } from "./error-handler.js";
-import { logPaymentEvent, logError } from "./logger.js";
+import { logPaymentEvent, logError, setCurrentUser } from "./logger.js";
 
 console.log("payments.js loaded");
 
@@ -111,7 +111,7 @@ window.buyPlan = async function (plan) {
                     });
 
                     // Verify payment with Razorpay before proceeding
-                    const verifyPayment = httpsCallable('verifyPayment');
+                    const verifyPayment = httpsCallable(getFunctions(), 'verifyPayment');
                     const verificationResult = await verifyPayment({
                         paymentId: response.razorpay_payment_id
                     });
@@ -164,7 +164,7 @@ window.buyPlan = async function (plan) {
                     let upgradeEmailStatus = '';
                     try {
                         showError("✉️ Sending upgrade confirmation email...", { type: 'info', showRetry: false });
-                        const sendUpgradeEmail = httpsCallable('sendUpgradeEmail');
+                        const sendUpgradeEmail = httpsCallable(getFunctions(), 'sendUpgradeEmail');
                         await sendUpgradeEmail({
                             email: user.email,
                             userName: user.email.split('@')[0], // Use email prefix as name for now

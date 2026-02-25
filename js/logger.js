@@ -68,7 +68,7 @@ async function storeLog(logEntry) {
       collectionName = 'usage_logs';
     }
 
-    await addDoc(collection(collectionName), logEntry);
+    await addDoc(collection(db, collectionName), logEntry);
   } catch (error) {
     // Don't throw - logging failures shouldn't break the app
     console.error('Log storage failed:', error);
@@ -173,6 +173,30 @@ export function logPageView(page, data = {}) {
     ...data,
     page,
     category: 'navigation'
+  });
+}
+
+// Notification logging functions
+export function logNotificationCreated(notificationId, type, priority) {
+  logger.info('notification_created', {
+    notificationId,
+    type,
+    priority,
+    category: 'notification'
+  });
+}
+
+export function logNotificationRead(notificationId) {
+  logger.info('notification_read', {
+    notificationId,
+    category: 'notification'
+  });
+}
+
+export function logNotificationShown(notificationId) {
+  logger.info('notification_shown', {
+    notificationId,
+    category: 'notification'
   });
 }
 
