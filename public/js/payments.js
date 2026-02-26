@@ -26,6 +26,7 @@ async function getUserPlan() {
 // ✅ Function ko global scope me rakhein (DOMContentLoaded ke bahar)
 window.buyPlan = async function (plan) {
 
+
     // Log buy button click
     logPaymentEvent('buy_button_clicked', {
         plan: plan,
@@ -255,3 +256,6 @@ window.buyPlan = async function (plan) {
         showError("Payment system encountered an error. Please try again or contact support.", { showRetry: true });
     }
 };
+
+// Expose stable reference for pricing.html wrapper to delegate to
+window._paymentsBuyPlan = window.buyPlan;

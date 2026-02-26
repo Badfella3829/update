@@ -55,13 +55,22 @@
     <div id="result" class="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
     let lastOutput = '';
     let authReady = false;
     let creditsDeducted = false;
-    
     initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
       .then(({ credits }) => {
         document.getElementById('loadingScreen').classList.add('hidden');

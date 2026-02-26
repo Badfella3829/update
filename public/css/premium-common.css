@@ -300,30 +300,26 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes rippleAnim {
+  0% { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* animate-fade-in plays a one-shot fade-up animation when added by the scroll observer */
 .animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeIn 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
-/* Cards auto-targeted by initScrollAnimations() start hidden until in viewport */
-.premium-card:not(.animate-fade-in),
-.card:not(.animate-fade-in),
-.tool-card:not(.animate-fade-in),
-.feature-card:not(.animate-fade-in),
-.pricing-card:not(.animate-fade-in),
-.info-card:not(.animate-fade-in),
-.stat-card:not(.animate-fade-in),
-.feature-item:not(.animate-fade-in),
-.step-card:not(.animate-fade-in),
-.faq-item:not(.animate-fade-in),
-.team-card:not(.animate-fade-in),
-.testimonial-card:not(.animate-fade-in) {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
+/* Only elements that explicitly opt-in to scroll-triggered entrance start hidden */
 .animate-on-scroll:not(.animate-fade-in) {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
 }
 
 .animate-slide-in {
@@ -343,14 +339,20 @@ body {
   background: var(--card-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border);
-  padding: 16px 24px;
+  padding: 14px 22px;
   border-radius: 12px;
   font-size: 14px;
+  font-weight: 500;
   z-index: 10001;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 240px;
+  max-width: 420px;
 }
 
 .toast.show {
@@ -361,14 +363,32 @@ body {
 
 .toast.success {
   border-color: var(--success);
+  color: var(--success);
 }
 
 .toast.error {
   border-color: var(--error);
+  color: var(--error);
 }
 
 .toast.warning {
   border-color: var(--warning);
+  color: var(--warning);
+}
+
+.toast.info {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* The message text keeps the page's default text color; only icon gets type color */
+.toast .toast-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.toast span:last-child {
+  color: var(--text-main);
 }
 
 /* ============ INPUT STYLES ============ */

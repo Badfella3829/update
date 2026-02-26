@@ -70,34 +70,55 @@ function initBackToTop() {
 function initLiveCounter() {
   const liveCount = document.getElementById('liveCount');
   if (!liveCount) return;
-  
-  function updateCount() {
-    const base = 120;
-    const variation = Math.floor(Math.random() * 50);
-    liveCount.textContent = base + variation;
+
+  let currentCount = 120 + Math.floor(Math.random() * 50);
+  liveCount.textContent = currentCount;
+
+  function animateTo(target) {
+    const step = target > currentCount ? 1 : -1;
+    const steps = Math.abs(target - currentCount);
+    if (steps === 0) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      currentCount += step;
+      liveCount.textContent = currentCount;
+      if (++i >= steps) clearInterval(interval);
+    }, Math.max(30, 300 / steps));
   }
-  
-  updateCount();
-  setInterval(updateCount, 5000);
+
+  setInterval(() => {
+    // Fluctuate by -3 to +4 for realism
+    const delta = Math.floor(Math.random() * 8) - 3;
+    const next = Math.max(100, Math.min(200, currentCount + delta));
+    animateTo(next);
+  }, 5000);
 }
 
 // ============ TOAST NOTIFICATIONS ============
+const TOAST_ICONS = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+let _toastTimer = null;
+
 function showToast(message, type = 'info') {
   let toast = document.getElementById('toast');
-  
+
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast';
     toast.className = 'toast';
     document.body.appendChild(toast);
   }
-  
-  toast.textContent = message;
+
+  // Clear any pending hide timer so the toast stays fresh
+  if (_toastTimer) clearTimeout(_toastTimer);
+
+  const icon = TOAST_ICONS[type] || 'ℹ️';
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
   toast.className = `toast ${type} show`;
-  
-  setTimeout(() => {
+
+  _toastTimer = setTimeout(() => {
     toast.classList.remove('show');
-  }, 3000);
+    _toastTimer = null;
+  }, 3500);
 }
 
 // ============ RIPPLE EFFECT ============
@@ -148,6 +169,8 @@ const INTERSECTION_THRESHOLD = 0.08;
 
 function initScrollAnimations() {
   // Auto-animate common card and section elements across all pages
+  // Elements are always visible by default — animate-fade-in simply plays a one-shot
+  // fade-up animation when the element first enters the viewport.
   const AUTO_TARGETS = [
     '.animate-on-scroll',
     '.premium-card', '.card', '.tool-card', '.feature-card',
@@ -156,9 +179,8 @@ function initScrollAnimations() {
   ].join(', ');
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        // Stagger each card slightly based on its position within a row
         const siblings = Array.from(entry.target.parentElement.children);
         const index = siblings.indexOf(entry.target);
         entry.target.style.animationDelay = (index * STAGGER_DELAY_S) + 's';
@@ -169,7 +191,6 @@ function initScrollAnimations() {
   }, { threshold: INTERSECTION_THRESHOLD });
 
   document.querySelectorAll(AUTO_TARGETS).forEach(el => {
-    // Skip if already animated or explicitly excluded
     if (!el.classList.contains('animate-fade-in')) {
       observer.observe(el);
     }

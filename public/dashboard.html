@@ -3101,7 +3101,7 @@
         </div>
         <div class="footer-right">
           <span>Support: <a href="mailto:techvyro@gmail.com">techvyro@gmail.com</a></span>
-          <button class="feedback-btn" onclick="showComingSoon()">Feedback</button>
+          <button class="feedback-btn" onclick="window.location.href='submissions.html'">Feedback</button>
         </div>
       </div>
     </div>
@@ -3791,7 +3791,8 @@
             <a href="${data.audio}" download="techvyro-speech.wav" style="color: var(--blue); text-decoration: none;">Download Audio</a>
           `;
         } else if (data.text) {
-          result.innerHTML = `<p style="color: var(--text-muted);">Generated text: ${data.text}</p>`;
+          result.innerHTML = '<p style="color: var(--text-muted);"></p>';
+          result.querySelector('p').textContent = 'Generated text: ' + data.text;
         } else {
           result.innerHTML = `<p style="color: #ef4444;">Error: ${data.error || 'Failed to generate speech'}</p>`;
         }

@@ -379,50 +379,50 @@ iframe.razorpay-checkout-frame {
 
 </div>
 
+<!-- Non-Firebase UI scripts: loader, scroll-reveal, tilt (run regardless of Firebase) -->
+<script>
+(function() {
+  // 1. LOADER
+  window.addEventListener('load', function() {
+    const loader = document.getElementById('pageLoader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(function() { loader.style.display = 'none'; }, 500);
+    }
+  });
+
+  // 2. SCROLL REVEAL
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+  // 3. 3D TILT EFFECT
+  document.querySelectorAll('.js-tilt').forEach(function(card) {
+    card.addEventListener('mousemove', function(e) {
+      const rect = card.getBoundingClientRect();
+      const rotateX = ((e.clientY - rect.top - rect.height / 2) / (rect.height / 2)) * -5;
+      const rotateY = ((e.clientX - rect.left - rect.width / 2) / (rect.width / 2)) * 5;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', function() {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+    });
+  });
+})();
+</script>
+
 <script type="module">
 // Import required modules
 import { auth } from "../js/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// 1. LOADER & ANIMATION
-window.addEventListener("load",()=>{
-  const loader = document.getElementById("pageLoader");
-  if(loader) {
-    loader.style.opacity = '0';
-    setTimeout(() => loader.style.display="none", 500);
-  }
-});
-
-// 2. SCROLL REVEAL
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('active');
-      observer.unobserve(entry.target);
-    }
-  });
-}, {threshold: 0.1});
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// 3. 3D TILT EFFECT (Fixed for Razorpay Compatibility)
-document.querySelectorAll('.js-tilt').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = ((y - centerY) / centerY) * -5;
-    const rotateY = ((x - centerX) / centerX) * 5;
-
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-  });
-
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-  });
-});
+// Loader also handled in non-module script above for Firebase-fail safety
 
 // 4. PAYMENT LOGIC - Using the proper payment system
 // Load the payment module dynamically
@@ -438,7 +438,6 @@ async function loadPaymentSystem() {
     console.log("Payment system loaded successfully");
   } catch (error) {
     console.error("Failed to load payment system:", error);
-    // Fallback: redirect to login if payment system fails to load
     showToast('Payment system not available. Please try logging in first.', 'warning');
     window.location.href = "login.html";
   }
@@ -451,7 +450,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Override buyPlan to ensure payment system is loaded
+// Wrapper buyPlan: ensures payment module is loaded, then delegates to payments.js
 window.buyPlan = async function(planType) {
   const user = auth.currentUser;
   if (!user) {
@@ -460,18 +459,17 @@ window.buyPlan = async function(planType) {
     return;
   }
 
-  // Ensure payment system is loaded
+  // Load payments.js if not already loaded (it replaces window.buyPlan when loaded)
   if (!paymentModuleLoaded) {
     await loadPaymentSystem();
   }
 
-  // Call the proper buyPlan function from payments.js
-  if (window.buyPlan && window.buyPlan !== arguments.callee) {
-    // The payments.js buyPlan function should be loaded now
-    return window.buyPlan(planType);
-  } else {
-    showToast('Payment system failed to load. Please refresh.', 'error');
+  // After loading, payments.js will have set window._paymentsBuyPlan.
+  // If it is not a function, the load failed.
+  if (typeof window._paymentsBuyPlan === 'function') {
+    return window._paymentsBuyPlan(planType);
   }
+  showToast('Payment system failed to load. Please refresh.', 'error');
 };
 </script>
 
