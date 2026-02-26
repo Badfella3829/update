@@ -1416,7 +1416,7 @@
 
     /* ============ TYPING EFFECT ============ */
     .typing-text {
-      display: inline;
+      display: inline-block;
     }
 
     .cursor {
@@ -2581,7 +2581,7 @@
       </div>
       
       <h1 class="hero-title">
-        The Best <span class="typing-text glow-text gradient-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
+        The Best <span class="typing-text gradient-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
       </h1>
       
       <p class="hero-subtitle">
@@ -3615,13 +3615,30 @@
     (function() {
       const bar = document.getElementById('announcementBar');
       const closeBtn = document.getElementById('announcementClose');
+      const header = document.querySelector('.main-header');
       if (!bar || !closeBtn) return;
+
+      function updateHeaderTop() {
+        if (!bar || !header) return;
+        const barHeight = bar.classList.contains('hidden') ? 0 : bar.offsetHeight;
+        header.style.top = barHeight + 'px';
+      }
+
       if (sessionStorage.getItem('announcementDismissed')) {
         bar.classList.add('hidden');
       }
+      updateHeaderTop();
+
       closeBtn.addEventListener('click', () => {
         bar.classList.add('hidden');
         sessionStorage.setItem('announcementDismissed', '1');
+        updateHeaderTop();
+      });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateHeaderTop, 100);
       });
     })();
 
