@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TechVyro — The Best AI Tools Directory</title>
   <link rel="icon" type="image/jpeg" href="./logo.jpg">
+  <meta name="description" content="TechVyro is India's largest AI tools directory. Discover, compare and use 1000+ AI tools for chat, image generation, code, voice and content creation.">
+  <meta name="keywords" content="AI tools, artificial intelligence, AI directory, AI chat, image generator, code AI, voice AI, India, TechVyro">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TechVyro — The Best AI Tools Directory">
+  <meta property="og:description" content="India's largest AI tools directory. Discover, compare and use 1000+ AI tools to supercharge your productivity.">
+  <meta property="og:image" content="./logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TechVyro — The Best AI Tools Directory">
+  <meta name="twitter:description" content="India's largest AI tools directory. Discover 1000+ AI tools for chat, image, code and more.">
   <style>
     :root {
       --bg-dark: #020617;
@@ -2203,9 +2212,109 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
+    /* ============ SCROLL PROGRESS ============ */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+      z-index: 10001;
+      transition: width 0.1s linear;
+      pointer-events: none;
+    }
+
+    /* ============ SKIP TO CONTENT ============ */
+    .skip-to-content {
+      position: absolute;
+      top: -100px;
+      left: 16px;
+      z-index: 10002;
+      background: var(--accent);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 0 0 10px 10px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: top 0.3s ease;
+      text-decoration: none;
+    }
+    .skip-to-content:focus { top: 0; outline: 2px solid #fff; }
+
+    /* ============ NEWSLETTER SUCCESS ============ */
+    .newsletter-success {
+      color: #22c55e;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 8px 0;
+    }
+
+    /* ============ HAMBURGER MENU ============ */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text-main);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-right { display: none; }
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.98);
+        backdrop-filter: blur(20px);
+        z-index: 999;
+        transform: translateX(110%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .mobile-menu.open { transform: translateX(0); }
+      .mobile-menu .nav-link {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--text-main);
+        padding: 8px 0;
+      }
+      .mobile-menu .nav-link:hover { color: var(--accent); }
+      .mobile-menu .cta-btn {
+        font-size: 16px;
+        padding: 14px 32px;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
   <!-- PAGE LOADER -->
   <div class="page-loader" id="pageLoader">
     <div class="loader-spinner"></div>
@@ -2243,10 +2352,24 @@
       <a href="./contact.html" class="nav-link">Contact</a>
       <a href="./login.html" class="nav-link">Login</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
+  <!-- MOBILE NAVIGATION -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="./dashboard.html" class="nav-link">AI Tools</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="./contact.html" class="nav-link">Contact</a>
+    <a href="./login.html" class="nav-link">Login</a>
+    <a href="./signup.html" class="cta-btn primary" style="margin-top:8px;">Get Started Free</a>
+  </nav>
+
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="main-content">
     <div class="container">
       <div class="hero-badge">
         ⚡ Spotlight: Featured AI Tools
@@ -2291,7 +2414,7 @@
       </div>
 
       <div class="hero-search">
-        <input type="text" placeholder="Search AI tools, categories..." id="searchInput">
+        <input type="text" placeholder="Search AI tools, categories..." id="searchInput" aria-label="Search AI tools and categories">
         <button onclick="window.location.href='./dashboard.html'">Explore →</button>
       </div>
 
@@ -2918,7 +3041,7 @@
       <div class="footer-newsletter">
         <div class="newsletter-title">🚀 Subscribe to TechVyro Newsletter</div>
         <p class="newsletter-desc">Get the latest AI tools, tips, and exclusive deals delivered to your inbox.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+        <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletter(event)">
           <input type="email" placeholder="Enter your email address" required>
           <button type="submit">Subscribe</button>
         </form>
@@ -3222,6 +3345,44 @@
     
     setInterval(updateLiveCount, 5000);
     updateLiveCount();
+
+    // ============ SCROLL PROGRESS ============
+    const scrollProgressBar = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      if (docHeight > 0 && scrollProgressBar) {
+        scrollProgressBar.style.width = (window.scrollY / docHeight * 100) + '%';
+      }
+    }, { passive: true });
+
+    // ============ HAMBURGER MENU ============
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ============ NEWSLETTER ============
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const form = e.target;
+      const emailInput = form.querySelector('input[type="email"]');
+      if (!emailInput || !emailInput.value.trim()) return;
+      form.innerHTML = '<p class="newsletter-success">✅ Thank you for subscribing! Check your inbox soon.</p>';
+    }
   </script>
 </body>
 </html>
