@@ -14,6 +14,25 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TechVyro — The Best AI Tools Directory">
   <meta name="twitter:description" content="India's largest AI tools directory. Discover 1000+ AI tools for chat, image, code and more.">
+  <link rel="canonical" href="https://techvyro.com/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TechVyro",
+    "url": "https://techvyro.com/",
+    "description": "India's largest AI tools directory. Discover, compare and use 1000+ AI tools for chat, image generation, code, voice and content creation.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "TechVyro",
+      "url": "https://techvyro.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://techvyro.com/logo.jpg"
+      }
+    }
+  }
+  </script>
   <style>
     :root {
       --bg-dark: #020617;
@@ -2309,11 +2328,196 @@
         padding: 14px 32px;
       }
     }
+
+    /* ============ NAV CTA BUTTON ============ */
+    .nav-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 20px;
+      background: linear-gradient(135deg, var(--accent), #60a5fa);
+      color: #020617;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+      white-space: nowrap;
+    }
+    .nav-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(59, 130, 246, 0.5);
+    }
+
+    /* ============ ANNOUNCEMENT BAR ============ */
+    .announcement-bar {
+      background: linear-gradient(90deg, #1e3a8a, #1d4ed8, #1e3a8a);
+      background-size: 200% 100%;
+      animation: shimmerBar 4s linear infinite;
+      text-align: center;
+      padding: 10px 40px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #bfdbfe;
+      position: relative;
+      z-index: 1001;
+    }
+    @keyframes shimmerBar {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 0%; }
+    }
+    .announcement-bar a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .announcement-bar a:hover { opacity: 0.85; }
+    .announcement-close {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #93c5fd;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 2px 6px;
+      transition: color 0.2s;
+    }
+    .announcement-close:hover { color: #fff; }
+    .announcement-bar.hidden { display: none; }
+
+    /* ============ COOKIE CONSENT ============ */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.97);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(59, 130, 246, 0.25);
+      padding: 20px 32px;
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+    }
+    .cookie-banner.hidden {
+      transform: translateY(110%);
+      pointer-events: none;
+    }
+    .cookie-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-text a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .cookie-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .cookie-btn-accept {
+      padding: 10px 22px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .cookie-btn-accept:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .cookie-btn-decline {
+      padding: 10px 22px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .cookie-btn-decline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ============ SOCIAL PROOF TOAST ============ */
+    .sp-toast {
+      position: fixed;
+      bottom: 100px;
+      left: 24px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 9997;
+      max-width: 300px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      transform: translateX(-120%);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    }
+    .sp-toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .sp-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .sp-body { flex: 1; }
+    .sp-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .sp-action {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .sp-time {
+      font-size: 11px;
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar" id="announcementBar" role="banner">
+    🎉 Limited time: Get <strong>100 bonus credits</strong> when you sign up today &mdash;
+    <a href="./signup.html">Claim now →</a>
+    <button class="announcement-close" id="announcementClose" aria-label="Close announcement">×</button>
+  </div>
 
   <!-- PAGE LOADER -->
   <div class="page-loader" id="pageLoader">
@@ -2351,6 +2555,7 @@
       <a href="#pricing" class="nav-link">Pricing</a>
       <a href="./contact.html" class="nav-link">Contact</a>
       <a href="./login.html" class="nav-link">Login</a>
+      <a href="./signup.html" class="nav-cta-btn">Get Started Free →</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
       <span></span>
@@ -3121,6 +3326,28 @@
     </div>
   </footer>
 
+  <!-- COOKIE CONSENT BANNER -->
+  <div class="cookie-banner hidden" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+    <p class="cookie-text">
+      🍪 We use cookies to improve your experience and show relevant content.
+      See our <a href="./privacy.html">Privacy Policy</a> for details.
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn-decline" id="cookieDecline">Decline</button>
+      <button class="cookie-btn-accept" id="cookieAccept">Accept All</button>
+    </div>
+  </div>
+
+  <!-- SOCIAL PROOF TOAST -->
+  <div class="sp-toast" id="spToast" aria-live="polite">
+    <div class="sp-avatar" id="spAvatar">R</div>
+    <div class="sp-body">
+      <div class="sp-name" id="spName">Rahul from Delhi</div>
+      <div class="sp-action" id="spAction">just signed up for TechVyro 🎉</div>
+    </div>
+    <div class="sp-time">just now</div>
+  </div>
+
   <script>
     document.querySelectorAll('.category-tab').forEach(tab => {
       tab.addEventListener('click', () => {
@@ -3383,6 +3610,77 @@
       if (!emailInput || !emailInput.value.trim()) return;
       form.innerHTML = '<p class="newsletter-success">✅ Thank you for subscribing! Check your inbox soon.</p>';
     }
+
+    // ============ ANNOUNCEMENT BAR ============
+    (function() {
+      const bar = document.getElementById('announcementBar');
+      const closeBtn = document.getElementById('announcementClose');
+      if (!bar || !closeBtn) return;
+      if (sessionStorage.getItem('announcementDismissed')) {
+        bar.classList.add('hidden');
+      }
+      closeBtn.addEventListener('click', () => {
+        bar.classList.add('hidden');
+        sessionStorage.setItem('announcementDismissed', '1');
+      });
+    })();
+
+    // ============ COOKIE CONSENT ============
+    (function() {
+      const banner = document.getElementById('cookieBanner');
+      const acceptBtn = document.getElementById('cookieAccept');
+      const declineBtn = document.getElementById('cookieDecline');
+      if (!banner) return;
+      if (localStorage.getItem('cookieConsent')) {
+        banner.classList.add('hidden');
+        return;
+      }
+      function handleConsent(value) {
+        localStorage.setItem('cookieConsent', value);
+        banner.classList.add('hidden');
+      }
+      banner.classList.remove('hidden');
+      acceptBtn.addEventListener('click', () => handleConsent('accepted'));
+      declineBtn.addEventListener('click', () => handleConsent('declined'));
+    })();
+
+    // ============ SOCIAL PROOF TOAST ============
+    (function() {
+      const TOAST_DISPLAY_DURATION = 3500;
+      const notifications = [
+        { name: 'Rahul', city: 'Delhi', action: 'just signed up for TechVyro 🎉' },
+        { name: 'Priya', city: 'Mumbai', action: 'just tried AI Image Generator ✨' },
+        { name: 'Amit', city: 'Bangalore', action: 'upgraded to Pro plan 🚀' },
+        { name: 'Sneha', city: 'Pune', action: 'just created a Logo with AI 🎨' },
+        { name: 'Vikram', city: 'Chennai', action: 'just used Code AI to debug 💻' },
+        { name: 'Anjali', city: 'Hyderabad', action: 'just signed up for TechVyro 🎉' },
+        { name: 'Rohit', city: 'Jaipur', action: 'generated a Resume with AI 📄' },
+        { name: 'Kavya', city: 'Kolkata', action: 'just tried AI Chat 💬' }
+      ];
+      const toast = document.getElementById('spToast');
+      const spAvatar = document.getElementById('spAvatar');
+      const spName = document.getElementById('spName');
+      const spAction = document.getElementById('spAction');
+      if (!toast) return;
+
+      let idx = 0;
+      function showNext() {
+        const notification = notifications[idx % notifications.length];
+        spAvatar.textContent = notification.name[0];
+        spAvatar.setAttribute('aria-label', notification.name);
+        spName.textContent = notification.name + ' from ' + notification.city;
+        spAction.textContent = notification.action;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, TOAST_DISPLAY_DURATION);
+        idx++;
+      }
+
+      // First show after 5 s, then every 12 s
+      setTimeout(() => {
+        showNext();
+        setInterval(showNext, 12000);
+      }, 5000);
+    })();
   </script>
 </body>
 </html>
