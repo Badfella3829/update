@@ -109,7 +109,7 @@
     
     window.copyCSS = function() {
       navigator.clipboard.writeText(`background: ${currentCSS};`);
-      alert('CSS copied!');
+      showToast('CSS copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

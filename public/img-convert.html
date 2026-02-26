@@ -88,7 +88,7 @@
     
     window.convertImage = async function() {
       if (!authReady) return;
-      if (!selectedFile) { alert('Please select an image first'); return; }
+      if (!selectedFile) { showToast('Please select an image first', 'warning'); return; }
       
       const format = document.getElementById('format').value;
       const result = document.getElementById('result');

@@ -394,6 +394,7 @@
 </head>
 
 <body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
 
 <div class="layout">
 
@@ -586,7 +587,7 @@
         const credits = Number(document.querySelector(`.credits[data-uid="${uid}"]`).value);
 
         await updateDoc(doc(db, "users", uid), { plan, credits });
-        alert("Updated!");
+        showToast("Updated!", "success");
       };
     });
 
@@ -685,10 +686,10 @@
       };
 
       await setDoc(doc(db, "system", "rate_limits"), limits);
-      alert('Rate limits saved successfully!');
+      showToast('Rate limits saved successfully!', 'success');
     } catch (error) {
       console.error('Error saving rate limits:', error);
-      alert('Error saving rate limits.');
+      showToast('Error saving rate limits.', 'error');
     }
   }
 
@@ -713,10 +714,10 @@
 
       await setDoc(doc(db, "system", "feature_flags"), flags);
       clearFeatureFlagsCache();
-      alert('Feature flags saved successfully!');
+      showToast('Feature flags saved successfully!', 'success');
     } catch (error) {
       console.error('Error saving feature flags:', error);
-      alert('Error saving feature flags.');
+      showToast('Error saving feature flags.', 'error');
     }
   }
 
@@ -727,7 +728,7 @@
       const userData = userDoc.data();
 
       if (!userData) {
-        alert('User not found');
+        showToast('User not found', 'warning');
         return;
       }
 
@@ -772,7 +773,7 @@
       modal.style.display = 'block';
     } catch (error) {
       console.error('Error loading user details:', error);
-      alert('Error loading user details');
+      showToast('Error loading user details', 'error');
     }
   }
 
@@ -799,11 +800,11 @@
 
     try {
       await deleteDoc(doc(db, "users", userToDelete));
-      alert('User deleted successfully');
+      showToast('User deleted successfully', 'success');
       location.reload();
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert('Error deleting user');
+      showToast('Error deleting user', 'error');
     } finally {
       document.getElementById('deleteConfirmDialog').style.display = 'none';
       userToDelete = null;
@@ -851,5 +852,8 @@
 <!-- ================= 🔐 STEP-6 ADD END ================= -->
 
   <script src="js/premium-common.js"></script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
 </body>
 </html>

@@ -101,7 +101,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!input) { alert('Please enter description or code'); return; }
+      if (!input) { showToast('Please enter description or code', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Processing...</span>';
@@ -155,7 +155,7 @@
     
     window.copyCode = function() {
       navigator.clipboard.writeText(lastCode);
-      alert('Code copied!');
+      showToast('Code copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

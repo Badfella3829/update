@@ -112,7 +112,7 @@
       const from = document.getElementById('from').value;
       const to = document.getElementById('to').value;
       
-      if (isNaN(value)) { alert('Please enter a valid number'); return; }
+      if (isNaN(value)) { showToast('Please enter a valid number', 'warning'); return; }
       
       let converted;
       if (category === 'temperature') {

@@ -85,7 +85,7 @@
       const text = document.getElementById('text').value;
       const result = document.getElementById('result');
       
-      if (!pattern) { alert('Please enter a pattern'); return; }
+      if (!pattern) { showToast('Please enter a pattern', 'warning'); return; }
       
       try {
         const regex = new RegExp(pattern, flags);

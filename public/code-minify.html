@@ -110,7 +110,7 @@
     
     window.copyMinified = function() {
       navigator.clipboard.writeText(lastMinified);
-      alert('Copied!');
+      showToast('Copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

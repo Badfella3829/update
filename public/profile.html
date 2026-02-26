@@ -518,6 +518,13 @@
 
     let currentUser = null;
 
+    // Fallback: always hide loader within this many ms to prevent permanent stuck state
+    const LOADER_FALLBACK_MS = 4000;
+    setTimeout(() => {
+      const l = document.getElementById('pageLoader');
+      if (l) l.style.display = 'none';
+    }, LOADER_FALLBACK_MS);
+
     onAuthStateChanged(auth, async (user) => {
       document.getElementById('pageLoader').style.display = 'none';
       
@@ -663,7 +670,7 @@
         window.location.href = 'login.html';
       } catch (err) {
         console.error('Logout error:', err);
-        alert('Logout failed. Please try again.');
+        showToast('Logout failed. Please try again.', 'error');
       }
     };
 
@@ -684,11 +691,11 @@
         
         localStorage.clear();
         sessionStorage.clear();
-        alert('Account deleted successfully.');
+        showToast('Account deleted successfully.', 'success');
         window.location.href = 'index.html';
       } catch (err) {
         console.error('Delete error:', err);
-        alert('Failed to delete account. Please check your password.');
+        showToast('Failed to delete account. Please check your password.', 'error');
       }
     };
   </script>

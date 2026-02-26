@@ -304,6 +304,28 @@ body {
   animation: fadeIn 0.5s ease forwards;
 }
 
+/* Cards auto-targeted by initScrollAnimations() start hidden until in viewport */
+.premium-card:not(.animate-fade-in),
+.card:not(.animate-fade-in),
+.tool-card:not(.animate-fade-in),
+.feature-card:not(.animate-fade-in),
+.pricing-card:not(.animate-fade-in),
+.info-card:not(.animate-fade-in),
+.stat-card:not(.animate-fade-in),
+.feature-item:not(.animate-fade-in),
+.step-card:not(.animate-fade-in),
+.faq-item:not(.animate-fade-in),
+.team-card:not(.animate-fade-in),
+.testimonial-card:not(.animate-fade-in) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animate-on-scroll:not(.animate-fade-in) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
 .animate-slide-in {
   animation: slideIn 0.5s ease forwards;
 }

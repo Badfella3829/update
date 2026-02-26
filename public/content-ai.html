@@ -99,7 +99,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!topic) { alert('Please enter a topic'); return; }
+      if (!topic) { showToast('Please enter a topic', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Writing...</span>';
@@ -141,7 +141,7 @@
     
     window.copyContent = function() {
       navigator.clipboard.writeText(lastContent);
-      alert('Content copied!');
+      showToast('Content copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

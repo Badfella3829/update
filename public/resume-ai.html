@@ -92,7 +92,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!experience) { alert('Please enter your experience'); return; }
+      if (!experience) { showToast('Please enter your experience', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Creating...</span>';
@@ -134,7 +134,7 @@
     
     window.copyResume = function() {
       navigator.clipboard.writeText(lastResume);
-      alert('Resume copied!');
+      showToast('Resume copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

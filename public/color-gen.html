@@ -140,7 +140,7 @@
     
     window.copyColor = function(color) {
       navigator.clipboard.writeText(color);
-      alert('Copied: ' + color);
+      showToast('Color copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

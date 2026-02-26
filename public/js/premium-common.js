@@ -141,18 +141,38 @@ function initSmoothScroll() {
 }
 
 // ============ ANIMATE ON SCROLL ============
+// Stagger delay between sibling cards (seconds)
+const STAGGER_DELAY_S = 0.07;
+// Fraction of element that must be in view before animation triggers
+const INTERSECTION_THRESHOLD = 0.08;
+
 function initScrollAnimations() {
+  // Auto-animate common card and section elements across all pages
+  const AUTO_TARGETS = [
+    '.animate-on-scroll',
+    '.premium-card', '.card', '.tool-card', '.feature-card',
+    '.pricing-card', '.info-card', '.stat-card', '.feature-item',
+    '.step-card', '.faq-item', '.team-card', '.testimonial-card',
+  ].join(', ');
+
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
+        // Stagger each card slightly based on its position within a row
+        const siblings = Array.from(entry.target.parentElement.children);
+        const index = siblings.indexOf(entry.target);
+        entry.target.style.animationDelay = (index * STAGGER_DELAY_S) + 's';
         entry.target.classList.add('animate-fade-in');
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.animate-on-scroll').forEach(el => {
-    observer.observe(el);
+  }, { threshold: INTERSECTION_THRESHOLD });
+
+  document.querySelectorAll(AUTO_TARGETS).forEach(el => {
+    // Skip if already animated or explicitly excluded
+    if (!el.classList.contains('animate-fade-in')) {
+      observer.observe(el);
+    }
   });
 }
 
@@ -174,8 +194,9 @@ if (document.readyState === 'loading') {
   initPremiumFeatures();
 }
 
-// Export for manual use
+// Export for manual use — also expose showToast globally for inline onclick handlers
 window.TechVyro = {
   showToast,
   initPremiumFeatures
 };
+window.showToast = showToast;

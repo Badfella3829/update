@@ -66,7 +66,7 @@
       if (!authReady) return;
       
       const text = document.getElementById('input').value.trim();
-      if (!text) { alert('Please enter text or URL'); return; }
+      if (!text) { showToast('Please enter text or URL', 'warning'); return; }
       
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(text)}`;
       

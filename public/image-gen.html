@@ -90,7 +90,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!prompt) { alert('Please enter a description'); return; }
+      if (!prompt) { showToast('Please enter a description', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Generating...</span>';

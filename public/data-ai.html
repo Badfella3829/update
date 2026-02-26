@@ -88,7 +88,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!data) { alert('Please enter your data'); return; }
+      if (!data) { showToast('Please enter your data', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Analyzing...</span>';
@@ -130,7 +130,7 @@
     
     window.copyAnalysis = function() {
       navigator.clipboard.writeText(lastAnalysis);
-      alert('Analysis copied!');
+      showToast('Analysis copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

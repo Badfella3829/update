@@ -439,7 +439,7 @@ async function loadPaymentSystem() {
   } catch (error) {
     console.error("Failed to load payment system:", error);
     // Fallback: redirect to login if payment system fails to load
-    alert("Payment system is not available. Please try logging in first.");
+    showToast('Payment system not available. Please try logging in first.', 'warning');
     window.location.href = "login.html";
   }
 }
@@ -455,7 +455,7 @@ onAuthStateChanged(auth, async (user) => {
 window.buyPlan = async function(planType) {
   const user = auth.currentUser;
   if (!user) {
-    alert("Please login first to purchase a plan.");
+    showToast('Please login first to purchase a plan.', 'warning');
     window.location.href = "login.html";
     return;
   }
@@ -470,7 +470,7 @@ window.buyPlan = async function(planType) {
     // The payments.js buyPlan function should be loaded now
     return window.buyPlan(planType);
   } else {
-    alert("Payment system failed to load. Please refresh the page and try again.");
+    showToast('Payment system failed to load. Please refresh.', 'error');
   }
 };
 </script>

@@ -92,7 +92,7 @@
       const content = document.getElementById('content').value.trim();
       
       if (!url || !source || !medium || !campaign) {
-        alert('Please fill all required fields');
+        showToast('Please fill all required fields', 'warning');
         return;
       }
       
@@ -120,7 +120,7 @@
     
     window.copyURL = function() {
       navigator.clipboard.writeText(utmUrl);
-      alert('UTM link copied!');
+      showToast('UTM link copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

@@ -86,7 +86,7 @@
     
     window.compressImage = async function() {
       if (!authReady) return;
-      if (!selectedFile) { alert('Please select an image first'); return; }
+      if (!selectedFile) { showToast('Please select an image first', 'warning'); return; }
       
       const quality = parseInt(document.getElementById('quality').value) / 100;
       const result = document.getElementById('result');

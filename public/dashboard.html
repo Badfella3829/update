@@ -3593,7 +3593,7 @@
       if (page) {
         window.location.href = page;
       } else {
-        alert('Tool not found');
+        showToast('Tool not found', 'error');
       }
     };
     
@@ -3601,7 +3601,7 @@
     window.generateImage = async () => {
       const prompt = document.getElementById('image-prompt').value.trim();
       if (!prompt) {
-        alert('Please enter a description for your image');
+        showToast('Please enter a description for your image', 'warning');
         return;
       }
       
@@ -3651,7 +3651,7 @@
       const tone = document.getElementById('content-tone').value;
       
       if (!topic) {
-        alert('Please enter a topic');
+        showToast('Please enter a topic', 'warning');
         return;
       }
       
@@ -3687,7 +3687,7 @@
       const code = document.getElementById('code-input').value;
       
       if (!task) {
-        alert('Please describe what you need help with');
+        showToast('Please describe what you need help with', 'warning');
         return;
       }
       
@@ -3724,7 +3724,7 @@
       const tone = document.getElementById('email-tone').value;
       
       if (!subject) {
-        alert('Please enter the email subject or purpose');
+        showToast('Please enter the email subject or purpose', 'warning');
         return;
       }
       
@@ -3759,7 +3759,7 @@
       const voice = document.getElementById('voice-select').value;
       
       if (!text) {
-        alert('Please enter text to convert to speech');
+        showToast('Please enter text to convert to speech', 'warning');
         return;
       }
       
@@ -3809,7 +3809,7 @@
       const education = document.getElementById('resume-education').value;
       
       if (!name || !jobTitle) {
-        alert('Please enter your name and target job title');
+        showToast('Please enter your name and target job title', 'warning');
         return;
       }
       
@@ -3852,7 +3852,7 @@
       const question = document.getElementById('data-question').value;
       
       if (!data) {
-        alert('Please enter or paste your data');
+        showToast('Please enter or paste your data', 'warning');
         return;
       }
       
@@ -3889,7 +3889,7 @@
       const industry = document.getElementById('logo-industry').value;
       
       if (!brandName) {
-        alert('Please enter your brand name');
+        showToast('Please enter your brand name', 'warning');
         return;
       }
       
@@ -3985,7 +3985,7 @@
       }
       
       result.innerHTML = colors.map(c => `
-        <div onclick="navigator.clipboard.writeText('${c}'); alert('Copied: ${c}')" style="width: 80px; height: 80px; background: ${c}; border-radius: 12px; cursor: pointer; display: flex; align-items: flex-end; justify-content: center; padding: 8px;">
+        <div onclick="navigator.clipboard.writeText('${c}'); showToast('Copied: ${c}', 'success')" style="width: 80px; height: 80px; background: ${c}; border-radius: 12px; cursor: pointer; display: flex; align-items: flex-end; justify-content: center; padding: 8px;">
           <span style="background: rgba(0,0,0,0.7); color: white; padding: 3px 6px; border-radius: 4px; font-size: 11px;">${c}</span>
         </div>
       `).join('');
@@ -4007,7 +4007,7 @@
         <div style="width: 100%; height: 150px; background: ${css}; border-radius: 12px; margin-bottom: 15px;"></div>
         <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; font-family: monospace; color: var(--text-main);">
           <code>background: ${css};</code>
-          <button onclick="navigator.clipboard.writeText('background: ${css};'); alert('Copied!')" style="margin-left: 10px; background: var(--blue); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Copy</button>
+          <button onclick="navigator.clipboard.writeText('background: ${css};'); showToast('Copied!', 'success')" style="margin-left: 10px; background: var(--blue); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Copy</button>
         </div>
       `;
     };
@@ -4019,7 +4019,7 @@
       const result = document.getElementById('compress-result');
       
       if (!fileInput.files[0]) {
-        alert('Please select an image');
+        showToast('Please select an image', 'warning');
         return;
       }
       
@@ -4062,7 +4062,7 @@
         const parsed = JSON.parse(input);
         const formatted = JSON.stringify(parsed, null, 2);
         result.innerHTML = `<pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: #22c55e; overflow-x: auto; white-space: pre-wrap;">${formatted}</pre>
-        <button onclick="navigator.clipboard.writeText(\`${formatted.replace(/`/g, '\\`')}\`); alert('Copied!')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>`;
+        <button onclick="navigator.clipboard.writeText(\`${formatted.replace(/`/g, '\\`')}\`); showToast('Copied!', 'success')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>`;
       } catch(e) {
         result.innerHTML = `<p style="color: #ef4444;">Invalid JSON: ${e.message}</p>`;
       }
@@ -4073,7 +4073,7 @@
       try {
         const minified = JSON.stringify(JSON.parse(input));
         result.innerHTML = `<pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: #22c55e; overflow-x: auto; word-break: break-all;">${minified}</pre>
-        <button onclick="navigator.clipboard.writeText(\`${minified}\`); alert('Copied!')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>`;
+        <button onclick="navigator.clipboard.writeText(\`${minified}\`); showToast('Copied!', 'success')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>`;
       } catch(e) {
         result.innerHTML = `<p style="color: #ef4444;">Invalid JSON: ${e.message}</p>`;
       }
@@ -4100,7 +4100,7 @@
       result.innerHTML = `
         <p style="color: var(--text-main); margin-bottom: 10px;">Reduced by ${savings}% (${originalSize} → ${minifiedSize} bytes)</p>
         <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: #22c55e; overflow-x: auto; word-break: break-all;">${minified}</pre>
-        <button onclick="navigator.clipboard.writeText(window._lastMinified); alert('Copied!')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>
+        <button onclick="navigator.clipboard.writeText(window._lastMinified); showToast('Copied!', 'success')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>
       `;
     };
 
@@ -4143,7 +4143,7 @@
       const encoded = encodeURIComponent(input);
       document.getElementById('urlencode-result').innerHTML = `
         <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: #22c55e; word-break: break-all;">${encoded}</pre>
-        <button onclick="navigator.clipboard.writeText('${encoded}'); alert('Copied!')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>
+        <button onclick="navigator.clipboard.writeText('${encoded}'); showToast('Copied!', 'success')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>
       `;
     };
     window.decodeURL = () => {
@@ -4152,7 +4152,7 @@
         const decoded = decodeURIComponent(input);
         document.getElementById('urlencode-result').innerHTML = `
           <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: #22c55e; word-break: break-all;">${decoded}</pre>
-          <button onclick="navigator.clipboard.writeText(\`${decoded.replace(/`/g, '\\`')}\`); alert('Copied!')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>
+          <button onclick="navigator.clipboard.writeText(\`${decoded.replace(/\\/g, '\\\\').replace(/`/g, '\\`')}\`); showToast('Copied!', 'success')" style="margin-top: 10px; background: var(--blue); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer;">Copy</button>
         `;
       } catch(e) {
         document.getElementById('urlencode-result').innerHTML = `<p style="color: #ef4444;">Error decoding URL</p>`;
@@ -4200,7 +4200,7 @@
       if (useNumbers) chars += '0123456789';
       if (useSymbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
       
-      if (!chars) { alert('Select at least one option'); return; }
+      if (!chars) { showToast('Select at least one option', 'warning'); return; }
       
       let password = '';
       for (let i = 0; i < length; i++) {
@@ -4209,7 +4209,7 @@
       
       document.getElementById('passgen-result').innerHTML = `
         <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; font-family: monospace; font-size: 18px; color: #22c55e; word-break: break-all; margin-bottom: 15px;">${password}</div>
-        <button onclick="navigator.clipboard.writeText('${password}'); alert('Password copied!')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy Password</button>
+        <button onclick="navigator.clipboard.writeText('${password}'); showToast('Password copied!', 'success')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy Password</button>
       `;
     };
 
@@ -4218,7 +4218,7 @@
       const text = document.getElementById('qr-input').value.trim();
       const result = document.getElementById('qr-result');
       
-      if (!text) { alert('Please enter text or URL'); return; }
+      if (!text) { showToast('Please enter text or URL', 'warning'); return; }
       
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
       result.innerHTML = `
@@ -4234,7 +4234,7 @@
       const platform = document.getElementById('hashtag-platform').value;
       const result = document.getElementById('hashtag-result');
       
-      if (!topic) { alert('Please enter a topic'); return; }
+      if (!topic) { showToast('Please enter a topic', 'warning'); return; }
       
       const words = topic.toLowerCase().split(/\s+/);
       const hashtags = new Set();
@@ -4260,7 +4260,7 @@
         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;">
           ${finalTags.map(tag => `<span style="background: var(--blue); color: white; padding: 6px 12px; border-radius: 20px; font-size: 13px;">${tag}</span>`).join('')}
         </div>
-        <button onclick="navigator.clipboard.writeText('${finalTags.join(' ')}'); alert('Hashtags copied!')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy All</button>
+        <button onclick="navigator.clipboard.writeText('${finalTags.join(' ')}'); showToast('Hashtags copied!', 'success')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy All</button>
       `;
     };
 
@@ -4273,7 +4273,7 @@
       const result = document.getElementById('utm-result');
       
       if (!url || !source || !medium || !campaign) {
-        alert('Please fill all required fields');
+        showToast('Please fill all required fields', 'warning');
         return;
       }
       
@@ -4281,7 +4281,7 @@
       
       result.innerHTML = `
         <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: #22c55e; word-break: break-all; margin-bottom: 15px; font-family: monospace;">${utmUrl}</div>
-        <button onclick="navigator.clipboard.writeText('${utmUrl}'); alert('UTM link copied!')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy Link</button>
+        <button onclick="navigator.clipboard.writeText('${utmUrl}'); showToast('UTM link copied!', 'success')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy Link</button>
       `;
     };
 
@@ -4302,7 +4302,7 @@
       
       result.innerHTML = `
         <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: var(--text-main); white-space: pre-wrap; margin-bottom: 15px;">${output}</div>
-        <button onclick="navigator.clipboard.writeText(\`${output.replace(/`/g, '\\`')}\`); alert('Copied!')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy</button>
+        <button onclick="navigator.clipboard.writeText(\`${output.replace(/\\/g, '\\\\').replace(/`/g, '\\`')}\`); showToast('Copied!', 'success')" style="background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy</button>
       `;
     };
 
@@ -4333,7 +4333,7 @@
       const to = document.getElementById('unit-to').value;
       const result = document.getElementById('unit-result');
       
-      if (isNaN(value)) { alert('Please enter a valid number'); return; }
+      if (isNaN(value)) { showToast('Please enter a valid number', 'warning'); return; }
       
       let converted;
       if (category === 'temperature') {
@@ -4359,7 +4359,7 @@
       const format = document.getElementById('imgconvert-format').value;
       const result = document.getElementById('imgconvert-result');
       
-      if (!fileInput.files[0]) { alert('Please select an image'); return; }
+      if (!fileInput.files[0]) { showToast('Please select an image', 'warning'); return; }
       
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -4447,7 +4447,7 @@
       
       result.innerHTML = `
         <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; color: #22c55e; overflow-x: auto; white-space: pre-wrap;">${JSON.stringify(data, null, 2)}</pre>
-        <button onclick="navigator.clipboard.writeText(JSON.stringify(${JSON.stringify(data)}, null, 2)); alert('Copied!')" style="margin-top: 15px; background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy JSON</button>
+        <button onclick="navigator.clipboard.writeText(JSON.stringify(${JSON.stringify(data)}, null, 2)); showToast('Copied!', 'success')" style="margin-top: 15px; background: var(--blue); color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;">Copy JSON</button>
       `;
     };
 
