@@ -65,6 +65,9 @@ function setupNotificationsListener(userId) {
     // Update notification badge
     updateNotificationBadge(notifications.length);
 
+    // Dispatch custom event so the page can refresh the dropdown list in real-time
+    document.dispatchEvent(new CustomEvent('notificationsUpdated', { detail: { notifications } }));
+
     // Show in-app notifications if any
     notifications.forEach(notification => {
       if (notification.type === NOTIFICATION_TYPES.IN_APP && !notification.shown) {

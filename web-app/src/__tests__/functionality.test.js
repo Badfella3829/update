@@ -484,6 +484,29 @@ describe('Page Structure and Content Validation', () => {
     it('has notification badge', () => {
       expect(html).toContain('id="notificationBadge"');
     });
+
+    it('has notification dropdown', () => {
+      expect(html).toContain('id="notificationDropdown"');
+      expect(html).toContain('id="notificationsList"');
+    });
+
+    it('has mark all notifications read button', () => {
+      expect(html).toContain('markAllNotificationsRead()');
+      expect(html).toContain('window.markAllNotificationsRead');
+    });
+
+    it('listens for real-time notificationsUpdated event', () => {
+      expect(html).toContain("'notificationsUpdated'");
+    });
+
+    it('has in-app notification CSS styles', () => {
+      expect(html).toContain('.in-app-notification');
+      expect(html).toContain('notifSlideIn');
+    });
+
+    it('toggleNotifications opens and closes the dropdown via style.display', () => {
+      expect(html).toContain("style.display = isVisible ? 'none' : 'block'");
+    });
   });
 
   // Profile page
