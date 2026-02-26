@@ -47,6 +47,7 @@
       --text-muted: #94a3b8;
       --accent: #3b82f6;
       --accent-hover: #2563eb;
+      --accent-soft: rgba(59, 130, 246, 0.12);
       --accent-glow: rgba(59, 130, 246, 0.25);
       --border: rgba(255, 255, 255, 0.08);
       --blue: #3b82f6;
@@ -288,7 +289,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(245, 158, 11, 0.1);
+      background: var(--accent-soft);
       border: 1px solid var(--accent);
       padding: 8px 20px;
       border-radius: 30px;
@@ -587,7 +588,7 @@
     }
 
     .category-tab:hover, .category-tab.active {
-      background: rgba(245, 158, 11, 0.1);
+      background: var(--accent-soft);
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -740,7 +741,7 @@
     }
 
     .tool-badge.featured {
-      background: rgba(245, 158, 11, 0.15);
+      background: var(--accent-soft);
       color: var(--accent);
     }
 
@@ -929,7 +930,7 @@
     .cta-section {
       padding: 80px 0;
       text-align: center;
-      background: linear-gradient(180deg, transparent, rgba(245, 158, 11, 0.05));
+      background: linear-gradient(180deg, transparent, rgba(59, 130, 246, 0.05));
     }
 
     .cta-title {
