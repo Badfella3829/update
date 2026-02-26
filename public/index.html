@@ -62,6 +62,7 @@
       background: var(--bg-dark);
       color: var(--text-main);
       line-height: 1.6;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     a { text-decoration: none; color: inherit; }
@@ -693,6 +694,21 @@
 
     .tool-card:hover::before { opacity: 1; }
 
+    .tool-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: skewX(-15deg);
+      pointer-events: none;
+      transition: left 0.7s ease;
+    }
+
+    .tool-card:hover::after { left: 150%; }
+
     .tool-header {
       display: flex;
       align-items: flex-start;
@@ -878,6 +894,8 @@
       padding: 24px;
       text-align: center;
       transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .featured-card:hover {
@@ -885,6 +903,21 @@
       transform: translateY(-6px);
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
+
+    .featured-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: skewX(-15deg);
+      pointer-events: none;
+      transition: left 0.7s ease;
+    }
+
+    .featured-card:hover::after { left: 150%; }
 
     .featured-icon {
       width: 70px;
@@ -2105,6 +2138,8 @@
       padding: 24px;
       text-align: center;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .preview-card:hover {
@@ -2112,6 +2147,21 @@
       border-color: var(--accent);
       background: rgba(59, 130, 246, 0.05);
     }
+
+    .preview-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: skewX(-15deg);
+      pointer-events: none;
+      transition: left 0.7s ease;
+    }
+
+    .preview-card:hover::after { left: 150%; }
 
     .preview-icon {
       font-size: 36px;
@@ -3264,7 +3314,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo">
-            <img src="./logo.jpg" alt="TechVyro" class="footer-logo-icon">
+            <img src="./logo.jpg" alt="TechVyro" class="footer-logo-icon" loading="lazy">
             <span>Tech<span style="color: var(--accent);">Vyro</span></span>
           </div>
           <p class="footer-desc">
@@ -3470,11 +3520,23 @@
     }
     animateCounters();
 
+    // ============ STAGGER ANIMATION SETUP ============
+    document.querySelectorAll('.tools-grid, .featured-grid, .preview-grid, .testimonials-grid, .steps-grid, .pricing-grid').forEach(grid => {
+      Array.from(grid.children).forEach((child, i) => {
+        child.style.transitionDelay = (i * 0.08) + 's';
+      });
+    });
+
+    const REVEAL_ANIMATION_DURATION = 0.8; // seconds, matches CSS transition
+
     // ============ SCROLL REVEAL ============
     const scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('revealed');
+          // Reset delay after animation completes so hover effects remain snappy
+          const delay = parseFloat(entry.target.style.transitionDelay) || 0;
+          setTimeout(() => { entry.target.style.transitionDelay = '0s'; }, (delay + REVEAL_ANIMATION_DURATION) * 1000);
         }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
@@ -3499,6 +3561,18 @@
           item.classList.add('active');
         }
       });
+    });
+
+    // ============ KEYBOARD SEARCH SHORTCUT (press / to focus search) ============
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.select();
+        }
+      }
     });
 
     // ============ CURSOR SPARKLE TRAIL ============

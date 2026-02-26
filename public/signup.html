@@ -122,6 +122,28 @@
   .toast.error { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2); }
   .toast.success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.2); }
 
+  /* ================= PASSWORD STRENGTH ================= */
+  .pw-strength-bar {
+    height: 4px;
+    border-radius: 2px;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+  .pw-strength-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 2px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
+  .pw-strength-label {
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .pw-strength-hidden { color: transparent; }
+
   /* BACK HOME */
   .back-home {
     position: absolute; top: 30px; left: 30px;
@@ -193,6 +215,8 @@
         <div class="input-group">
           <label class="label">Create Password</label>
           <input type="password" id="password" class="input-field" placeholder="At least 6 characters" autocomplete="new-password">
+          <div class="pw-strength-bar"><div class="pw-strength-fill" id="pwStrengthFill"></div></div>
+          <div class="pw-strength-label pw-strength-hidden" id="pwStrengthLabel">&#8203;</div>
         </div>
 
         <div class="input-group">
@@ -370,6 +394,41 @@
         btn.disabled = false;
         btn.style.opacity = "1";
       }
+    });
+  </script>
+
+  <script>
+    // --- PASSWORD STRENGTH INDICATOR ---
+    document.addEventListener('DOMContentLoaded', function() {
+      var pwInput = document.getElementById('password');
+      var pwFill = document.getElementById('pwStrengthFill');
+      var pwLabel = document.getElementById('pwStrengthLabel');
+      if (!pwInput || !pwFill || !pwLabel) return;
+
+      pwInput.addEventListener('input', function() {
+        var val = pwInput.value;
+        var score = 0;
+        if (val.length >= 6) score++;
+        if (val.length >= 10) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        var levels = [
+          { pct: '0%',   color: 'transparent', label: '\u200B',      labelColor: 'transparent' },
+          { pct: '25%',  color: '#ef4444',      label: 'Weak',        labelColor: '#ef4444' },
+          { pct: '50%',  color: '#f97316',      label: 'Fair',        labelColor: '#f97316' },
+          { pct: '75%',  color: '#eab308',      label: 'Good',        labelColor: '#eab308' },
+          { pct: '90%',  color: '#22c55e',      label: 'Strong',      labelColor: '#22c55e' },
+          { pct: '100%', color: '#10b981',      label: 'Very Strong', labelColor: '#10b981' }
+        ];
+        var level = val.length === 0 ? levels[0] : levels[Math.min(score, levels.length - 1)];
+        pwFill.style.width = level.pct;
+        pwFill.style.backgroundColor = level.color;
+        pwLabel.textContent = level.label;
+        pwLabel.style.color = level.labelColor;
+        pwLabel.classList.toggle('pw-strength-hidden', val.length === 0);
+      });
     });
   </script>
 
