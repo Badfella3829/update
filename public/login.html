@@ -297,7 +297,8 @@
 
       if (fb.auth && fbAuth.sendPasswordResetEmail) {
         await fbAuth.sendPasswordResetEmail(fb.auth, email);
-        showToast("Reset link sent! Check email.", "success");
+        showToast("If an account exists, a reset link has been sent. Check your email.", "success");
+        btn.innerText = "Sent!";
         setTimeout(() => showLoginForm(), 3000);
       } else {
         setTimeout(() => {
@@ -307,7 +308,19 @@
         }, 1200);
       }
     } catch(err) {
-      showToast(err.message, "error");
+      const code = err && err.code ? err.code : "";
+      let msg = "An error occurred. Please try again.";
+      if (code === "auth/user-not-found") {
+        msg = "If an account exists, a reset link has been sent. Check your email.";
+      } else if (code === "auth/invalid-email") {
+        msg = "Please enter a valid email address.";
+      } else if (code === "auth/too-many-requests") {
+        msg = "Too many requests. Please wait before trying again.";
+      } else if (code === "auth/network-request-failed") {
+        msg = "Network error. Check your internet connection and try again.";
+      }
+      showToast(msg, code === "auth/user-not-found" ? "success" : "error");
+      btn.innerText = 'Send Reset Link';
       btn.disabled = false;
     }
   });
