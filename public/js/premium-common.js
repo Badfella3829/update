@@ -4,10 +4,27 @@
    ============================================ */
 
 // ============ PAGE LOADER ============
+// Maximum ms to wait before force-hiding the loader (prevents permanent stuck state)
+const LOADER_MAX_MS = 3000;
+
 function initPageLoader() {
   const loader = document.getElementById('pageLoader');
-  if (loader) {
+  if (!loader) return;
+
+  // Always hide within LOADER_MAX_MS — prevents loader from getting permanently stuck
+  const fallback = setTimeout(() => loader.classList.add('hidden'), LOADER_MAX_MS);
+
+  const doHide = () => {
+    clearTimeout(fallback);
     loader.classList.add('hidden');
+  };
+
+  if (document.readyState === 'complete') {
+    // All resources already loaded — hide now
+    doHide();
+  } else {
+    // Wait until all resources (scripts, images, Firebase modules) finish loading
+    window.addEventListener('load', doHide, { once: true });
   }
 }
 
@@ -53,34 +70,55 @@ function initBackToTop() {
 function initLiveCounter() {
   const liveCount = document.getElementById('liveCount');
   if (!liveCount) return;
-  
-  function updateCount() {
-    const base = 120;
-    const variation = Math.floor(Math.random() * 50);
-    liveCount.textContent = base + variation;
+
+  let currentCount = 120 + Math.floor(Math.random() * 50);
+  liveCount.textContent = currentCount;
+
+  function animateTo(target) {
+    const step = target > currentCount ? 1 : -1;
+    const steps = Math.abs(target - currentCount);
+    if (steps === 0) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      currentCount += step;
+      liveCount.textContent = currentCount;
+      if (++i >= steps) clearInterval(interval);
+    }, Math.max(30, 300 / steps));
   }
-  
-  updateCount();
-  setInterval(updateCount, 5000);
+
+  setInterval(() => {
+    // Fluctuate by -3 to +4 for realism
+    const delta = Math.floor(Math.random() * 8) - 3;
+    const next = Math.max(100, Math.min(200, currentCount + delta));
+    animateTo(next);
+  }, 5000);
 }
 
 // ============ TOAST NOTIFICATIONS ============
+const TOAST_ICONS = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+let _toastTimer = null;
+
 function showToast(message, type = 'info') {
   let toast = document.getElementById('toast');
-  
+
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast';
     toast.className = 'toast';
     document.body.appendChild(toast);
   }
-  
-  toast.textContent = message;
+
+  // Clear any pending hide timer so the toast stays fresh
+  if (_toastTimer) clearTimeout(_toastTimer);
+
+  const icon = TOAST_ICONS[type] || 'ℹ️';
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
   toast.className = `toast ${type} show`;
-  
-  setTimeout(() => {
+
+  _toastTimer = setTimeout(() => {
     toast.classList.remove('show');
-  }, 3000);
+    _toastTimer = null;
+  }, 3500);
 }
 
 // ============ RIPPLE EFFECT ============
@@ -124,18 +162,38 @@ function initSmoothScroll() {
 }
 
 // ============ ANIMATE ON SCROLL ============
+// Stagger delay between sibling cards (seconds)
+const STAGGER_DELAY_S = 0.07;
+// Fraction of element that must be in view before animation triggers
+const INTERSECTION_THRESHOLD = 0.08;
+
 function initScrollAnimations() {
+  // Auto-animate common card and section elements across all pages
+  // Elements are always visible by default — animate-fade-in simply plays a one-shot
+  // fade-up animation when the element first enters the viewport.
+  const AUTO_TARGETS = [
+    '.animate-on-scroll',
+    '.premium-card', '.card', '.tool-card', '.feature-card',
+    '.pricing-card', '.info-card', '.stat-card', '.feature-item',
+    '.step-card', '.faq-item', '.team-card', '.testimonial-card',
+  ].join(', ');
+
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
+        const siblings = Array.from(entry.target.parentElement.children);
+        const index = siblings.indexOf(entry.target);
+        entry.target.style.animationDelay = (index * STAGGER_DELAY_S) + 's';
         entry.target.classList.add('animate-fade-in');
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.animate-on-scroll').forEach(el => {
-    observer.observe(el);
+  }, { threshold: INTERSECTION_THRESHOLD });
+
+  document.querySelectorAll(AUTO_TARGETS).forEach(el => {
+    if (!el.classList.contains('animate-fade-in')) {
+      observer.observe(el);
+    }
   });
 }
 
@@ -157,8 +215,9 @@ if (document.readyState === 'loading') {
   initPremiumFeatures();
 }
 
-// Export for manual use
+// Export for manual use — also expose showToast globally for inline onclick handlers
 window.TechVyro = {
   showToast,
   initPremiumFeatures
 };
+window.showToast = showToast;

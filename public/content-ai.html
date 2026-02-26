@@ -75,13 +75,22 @@
     <div id="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage, getPlan } from './js/auth-credits.js';
     
     let authReady = false;
     let userPlan = 'free';
     let lastContent = '';
-    
     initAuthCredits({ requireAuth: true, requirePremium: true, creditCost: 5 })
       .then(({ credits, plan }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
@@ -99,7 +108,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!topic) { alert('Please enter a topic'); return; }
+      if (!topic) { showToast('Please enter a topic', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Writing...</span>';
@@ -141,7 +150,7 @@
     
     window.copyContent = function() {
       navigator.clipboard.writeText(lastContent);
-      alert('Content copied!');
+      showToast('Content copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

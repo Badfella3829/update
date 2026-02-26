@@ -517,6 +517,7 @@
 
     .loading-screen.hidden {
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
     }
 
@@ -533,6 +534,7 @@
       to { transform: rotate(360deg); }
     }
   </style>
+  <link rel="stylesheet" href="css/premium-common.css">
 </head>
 <body>
   <div class="loading-screen" id="loadingScreen">
@@ -819,6 +821,13 @@
 
     let currentUser = null;
 
+    // Fallback: always hide loader within this many ms to prevent permanent stuck state
+    const LOADER_FALLBACK_MS = 4000;
+    setTimeout(() => {
+      const s = document.getElementById('loadingScreen');
+      if (s) s.classList.add('hidden');
+    }, LOADER_FALLBACK_MS);
+
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         currentUser = user;
@@ -908,7 +917,7 @@
       e.preventDefault();
       
       if (!currentUser) {
-        alert('Please login first');
+        showToast('Please login first', 'warning');
         return;
       }
       
@@ -930,11 +939,11 @@
         });
         
         closeModal();
-        alert('Submission successful! We will review it shortly.');
+        showToast('Submission successful! We will review it shortly.', 'success');
         loadSubmissions(currentUser.uid);
       } catch (error) {
         console.error('Error submitting:', error);
-        alert('Error submitting. Please try again.');
+        showToast('Error submitting. Please try again.', 'error');
       }
     });
 
@@ -954,5 +963,9 @@
       }
     });
   </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
 </body>
 </html>

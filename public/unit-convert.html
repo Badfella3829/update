@@ -72,6 +72,16 @@
     <div id="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
@@ -85,7 +95,6 @@
       area: { units: ['sqmeters', 'sqfeet', 'acres', 'hectares'], conversions: { sqmeters: 1, sqfeet: 10.7639, acres: 0.000247105, hectares: 0.0001 }},
       volume: { units: ['liters', 'milliliters', 'gallons', 'cups'], conversions: { liters: 1, milliliters: 1000, gallons: 0.264172, cups: 4.22675 }}
     };
-    
     initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
       .then(({ credits }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
@@ -112,7 +121,7 @@
       const from = document.getElementById('from').value;
       const to = document.getElementById('to').value;
       
-      if (isNaN(value)) { alert('Please enter a valid number'); return; }
+      if (isNaN(value)) { showToast('Please enter a valid number', 'warning'); return; }
       
       let converted;
       if (category === 'temperature') {

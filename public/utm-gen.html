@@ -67,13 +67,22 @@
     <div id="result" class="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
     let utmUrl = '';
     let authReady = false;
     let creditsDeducted = false;
-    
     initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
       .then(({ credits }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
@@ -92,7 +101,7 @@
       const content = document.getElementById('content').value.trim();
       
       if (!url || !source || !medium || !campaign) {
-        alert('Please fill all required fields');
+        showToast('Please fill all required fields', 'warning');
         return;
       }
       
@@ -120,7 +129,7 @@
     
     window.copyURL = function() {
       navigator.clipboard.writeText(utmUrl);
-      alert('UTM link copied!');
+      showToast('UTM link copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

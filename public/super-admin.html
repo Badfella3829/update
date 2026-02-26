@@ -376,6 +376,10 @@
   const usersTable = document.getElementById("usersTable");
   const loader = document.getElementById("pageLoader");
 
+  // Fallback: always hide loader within this many ms to prevent permanent stuck state
+  const LOADER_FALLBACK_MS = 4000;
+  setTimeout(() => { if (loader) loader.style.display = "none"; }, LOADER_FALLBACK_MS);
+
   // ================= SUPER ADMIN SECURITY =================
   auth.onAuthStateChanged(async user => {
     if (!user) {
@@ -436,5 +440,8 @@
 <script type="module" src="js/admin-guard.js"></script>
 
   <script src="js/premium-common.js"></script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
 </body>
 </html>

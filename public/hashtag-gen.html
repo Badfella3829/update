@@ -62,13 +62,22 @@
     <div id="result" class="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
     
     let allHashtags = [];
     let authReady = false;
     let creditsDeducted = false;
-    
     initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
       .then(({ credits }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
@@ -82,7 +91,7 @@
       const topic = document.getElementById('topic').value.trim();
       const platform = document.getElementById('platform').value;
       
-      if (!topic) { alert('Please enter a topic'); return; }
+      if (!topic) { showToast('Please enter a topic', 'warning'); return; }
       
       const words = topic.toLowerCase().split(/[\s,]+/).filter(w => w.length > 2);
       const hashtags = new Set();
@@ -119,12 +128,12 @@
     
     window.copyOne = function(tag) {
       navigator.clipboard.writeText(tag);
-      alert('Copied: ' + tag);
+      showToast('Copied: ' + tag, 'success');
     };
     
     window.copyAll = function() {
       navigator.clipboard.writeText(allHashtags.join(' '));
-      alert('All hashtags copied!');
+      showToast('All hashtags copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

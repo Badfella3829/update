@@ -5,15 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TechVyro — The Best AI Tools Directory</title>
   <link rel="icon" type="image/jpeg" href="./logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <meta name="description" content="TechVyro is India's largest AI tools directory. Discover, compare and use 1000+ AI tools for chat, image generation, code, voice and content creation.">
   <meta name="keywords" content="AI tools, artificial intelligence, AI directory, AI chat, image generator, code AI, voice AI, India, TechVyro">
   <meta property="og:type" content="website">
   <meta property="og:title" content="TechVyro — The Best AI Tools Directory">
+  <meta property="og:url" content="https://techvyro.com/">
   <meta property="og:description" content="India's largest AI tools directory. Discover, compare and use 1000+ AI tools to supercharge your productivity.">
-  <meta property="og:image" content="./logo.jpg">
+  <meta property="og:image" content="https://techvyro.com/logo.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TechVyro — The Best AI Tools Directory">
   <meta name="twitter:description" content="India's largest AI tools directory. Discover 1000+ AI tools for chat, image, code and more.">
+  <meta name="twitter:image" content="https://techvyro.com/logo.jpg">
   <link rel="canonical" href="https://techvyro.com/">
   <script type="application/ld+json">
   {
@@ -52,7 +57,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: var(--bg-dark);
       color: var(--text-main);
       line-height: 1.6;
@@ -1416,7 +1421,7 @@
 
     /* ============ TYPING EFFECT ============ */
     .typing-text {
-      display: inline;
+      display: inline-block;
     }
 
     .cursor {
@@ -2581,7 +2586,7 @@
       </div>
       
       <h1 class="hero-title">
-        The Best <span class="typing-text glow-text gradient-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
+        The Best <span class="typing-text gradient-text" id="typingText">AI Tools</span><span class="cursor"></span> Directory
       </h1>
       
       <p class="hero-subtitle">
@@ -2768,14 +2773,14 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title"><span class="icon">📰</span> Featured AI News</h2>
-        <a href="#" class="view-all">View All →</a>
+        <a href="./dashboard.html" class="view-all">View All →</a>
       </div>
 
       <div class="news-grid">
         <a href="./chat.html" class="news-card">
           <div class="news-image">🤖</div>
           <div class="news-content">
-            <div class="news-date">January 20, 2026</div>
+            <div class="news-date">February 20, 2026</div>
             <h3 class="news-title">OpenAI Launches GPT-5: The Next Generation of AI</h3>
             <p class="news-excerpt">The latest model promises 10x better reasoning and multimodal capabilities...</p>
           </div>
@@ -2784,7 +2789,7 @@
         <a href="./image-gen.html" class="news-card">
           <div class="news-image">🎨</div>
           <div class="news-content">
-            <div class="news-date">January 18, 2026</div>
+            <div class="news-date">February 18, 2026</div>
             <h3 class="news-title">AI Art Revolution: New Tools Transform Creative Industry</h3>
             <p class="news-excerpt">How AI-powered design tools are changing the way creators work...</p>
           </div>
@@ -2793,7 +2798,7 @@
         <a href="./dashboard.html" class="news-card">
           <div class="news-image">💼</div>
           <div class="news-content">
-            <div class="news-date">January 15, 2026</div>
+            <div class="news-date">February 15, 2026</div>
             <h3 class="news-title">Top 10 AI Tools for Business Productivity in 2026</h3>
             <p class="news-excerpt">Discover the most impactful AI tools that are revolutionizing workplace efficiency...</p>
           </div>
@@ -2990,6 +2995,7 @@
               <div class="testimonial-role">Startup Founder</div>
             </div>
           </div>
+          <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">TechVyro has been a game-changer for our startup. The AI tools saved us hundreds of hours of work.</p>
         </div>
 
@@ -3001,6 +3007,7 @@
               <div class="testimonial-role">Content Creator</div>
             </div>
           </div>
+          <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">Best AI directory I've found. The tools are curated perfectly and always up-to-date.</p>
         </div>
 
@@ -3012,6 +3019,7 @@
               <div class="testimonial-role">Developer</div>
             </div>
           </div>
+          <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">The Code AI tool is incredible. It understands context and generates production-ready code.</p>
         </div>
       </div>
@@ -3120,7 +3128,7 @@
             <li>Priority support</li>
             <li>Custom integrations</li>
           </ul>
-          <a href="./signup.html" class="pricing-btn secondary">Go Premium</a>
+          <a href="./signup.html" class="pricing-btn primary ripple-btn">Go Premium</a>
         </div>
       </div>
     </div>
@@ -3432,6 +3440,7 @@
       
       counters.forEach(counter => {
         const text = counter.textContent;
+        if (text.includes('.')) return; // Skip decimal values — keep as-is (e.g. "4.9★")
         const target = parseInt(text.replace(/[^0-9]/g, ''));
         const suffix = text.replace(/[0-9]/g, '');
         let current = 0;
@@ -3529,7 +3538,17 @@
     createFloatingIcons();
 
     // ============ PAGE LOADER ============
-    document.getElementById('pageLoader').classList.add('hidden');
+    (function() {
+      var loader = document.getElementById('pageLoader');
+      if (!loader) return;
+      var fallback = setTimeout(function() { loader.classList.add('hidden'); }, 3000); // 3s max wait, matches LOADER_MAX_MS in premium-common.js
+      var doHide = function() { clearTimeout(fallback); loader.classList.add('hidden'); };
+      if (document.readyState === 'complete') {
+        doHide();
+      } else {
+        window.addEventListener('load', doHide, { once: true });
+      }
+    })();
 
     // ============ THEME TOGGLE ============
     const themeToggle = document.getElementById('themeToggle');
@@ -3615,13 +3634,30 @@
     (function() {
       const bar = document.getElementById('announcementBar');
       const closeBtn = document.getElementById('announcementClose');
+      const header = document.querySelector('.main-header');
       if (!bar || !closeBtn) return;
+
+      function updateHeaderTop() {
+        if (!bar || !header) return;
+        const barHeight = bar.classList.contains('hidden') ? 0 : bar.offsetHeight;
+        header.style.top = barHeight + 'px';
+      }
+
       if (sessionStorage.getItem('announcementDismissed')) {
         bar.classList.add('hidden');
       }
+      updateHeaderTop();
+
       closeBtn.addEventListener('click', () => {
         bar.classList.add('hidden');
         sessionStorage.setItem('announcementDismissed', '1');
+        updateHeaderTop();
+      });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateHeaderTop, 100);
       });
     })();
 

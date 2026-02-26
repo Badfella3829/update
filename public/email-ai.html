@@ -71,13 +71,22 @@
     <div id="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage, getPlan } from './js/auth-credits.js';
     
     let authReady = false;
     let userPlan = 'free';
     let lastEmail = '';
-    
     initAuthCredits({ requireAuth: true, requirePremium: true, creditCost: 5 })
       .then(({ credits, plan }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
@@ -95,7 +104,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!context) { alert('Please describe the purpose'); return; }
+      if (!context) { showToast('Please describe the purpose', 'warning'); return; }
       
       const typeMap = { professional: 'business', followup: 'follow-up', apology: 'apology', request: 'request', thank: 'thank-you', introduction: 'introduction' };
       const mappedType = typeMap[type] || type;
@@ -141,7 +150,7 @@
     
     window.copyEmail = function() {
       navigator.clipboard.writeText(lastEmail);
-      alert('Email copied!');
+      showToast('Email copied!', 'success');
     };
   </script>
     <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>

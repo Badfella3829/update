@@ -65,13 +65,22 @@
     <div id="result" class="result"></div>
   </div>
 
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
   <script type="module">
     import { initAuthCredits, deductCredits, logToolUsage, getCredits, setupKeyboardShortcuts, getToolCreditCost } from './js/auth-credits.js';
     
     let authReady = false;
     const TOOL_NAME = 'image-gen';
     const CREDIT_COST = getToolCreditCost(TOOL_NAME);
-    
     initAuthCredits({ requireAuth: true, requirePremium: false, toolName: TOOL_NAME })
       .then(({ credits }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
@@ -90,7 +99,7 @@
       const btn = document.getElementById('generateBtn');
       const result = document.getElementById('result');
       
-      if (!prompt) { alert('Please enter a description'); return; }
+      if (!prompt) { showToast('Please enter a description', 'warning'); return; }
       
       btn.disabled = true;
       btn.innerHTML = '<span>⏳ Generating...</span>';
