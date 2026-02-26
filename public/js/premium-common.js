@@ -4,10 +4,27 @@
    ============================================ */
 
 // ============ PAGE LOADER ============
+// Maximum ms to wait before force-hiding the loader (prevents permanent stuck state)
+const LOADER_MAX_MS = 3000;
+
 function initPageLoader() {
   const loader = document.getElementById('pageLoader');
-  if (loader) {
+  if (!loader) return;
+
+  // Always hide within LOADER_MAX_MS — prevents loader from getting permanently stuck
+  const fallback = setTimeout(() => loader.classList.add('hidden'), LOADER_MAX_MS);
+
+  const doHide = () => {
+    clearTimeout(fallback);
     loader.classList.add('hidden');
+  };
+
+  if (document.readyState === 'complete') {
+    // All resources already loaded — hide now
+    doHide();
+  } else {
+    // Wait until all resources (scripts, images, Firebase modules) finish loading
+    window.addEventListener('load', doHide, { once: true });
   }
 }
 

@@ -3538,7 +3538,17 @@
     createFloatingIcons();
 
     // ============ PAGE LOADER ============
-    document.getElementById('pageLoader').classList.add('hidden');
+    (function() {
+      var loader = document.getElementById('pageLoader');
+      if (!loader) return;
+      var fallback = setTimeout(function() { loader.classList.add('hidden'); }, 3000); // 3s max wait, matches LOADER_MAX_MS in premium-common.js
+      var doHide = function() { clearTimeout(fallback); loader.classList.add('hidden'); };
+      if (document.readyState === 'complete') {
+        doHide();
+      } else {
+        window.addEventListener('load', doHide, { once: true });
+      }
+    })();
 
     // ============ THEME TOGGLE ============
     const themeToggle = document.getElementById('themeToggle');
