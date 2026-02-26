@@ -189,7 +189,7 @@
     <div class="logo">TechVyro</div>
     <div class="subtitle">Secure passwordless login via email</div>
 
-    <label>Email address</label>
+    <label for="email">Email address</label>
     <input id="email" type="email" placeholder="you@example.com" />
 
     <button id="sendBtn">Send Secure Login Link</button>
@@ -198,7 +198,7 @@
 
     <!-- Fallback confirm -->
     <div class="confirm-box" id="confirmBox">
-      <label>Confirm email to complete login</label>
+      <label for="confirmEmail">Confirm email to complete login</label>
       <input id="confirmEmail" type="email" placeholder="Enter email again" />
       <button id="confirmBtn">Complete Login</button>
     </div>
@@ -252,7 +252,7 @@
   document.getElementById("sendBtn").onclick = async () => {
     const btn = document.getElementById("sendBtn");
     const email = document.getElementById("email").value.trim();
-    if (!email) return showToast("PLEASE ENTER YOUR REGISTERED EMAIL", "error");
+    if (!email) return showToast("Please enter your registered email", "error");
 
     btn.disabled = true;
     const oldText = btn.innerText;
@@ -261,14 +261,15 @@
     try {
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       localStorage.setItem("emailForSignIn", email);
-      showToast("SECURE LOGIN LINK SENT. CHECK YOUR EMAIL.", "success");
+      showToast("Login link sent! Please check your email.", "success");
+      btn.innerText = "Link Sent!";
+      // Keep button disabled after success to prevent duplicate sends
     } catch {
-      showToast("ACCOUNT NOT FOUND. PLEASE SIGN UP.", "error");
+      showToast("Account not found. Please sign up.", "error");
       setTimeout(() => location.href="signup.html", 2000);
+      btn.innerText = oldText;
+      btn.disabled = false;
     }
-
-    btn.innerText = oldText;
-    btn.disabled = false;
   };
 
   if (isSignInWithEmailLink(auth, window.location.href)) {
@@ -287,7 +288,7 @@
   document.getElementById("confirmBtn").onclick = async () => {
     const btn = document.getElementById("confirmBtn");
     const email = document.getElementById("confirmEmail").value.trim();
-    if (!email) return showToast("PLEASE ENTER EMAIL", "error");
+    if (!email) return showToast("Please enter your email address", "error");
 
     btn.disabled = true;
     const oldText = btn.innerText;
@@ -297,11 +298,10 @@
       await signInWithEmailLink(auth, email, window.location.href);
       location.href = "dashboard.html";
     } catch {
-      showToast("LOGIN FAILED. TRY AGAIN.", "error");
+      showToast("Login failed. Please try again.", "error");
+      btn.innerText = oldText;
+      btn.disabled = false;
     }
-
-    btn.innerText = oldText;
-    btn.disabled = false;
   };
 
   window.addEventListener("load", () => {

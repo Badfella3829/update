@@ -196,12 +196,12 @@
 
         <form id="loginForm" onsubmit="return false;">
           <div class="input-group">
-            <label class="input-label">Email Address</label>
+            <label class="input-label" for="username">Email Address</label>
             <input type="email" id="username" class="input-field" placeholder="name@example.com" autocomplete="email" required>
           </div>
 
           <div class="input-group">
-            <label class="input-label">Password</label>
+            <label class="input-label" for="password">Password</label>
             <input type="password" id="password" class="input-field" placeholder="••••••••" autocomplete="current-password">
           </div>
 
@@ -221,7 +221,7 @@
         </div>
 
         <div class="input-group">
-          <label class="input-label">Your Email</label>
+          <label class="input-label" for="resetEmail">Your Email</label>
           <input type="email" id="resetEmail" class="input-field" placeholder="name@example.com" autocomplete="email">
         </div>
 
@@ -297,7 +297,8 @@
 
       if (fb.auth && fbAuth.sendPasswordResetEmail) {
         await fbAuth.sendPasswordResetEmail(fb.auth, email);
-        showToast("Reset link sent! Check email.", "success");
+        showToast("If an account exists, a reset link has been sent. Check your email.", "success");
+        btn.innerText = "Sent!";
         setTimeout(() => showLoginForm(), 3000);
       } else {
         setTimeout(() => {
@@ -307,7 +308,19 @@
         }, 1200);
       }
     } catch(err) {
-      showToast(err.message, "error");
+      const code = err && err.code ? err.code : "";
+      let msg = "An error occurred. Please try again.";
+      if (code === "auth/user-not-found") {
+        msg = "If an account exists, a reset link has been sent. Check your email.";
+      } else if (code === "auth/invalid-email") {
+        msg = "Please enter a valid email address.";
+      } else if (code === "auth/too-many-requests") {
+        msg = "Too many requests. Please wait before trying again.";
+      } else if (code === "auth/network-request-failed") {
+        msg = "Network error. Check your internet connection and try again.";
+      }
+      showToast(msg, code === "auth/user-not-found" ? "success" : "error");
+      btn.innerText = 'Send Reset Link';
       btn.disabled = false;
     }
   });
