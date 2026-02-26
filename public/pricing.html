@@ -419,7 +419,7 @@ iframe.razorpay-checkout-frame {
 
 <script type="module">
 // Import required modules
-import { auth } from "../js/firebase.js";
+import { auth } from "./js/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Loader also handled in non-module script above for Firebase-fail safety
@@ -433,7 +433,7 @@ async function loadPaymentSystem() {
 
   try {
     // Dynamically import the payment system
-    await import('../js/payments.js');
+    await import('./js/payments.js');
     paymentModuleLoaded = true;
     console.log("Payment system loaded successfully");
   } catch (error) {
