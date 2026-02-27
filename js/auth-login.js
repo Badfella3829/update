@@ -106,6 +106,7 @@ window.login = async function () {
     switch (error.code) {
       case 'auth/user-not-found':
       case 'auth/wrong-password':
+      case 'auth/invalid-credential':
         // Security Best Practice: Generic message to avoid revealing which field is incorrect
         errorMessage = "Invalid email or password.";
         break;
