@@ -7,7 +7,7 @@ import { getFirestore } from
 
 const firebaseConfig = {
   apiKey: "AIzaSyAaLJsNcgxRa_lGMOxJnwrcttt_m5MtwBM",
-  authDomain: "www.techvyro.in",
+  authDomain: "techvyro.in",
   projectId: "techvyro-saas",
   storageBucket: "techvyro-saas.appspot.com",
   messagingSenderId: "684333859256",
