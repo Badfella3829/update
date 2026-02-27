@@ -386,7 +386,7 @@ describe('Page Structure and Content Validation', () => {
     });
 
     it('shows success message on successful reset', () => {
-      expect(html).toContain('Password reset link sent! Check your email.');
+      expect(html).toContain('If an account exists, a reset link has been sent. Check your email.');
     });
   });
 
