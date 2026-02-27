@@ -321,7 +321,7 @@
       btn.disabled = !termsCheckbox.checked;
     });
 
-    btn.addEventListener("click", async () => {
+    async function handleSignup() {
       const fullName = document.getElementById("fullName").value.trim();
       const u = document.getElementById("username").value.trim();
       const p = document.getElementById("password").value;
@@ -431,6 +431,16 @@
         btn.disabled = false;
         btn.style.opacity = "1";
       }
+    }
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      handleSignup();
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleSignup();
     });
 
     // Import Google sign-in

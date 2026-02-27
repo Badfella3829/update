@@ -312,6 +312,11 @@
   };
 
   // 1. LOGIN - Use auth-login.js module
+  document.getElementById("loginForm").addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await window.login();
+  });
+
   document.getElementById("loginBtn").addEventListener('click', async (e) => {
     e.preventDefault();
     await window.login();
