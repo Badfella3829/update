@@ -146,7 +146,7 @@ Date: ${date}
 Status: Success
 
 Thank you for your payment!
-For any queries, contact support@techvyro.com
+For any queries, contact support@techvyro.in
 
 Generated on: ${new Date().toLocaleString()}
   `.trim();
@@ -208,7 +208,7 @@ function displaySuspiciousActivities(activities) {
           ${reasons.map(reason => `• ${reason}`).join('<br>')}
         </div>
         <div style="margin-top: 10px;">
-          <a href="https://techvyro.com/forgot-password.html" style="color: #dc2626; text-decoration: underline; font-size: 13px;">
+          <a href="https://techvyro.in/forgot-password.html" style="color: #dc2626; text-decoration: underline; font-size: 13px;">
             Change Password if this wasn't you
           </a>
         </div>
