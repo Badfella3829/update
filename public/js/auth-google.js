@@ -64,12 +64,16 @@ async function handleGoogleSignIn() {
   } catch (error) {
     console.error("Google sign-in error:", error);
     let message = "Google sign-in failed. Please try again.";
-    if (error.code === "auth/popup-closed-by-user") {
+    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
       message = "Sign-in cancelled.";
     } else if (error.code === "auth/network-request-failed") {
       message = "Network error. Check your internet connection.";
     } else if (error.code === "auth/popup-blocked") {
       message = "Pop-up blocked by browser. Please allow pop-ups for this site.";
+    } else if (error.code === "auth/operation-not-allowed") {
+      message = "Google sign-in is not enabled. Please contact support.";
+    } else if (error.code === "auth/unauthorized-domain") {
+      message = "This domain is not authorized for Google sign-in. Please contact support.";
     }
     alert(message);
   } finally {
