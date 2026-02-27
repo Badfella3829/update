@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 15px; resize: vertical; min-height: 250px; line-height: 1.6; }
+    textarea:focus { outline: none; border-color: var(--blue); }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-top: 25px; }
+    .stat-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 18px; text-align: center; transition: 0.2s; }
+    .stat-card:hover { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.05); }
+    .stat-value { font-size: 28px; font-weight: 800; color: var(--blue); }
+    .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .actions { display: flex; gap: 12px; margin-top: 20px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn-secondary { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+    .btn-secondary:hover { background: rgba(59,130,246,0.25); }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .reading-time { margin-top: 15px; padding: 12px 16px; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 10px; font-size: 14px; color: var(--text-muted); }
+    .reading-time span { color: var(--blue); font-weight: 600; }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🔢 Word Counter</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">Count words, characters, sentences, and more. Real-time analysis as you type. (Free tool)</p>
+
+    <textarea id="textInput" placeholder="Type or paste your text here to count words, characters, sentences, and paragraphs..." oninput="analyzeText()"></textarea>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="wordCount">0</div>
+        <div class="stat-label">Words</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="charCount">0</div>
+        <div class="stat-label">Characters</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="charNoSpaces">0</div>
+        <div class="stat-label">No Spaces</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="sentenceCount">0</div>
+        <div class="stat-label">Sentences</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="paragraphCount">0</div>
+        <div class="stat-label">Paragraphs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="lineCount">0</div>
+        <div class="stat-label">Lines</div>
+      </div>
+    </div>
+
+    <div class="reading-time" id="readingTime">
+      📖 Estimated reading time: <span>0 sec</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="copyText()">📋 Copy Text</button>
+      <button class="btn btn-secondary" onclick="clearText()">🗑️ Clear</button>
+    </div>
+  </div>
+
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
+  <script>
+    window.analyzeText = function() {
+      const text = document.getElementById('textInput').value;
+
+      // Word count
+      const words = text.trim() === '' ? [] : text.trim().split(/\s+/).filter(w => w.length > 0);
+      document.getElementById('wordCount').textContent = words.length;
+
+      // Character counts
+      document.getElementById('charCount').textContent = text.length;
+      document.getElementById('charNoSpaces').textContent = text.replace(/\s/g, '').length;
+
+      // Sentence count
+      const sentences = text.trim() === '' ? 0 : text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+      document.getElementById('sentenceCount').textContent = sentences;
+
+      // Paragraph count
+      const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length || (text.trim() ? 1 : 0);
+      document.getElementById('paragraphCount').textContent = paragraphs;
+
+      // Line count
+      const lines = text === '' ? 0 : text.split('\n').length;
+      document.getElementById('lineCount').textContent = lines;
+
+      // Reading time (avg 200 words/min)
+      const readingSeconds = Math.ceil((words.length / 200) * 60);
+      let readingLabel;
+      if (readingSeconds < 60) {
+        readingLabel = readingSeconds + ' sec';
+      } else {
+        const mins = Math.floor(readingSeconds / 60);
+        const secs = readingSeconds % 60;
+        readingLabel = mins + ' min' + (secs > 0 ? ' ' + secs + ' sec' : '');
+      }
+      document.getElementById('readingTime').innerHTML = `📖 Estimated reading time: <span>${readingLabel}</span>`;
+    };
+
+    window.copyText = function() {
+      const text = document.getElementById('textInput').value;
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      if (window.showToast) showToast('Text copied!', 'success');
+    };
+
+    window.clearText = function() {
+      document.getElementById('textInput').value = '';
+      analyzeText();
+    };
+  </script>
+  <script type="module">
+    import { initAuthCredits } from './js/auth-credits.js';
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 0 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+      }).catch(err => console.log('Auth error:', err));
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>
