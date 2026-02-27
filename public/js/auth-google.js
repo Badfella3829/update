@@ -1,8 +1,7 @@
 import { auth, db } from "./firebase.js";
 import {
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
@@ -14,36 +13,20 @@ import {
 
 const provider = new GoogleAuthProvider();
 
+function resetGoogleButton(btn, textNode) {
+  if (btn) btn.disabled = false;
+  if (textNode) textNode.textContent = "Continue with Google";
+}
+
 async function handleGoogleSignIn() {
   const btn = document.getElementById("googleBtn");
   const textNode = btn ? btn.querySelector(".google-btn-text") : null;
 
   if (btn) btn.disabled = true;
-  if (textNode) textNode.textContent = "Redirecting…";
+  if (textNode) textNode.textContent = "Signing in…";
 
   try {
-    await signInWithRedirect(auth, provider);
-  } catch (error) {
-    console.error("Google sign-in error:", error);
-    let message = "Google sign-in failed. Please try again.";
-    if (error.code === "auth/network-request-failed") {
-      message = "Network error. Check your internet connection.";
-    } else if (error.code === "auth/operation-not-allowed") {
-      message = "Google sign-in is not enabled. Please contact support.";
-    } else if (error.code === "auth/unauthorized-domain") {
-      message = "This domain is not authorized for Google sign-in. Please contact support.";
-    }
-    alert(message);
-    if (btn) btn.disabled = false;
-    if (textNode) textNode.textContent = "Continue with Google";
-  }
-}
-
-async function handleRedirectResult() {
-  try {
-    const result = await getRedirectResult(auth);
-    if (!result || !result.user) return; // No redirect result — normal page load
-
+    const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
     // Fetch or create user document in Firestore
@@ -55,6 +38,7 @@ async function handleRedirectResult() {
       if (snap.data().blocked === true) {
         await signOut(auth);
         alert("Your account has been blocked by admin. Please contact support.");
+        resetGoogleButton(btn, textNode);
         return;
       }
     } else {
@@ -84,21 +68,23 @@ async function handleRedirectResult() {
     // ✅ Redirect to dashboard
     location.href = "dashboard.html";
   } catch (error) {
-    console.error("Google sign-in redirect error:", error);
+    console.error("Google sign-in error:", error);
     let message = "Google sign-in failed. Please try again.";
-    if (error.code === "auth/network-request-failed") {
+    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
+      message = "Sign-in popup was closed. Please try again.";
+    } else if (error.code === "auth/network-request-failed") {
       message = "Network error. Check your internet connection.";
     } else if (error.code === "auth/operation-not-allowed") {
       message = "Google sign-in is not enabled. Please contact support.";
     } else if (error.code === "auth/unauthorized-domain") {
       message = "This domain is not authorized for Google sign-in. Please contact support.";
+    } else if (error.code === "auth/popup-blocked") {
+      message = "Popup was blocked by your browser. Please allow popups for this site and try again.";
     }
     alert(message);
+    resetGoogleButton(btn, textNode);
   }
 }
-
-// Handle redirect result on page load
-handleRedirectResult();
 
 // Attach event listener once DOM is ready
 const btn = document.getElementById("googleBtn");
