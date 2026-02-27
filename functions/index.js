@@ -167,15 +167,15 @@ exports.sendUpgradeEmail = functions.https.onCall(
         .replace(/{{fromPlan}}/g, fromPlan || "Free")
         .replace(/{{toPlan}}/g, toPlan)
         .replace(/{{planTitle}}/g, planTitle)
-        .replace(/{{dashboardUrl}}/g, "https://techvyro.com/dashboard.html")
-        .replace(/{{supportUrl}}/g, "https://techvyro.com/contact.html")
-        .replace(/{{privacyUrl}}/g, "https://techvyro.com/privacy.html")
-        .replace(/{{termsUrl}}/g, "https://techvyro.com/terms.html");
+        .replace(/{{dashboardUrl}}/g, "https://techvyro.in/dashboard.html")
+        .replace(/{{supportUrl}}/g, "https://techvyro.in/contact.html")
+        .replace(/{{privacyUrl}}/g, "https://techvyro.in/privacy.html")
+        .replace(/{{termsUrl}}/g, "https://techvyro.in/terms.html");
 
       const msg = {
         to: email,
         from: {
-          email: "billing@techvyro.com",
+          email: "billing@techvyro.in",
           name: "TechVyro AI Billing"
         },
         subject: `Welcome to ${planTitle} - TechVyro AI`,
@@ -223,15 +223,15 @@ exports.sendLoginAlertEmail = functions.https.onCall(
         .replace(/{{deviceInfo}}/g, deviceInfo || "Unknown Device")
         .replace(/{{location}}/g, location || "Unknown Location")
         .replace(/{{ipAddress}}/g, ipAddress || "Unknown IP")
-        .replace(/{{changePasswordUrl}}/g, "https://techvyro.com/forgot-password.html")
-        .replace(/{{accountSettingsUrl}}/g, "https://techvyro.com/profile.html")
-        .replace(/{{privacyUrl}}/g, "https://techvyro.com/privacy.html")
-        .replace(/{{termsUrl}}/g, "https://techvyro.com/terms.html");
+        .replace(/{{changePasswordUrl}}/g, "https://techvyro.in/forgot-password.html")
+        .replace(/{{accountSettingsUrl}}/g, "https://techvyro.in/profile.html")
+        .replace(/{{privacyUrl}}/g, "https://techvyro.in/privacy.html")
+        .replace(/{{termsUrl}}/g, "https://techvyro.in/terms.html");
 
       const msg = {
         to: email,
         from: {
-          email: "security@techvyro.com",
+          email: "security@techvyro.in",
           name: "TechVyro AI Security"
         },
         subject: "New Login Detected - TechVyro AI",

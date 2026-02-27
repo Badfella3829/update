@@ -26,7 +26,7 @@
   "version": "1.0.0",
   "email": {
     "service": "sendgrid",
-    "fromEmail": "noreply@techvyro.com",
+    "fromEmail": "noreply@techvyro.in",
     "fromName": "TechVyro AI",
     "templates": {
       "welcome": "welcome-email.html",
