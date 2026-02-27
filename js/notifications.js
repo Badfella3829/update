@@ -26,6 +26,7 @@ export const NOTIFICATION_PRIORITIES = {
 
 let currentUser = null;
 let notificationsListener = null;
+let notificationTimeouts = [];
 
 /**
  * Initialize notifications for the current user
@@ -36,6 +37,9 @@ export function initNotifications() {
     if (user) {
       setupNotificationsListener(user.uid);
     } else {
+      // Cancel any pending staggered notification timeouts
+      notificationTimeouts.forEach(id => clearTimeout(id));
+      notificationTimeouts = [];
       if (notificationsListener) {
         notificationsListener();
         notificationsListener = null;
@@ -65,11 +69,14 @@ function setupNotificationsListener(userId) {
     // Update notification badge
     updateNotificationBadge(notifications.length);
 
-    // Show in-app notifications if any
-    notifications.forEach(notification => {
-      if (notification.type === NOTIFICATION_TYPES.IN_APP && !notification.shown) {
-        showInAppNotification(notification);
-      }
+    // Show in-app notifications, staggered so each toast is fully visible
+    const unshown = notifications.filter(n => n.type === NOTIFICATION_TYPES.IN_APP && !n.shown);
+    // Clear previous pending timeouts before scheduling new ones
+    notificationTimeouts.forEach(id => clearTimeout(id));
+    notificationTimeouts = [];
+    unshown.forEach((notification, index) => {
+      const id = setTimeout(() => showInAppNotification(notification), index * 4000);
+      notificationTimeouts.push(id);
     });
   });
 }
@@ -210,30 +217,61 @@ export async function createNewFeatureAlert(userIds, featureName, featureDescrip
   return await Promise.all(promises);
 }
 
+// Map notification priority to website toast type
+const PRIORITY_TOAST_TYPE = {
+  urgent: 'error',
+  high: 'warning',
+  medium: 'info',
+  low: 'success'
+};
+
 /**
  * Show in-app notification
+ * Uses the website's standard showToast system when available so pop
+ * notifications match the site UI/UX.  Falls back to a styled element
+ * when showToast is not present on the page.
  */
 function showInAppNotification(notification) {
-  // Create notification element
-  const notificationEl = document.createElement('div');
-  notificationEl.className = `in-app-notification ${notification.priority}`;
-  notificationEl.innerHTML = `
-    <div class="notification-content">
-      <h4>${notification.title}</h4>
-      <p>${notification.message}</p>
-    </div>
-    <button class="notification-close" onclick="this.parentElement.remove()">&times;</button>
-  `;
+  const toastType = PRIORITY_TOAST_TYPE[notification.priority] || 'info';
 
-  // Add to page
-  document.body.appendChild(notificationEl);
+  if (typeof window.showToast === 'function') {
+    // Use the site-wide toast — title + abbreviated message
+    const msg = `${notification.title}${notification.message ? `: ${notification.message}` : ''}`;
+    window.showToast(msg, toastType);
+  } else {
+    // Fallback: create a notification element styled to match the site design
+    const notificationEl = document.createElement('div');
+    notificationEl.className = `in-app-notification ${notification.priority}`;
 
-  // Auto-remove after 5 seconds
-  setTimeout(() => {
-    if (notificationEl.parentElement) {
-      notificationEl.remove();
-    }
-  }, 5000);
+    const content = document.createElement('div');
+    content.className = 'notification-content';
+
+    const title = document.createElement('h4');
+    title.textContent = notification.title;
+
+    const body = document.createElement('p');
+    body.textContent = notification.message;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'notification-close';
+    closeBtn.setAttribute('aria-label', 'Close notification');
+    closeBtn.textContent = '\u00D7';
+    closeBtn.addEventListener('click', () => notificationEl.remove());
+
+    content.appendChild(title);
+    content.appendChild(body);
+    notificationEl.appendChild(content);
+    notificationEl.appendChild(closeBtn);
+
+    document.body.appendChild(notificationEl);
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      if (notificationEl.parentElement) {
+        notificationEl.remove();
+      }
+    }, 5000);
+  }
 
   // Mark as shown
   markAsShown(notification.id);
