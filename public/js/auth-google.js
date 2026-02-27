@@ -1,7 +1,8 @@
 import { auth, db } from "./firebase.js";
 import {
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
@@ -18,10 +19,31 @@ async function handleGoogleSignIn() {
   const textNode = btn ? btn.querySelector(".google-btn-text") : null;
 
   if (btn) btn.disabled = true;
-  if (textNode) textNode.textContent = "Signing in…";
+  if (textNode) textNode.textContent = "Redirecting…";
 
   try {
-    const result = await signInWithPopup(auth, provider);
+    await signInWithRedirect(auth, provider);
+  } catch (error) {
+    console.error("Google sign-in error:", error);
+    let message = "Google sign-in failed. Please try again.";
+    if (error.code === "auth/network-request-failed") {
+      message = "Network error. Check your internet connection.";
+    } else if (error.code === "auth/operation-not-allowed") {
+      message = "Google sign-in is not enabled. Please contact support.";
+    } else if (error.code === "auth/unauthorized-domain") {
+      message = "This domain is not authorized for Google sign-in. Please contact support.";
+    }
+    alert(message);
+    if (btn) btn.disabled = false;
+    if (textNode) textNode.textContent = "Continue with Google";
+  }
+}
+
+async function handleRedirectResult() {
+  try {
+    const result = await getRedirectResult(auth);
+    if (!result || !result.user) return; // No redirect result — normal page load
+
     const user = result.user;
 
     // Fetch or create user document in Firestore
@@ -62,25 +84,21 @@ async function handleGoogleSignIn() {
     // ✅ Redirect to dashboard
     location.href = "dashboard.html";
   } catch (error) {
-    console.error("Google sign-in error:", error);
+    console.error("Google sign-in redirect error:", error);
     let message = "Google sign-in failed. Please try again.";
-    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
-      message = "Sign-in cancelled.";
-    } else if (error.code === "auth/network-request-failed") {
+    if (error.code === "auth/network-request-failed") {
       message = "Network error. Check your internet connection.";
-    } else if (error.code === "auth/popup-blocked") {
-      message = "Pop-up blocked by browser. Please allow pop-ups for this site.";
     } else if (error.code === "auth/operation-not-allowed") {
       message = "Google sign-in is not enabled. Please contact support.";
     } else if (error.code === "auth/unauthorized-domain") {
       message = "This domain is not authorized for Google sign-in. Please contact support.";
     }
     alert(message);
-  } finally {
-    if (btn) btn.disabled = false;
-    if (textNode) textNode.textContent = "Continue with Google";
   }
 }
+
+// Handle redirect result on page load
+handleRedirectResult();
 
 // Attach event listener once DOM is ready
 const btn = document.getElementById("googleBtn");
