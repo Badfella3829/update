@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Translator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    .translate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .translate-grid { grid-template-columns: 1fr; } }
+    .lang-panel { display: flex; flex-direction: column; gap: 10px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 6px; font-size: 13px; }
+    select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 12px 15px; font-size: 14px; }
+    textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; resize: vertical; min-height: 200px; }
+    textarea[readonly] { background: rgba(59,130,246,0.05); border-color: rgba(59,130,246,0.2); cursor: default; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; margin-top: 10px; font-size: 14px; width: 100%; }
+    .copy-btn:hover { background: rgba(59,130,246,0.3); }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🌐 Language Translator</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">Translate text between 20+ languages instantly using AI. (5 credits per use)</p>
+
+    <div class="translate-grid">
+      <div class="lang-panel">
+        <label>From Language</label>
+        <select id="sourceLang">
+          <option value="auto">Auto Detect</option>
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Italian">Italian</option>
+          <option value="Russian">Russian</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Chinese">Chinese (Simplified)</option>
+          <option value="Korean">Korean</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Bengali">Bengali</option>
+          <option value="Tamil">Tamil</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Gujarati">Gujarati</option>
+          <option value="Dutch">Dutch</option>
+          <option value="Turkish">Turkish</option>
+          <option value="Polish">Polish</option>
+        </select>
+        <label>Source Text</label>
+        <textarea id="sourceText" placeholder="Enter text to translate..."></textarea>
+      </div>
+
+      <div class="lang-panel">
+        <label>To Language</label>
+        <select id="targetLang">
+          <option value="Hindi">Hindi</option>
+          <option value="English" selected>English</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Italian">Italian</option>
+          <option value="Russian">Russian</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Chinese">Chinese (Simplified)</option>
+          <option value="Korean">Korean</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Bengali">Bengali</option>
+          <option value="Tamil">Tamil</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Gujarati">Gujarati</option>
+          <option value="Dutch">Dutch</option>
+          <option value="Turkish">Turkish</option>
+          <option value="Polish">Polish</option>
+        </select>
+        <label>Translation</label>
+        <textarea id="translatedText" readonly placeholder="Translation will appear here..."></textarea>
+        <button class="copy-btn" onclick="copyTranslation()">📋 Copy Translation</button>
+      </div>
+    </div>
+
+    <button class="btn" id="translateBtn" onclick="translateText()">🌐 Translate</button>
+  </div>
+
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+
+    let authReady = false;
+    let creditsDeducted = false;
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+
+    window.translateText = async function() {
+      if (!authReady) return;
+
+      const sourceText = document.getElementById('sourceText').value.trim();
+      const sourceLang = document.getElementById('sourceLang').value;
+      const targetLang = document.getElementById('targetLang').value;
+      const btn = document.getElementById('translateBtn');
+
+      if (!sourceText) { showToast('Please enter text to translate', 'warning'); return; }
+
+      const fromLabel = sourceLang === 'auto' ? 'the detected language' : sourceLang;
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Translating...';
+
+      try {
+        const response = await fetch('/api/chat-simple', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: `Translate the following text from ${fromLabel} to ${targetLang}. Provide only the translation, no additional commentary or explanation:\n\n${sourceText.slice(0, 3000)}`
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.response) {
+          document.getElementById('translatedText').value = data.response;
+
+          if (!creditsDeducted) {
+            const newCredits = await deductCredits(5);
+            document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+            await logToolUsage('Language Translator');
+            creditsDeducted = true;
+          }
+
+          showToast('Translation complete!', 'success');
+        } else {
+          showToast('Translation failed. Please try again.', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to translation service. Please try again.', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '🌐 Translate';
+    };
+
+    window.copyTranslation = function() {
+      const text = document.getElementById('translatedText').value;
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      showToast('Translation copied!', 'success');
+    };
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>

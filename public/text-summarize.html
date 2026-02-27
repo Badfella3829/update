@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Summarizer - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 800px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; resize: vertical; }
+    select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 20px; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 25px; white-space: pre-wrap; line-height: 1.7; font-size: 15px; }
+    .result-label { color: var(--text-muted); font-size: 13px; margin-bottom: 10px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; margin-top: 15px; font-size: 14px; }
+    .copy-btn:hover { background: rgba(59,130,246,0.3); }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">⏳</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>📋 Text Summarizer</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">Paste any long text and get a concise AI-powered summary. (5 credits per use)</p>
+
+    <label>Text to Summarize</label>
+    <textarea id="inputText" rows="10" placeholder="Paste your article, document, or any long text here..."></textarea>
+
+    <label>Summary Length</label>
+    <select id="summaryLength">
+      <option value="brief">Brief (1-2 sentences)</option>
+      <option value="short" selected>Short (3-5 sentences)</option>
+      <option value="detailed">Detailed (full paragraph)</option>
+    </select>
+
+    <button class="btn" id="summarizeBtn" onclick="summarizeText()">📋 Summarize Text</button>
+
+    <div id="result" style="display: none;">
+      <p class="result-label">Summary:</p>
+      <div class="result-box" id="summaryOutput"></div>
+      <button class="copy-btn" onclick="copySummary()">📋 Copy Summary</button>
+    </div>
+  </div>
+
+  <!-- Fallback: hide loading screen if module/Firebase fails to load -->
+  <script>
+    (function() {
+      var LOADER_FALLBACK_MS = 4000;
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, LOADER_FALLBACK_MS);
+    })();
+  </script>
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+
+    let authReady = false;
+    let creditsDeducted = false;
+    let lastSummary = '';
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+
+    window.summarizeText = async function() {
+      if (!authReady) return;
+
+      const text = document.getElementById('inputText').value.trim();
+      const length = document.getElementById('summaryLength').value;
+      const btn = document.getElementById('summarizeBtn');
+
+      if (!text) { showToast('Please enter some text to summarize', 'warning'); return; }
+      if (text.length < 50) { showToast('Text is too short to summarize', 'warning'); return; }
+
+      const lengthInstruction = {
+        brief: 'in 1-2 sentences',
+        short: 'in 3-5 sentences',
+        detailed: 'in a detailed paragraph'
+      }[length];
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Summarizing...';
+
+      try {
+        const response = await fetch('/api/chat-simple', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: `Please summarize the following text ${lengthInstruction}. Provide only the summary, no additional commentary:\n\n${text.slice(0, 4000)}`
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.response) {
+          lastSummary = data.response;
+
+          if (!creditsDeducted) {
+            const newCredits = await deductCredits(5);
+            document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+            await logToolUsage('Text Summarizer');
+            creditsDeducted = true;
+          }
+
+          document.getElementById('summaryOutput').textContent = lastSummary;
+          document.getElementById('result').style.display = 'block';
+          showToast('Summary generated!', 'success');
+        } else {
+          showToast('Failed to generate summary. Please try again.', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to AI service. Please try again.', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '📋 Summarize Text';
+    };
+
+    window.copySummary = function() {
+      if (!lastSummary) return;
+      navigator.clipboard.writeText(lastSummary);
+      showToast('Summary copied!', 'success');
+    };
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>

@@ -2506,6 +2506,28 @@
           </div>
         </div>
       </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📋</div>
+          <h3>Text Summarizer</h3>
+          <p class="card-description">Summarize long articles and documents with AI</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('summarize')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🌐</div>
+          <h3>Translator</h3>
+          <p class="card-description">Translate text between 20+ languages with AI</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('translator')">Open</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="section-design" class="section-header">🎨 Design & Media</div>
@@ -2895,6 +2917,17 @@
           <div class="card-footer">
             <span class="card-status free">🟢 Free</span>
             <button class="card-btn" onclick="checkCreditAndOpen('fakedata')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🔢</div>
+          <h3>Word Counter</h3>
+          <p class="card-description">Count words, characters, sentences, and more</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('wordcounter')">Open</button>
           </div>
         </div>
       </div>
@@ -3621,12 +3654,14 @@
         chat: 'AI Chat', image: 'Image Generator', logo: 'Logo Maker',
         content: 'Content AI', code: 'Code AI', email: 'Email AI',
         voice: 'Voice AI', resume: 'Resume AI', data: 'Data AI',
+        summarize: 'Text Summarizer', translator: 'Language Translator',
         color: 'Color Generator', gradient: 'Gradient Generator',
         imgcompress: 'Image Compress', json: 'JSON Format', minify: 'Code Minify',
         jwt: 'JWT Decode', urlencode: 'URL Encode', regex: 'Regex Test',
         passgen: 'Password Generator', qr: 'QR Generator', hashtag: 'Hashtag Generator',
         utm: 'UTM Generator', case: 'Case Convert', unit: 'Unit Convert',
-        imgconvert: 'Image Convert', ip: 'IP Lookup', fakedata: 'Fake Data'
+        imgconvert: 'Image Convert', ip: 'IP Lookup', fakedata: 'Fake Data',
+        wordcounter: 'Word Counter'
       };
       if (window.trackToolUsage) {
         window.trackToolUsage(toolNames[toolType] || toolType);
@@ -3643,6 +3678,8 @@
         voice: 'voice-ai.html',
         resume: 'resume-ai.html',
         data: 'data-ai.html',
+        summarize: 'text-summarize.html',
+        translator: 'translator.html',
         color: 'color-gen.html',
         gradient: 'gradient-gen.html',
         imgcompress: 'img-compress.html',
@@ -3659,7 +3696,8 @@
         unit: 'unit-convert.html',
         imgconvert: 'img-convert.html',
         ip: 'ip-lookup.html',
-        fakedata: 'fake-data.html'
+        fakedata: 'fake-data.html',
+        wordcounter: 'word-counter.html'
       };
       
       const page = toolPages[toolType];
