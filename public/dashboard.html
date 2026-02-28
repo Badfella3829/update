@@ -958,10 +958,10 @@
     height: 200%;
     background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
     transform: rotate(45deg);
-    animation: shimmer 3s infinite;
+    animation: upgradeShimmer 3s infinite;
   }
   
-  @keyframes shimmer {
+  @keyframes upgradeShimmer {
     0% { transform: translateX(-100%) rotate(45deg); }
     100% { transform: translateX(100%) rotate(45deg); }
   }
@@ -1464,7 +1464,7 @@
   }
 
   .welcome-left { flex: 1; }
-  .welcome-right { display: flex; align-items: center; }
+  .welcome-right { display: flex; align-items: center; position: relative; }
 
   .welcome-message {
     display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
@@ -1658,6 +1658,7 @@
     }
     .unlock-message { padding: 16px; }
     .alerts-box { position: static; width: 100%; margin-bottom: 20px; }
+    .tips-box { position: static; width: 100%; margin-bottom: 20px; }
   }
 
   /* Mobile */
@@ -1743,9 +1744,10 @@
     .nav-link { padding: 10px 12px; font-size: 13px; }
     .nav-icon { font-size: 16px; }
     
-    .welcome-section { padding: 20px; }
+    .welcome-section { padding: 20px; position: relative; }
     .welcome-content { flex-direction: column; align-items: flex-start; }
     .welcome-left { width: 100%; }
+    .welcome-right { position: absolute; top: 16px; right: 16px; }
     .user-details { margin-top: 8px; }
     .header-logo { width: 28px; height: 28px; }
   }
@@ -1785,6 +1787,7 @@
     .card-description { font-size: 12px; margin-bottom: 10px; }
     .section-header { font-size: 18px; margin: 20px 0 15px 0; }
     .welcome-section { padding: 12px; }
+    .welcome-right { top: 12px; right: 12px; }
     .welcome-text { font-size: 14px; }
     .welcome-emoji { font-size: 18px; }
     .recent-activity-section { padding: 12px; }
@@ -1798,6 +1801,13 @@
     .premium-benefits li { font-size: 12px; }
     .footer { padding: 12px; }
     .footer a, .footer span { font-size: 12px; }
+    /* Notification dropdown full-width on mobile - !important needed to override inline styles */
+    #notificationDropdown {
+      width: calc(100vw - 30px) !important;
+      right: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
     /* Sidebar overlay for mobile */
     .sidebar-overlay {
       display: none;
@@ -1855,6 +1865,23 @@
     .user-name { display: none; }
     .dropdown-arrow { display: none; }
     .header-logo { width: 24px; height: 24px; }
+  }
+
+  /* Disable transform hover on touch devices to prevent sticky states */
+  @media (hover: none) {
+    .card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    .card-btn:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .activity-item:hover {
+      transform: none;
+      box-shadow: none;
+    }
   }
 
   /* RECENT ACTIVITY / HISTORY SECTION - Premium Design */
