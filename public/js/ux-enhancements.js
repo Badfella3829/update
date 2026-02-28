@@ -246,6 +246,7 @@ class WelcomeTour {
 class TooltipSystem {
   constructor() {
     this.currentTooltip = null;
+    this.activeElement = null;
   }
 
   init() {
@@ -257,9 +258,9 @@ class TooltipSystem {
     });
 
     document.addEventListener('mouseout', (e) => {
-      const target = e.target.closest('[data-tooltip]');
+      const target = e.target.closest('[data-tooltip], [data-original-title]');
       if (target && this.currentTooltip) {
-        this.hideTooltip();
+        this.hideTooltip(target);
       }
     });
 
@@ -273,6 +274,13 @@ class TooltipSystem {
   showTooltip(element, event) {
     const text = element.getAttribute('data-tooltip');
     if (!text) return;
+
+    // Suppress native browser title tooltip to avoid duplicate text on hover
+    if (element.hasAttribute('title')) {
+      element.setAttribute('data-original-title', element.getAttribute('title'));
+      element.removeAttribute('title');
+    }
+    this.activeElement = element;
 
     this.currentTooltip = document.createElement('div');
     this.currentTooltip.className = 'custom-tooltip';
@@ -334,11 +342,18 @@ class TooltipSystem {
     tooltip.style.top = finalY + 'px';
   }
 
-  hideTooltip() {
+  hideTooltip(element) {
     if (this.currentTooltip) {
       this.currentTooltip.remove();
       this.currentTooltip = null;
     }
+    // Restore native title attribute if it was suppressed
+    const target = element || this.activeElement;
+    if (target && target.hasAttribute('data-original-title')) {
+      target.setAttribute('title', target.getAttribute('data-original-title'));
+      target.removeAttribute('data-original-title');
+    }
+    this.activeElement = null;
   }
 }
 
