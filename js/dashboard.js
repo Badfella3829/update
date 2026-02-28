@@ -97,7 +97,7 @@ onAuthStateChanged(auth, async (user) => {
     // Update Credits in Navbar
     const credits = await getCreditsByUid(user.uid);
     const el = document.getElementById("creditText");
-    if (el) el.innerText = `⚡ ${credits} Credits`;
+    if (el) el.innerText = `${credits} Credits`;
 
     // Update Progress Bar
     const bar = document.getElementById("creditBar");
