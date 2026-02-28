@@ -723,6 +723,5 @@ window.skeletonLoader = skeletonLoader;
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  tooltipSystem.init();
   welcomeTour.init();
 });
