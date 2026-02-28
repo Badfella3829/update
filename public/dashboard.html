@@ -692,6 +692,8 @@
     left: 0;
     height: 100vh;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .brand {
@@ -1760,11 +1762,12 @@
       left: -260px; 
       width: 260px;
       height: 100vh;
-      z-index: 1001;
+      z-index: 1100;
       transition: left 0.3s ease;
       padding: 20px 15px;
     }
     .sidebar.active { left: 0; }
+    .sidebar-close { display: flex !important; }
     .main-content { 
       margin-left: 0 !important; 
       padding: 15px;
@@ -1838,9 +1841,6 @@
   }
 
   @media(max-width:600px){
-    :root {
-      --sidebar-width: 160px;
-    }
     .sidebar { padding: 15px 8px; }
     .brand { font-size: 14px; margin-bottom: 15px; }
     .brand-logo { width: 26px; height: 26px; }
