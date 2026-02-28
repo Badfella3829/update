@@ -62,6 +62,7 @@
       background: var(--bg-dark);
       color: var(--text-main);
       line-height: 1.6;
+      overflow-x: hidden;
       transition: background-color 0.4s ease, color 0.4s ease;
     }
 
@@ -1368,6 +1369,7 @@
     @media (max-width: 900px) {
       .hero-title { font-size: 36px; }
       .hero-stats { flex-wrap: wrap; gap: 24px; }
+      .hero-cta { flex-wrap: wrap; }
       .nav-menu { display: none; }
     }
 
@@ -1848,6 +1850,7 @@
     /* ============ SMOOTH SCROLL ============ */
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
     /* ============ PAGE LOADER ============ */
