@@ -2406,7 +2406,63 @@
     <div class="grid" id="recent-grid" style="display: none;"></div>
 
     <div id="section-ai" class="section-header">🧠 AI Tools</div>
-    <div class="grid" id="ai-tools-content" style="display: grid;">
+    <div class="grid" id="ai-tools-grid" style="display: grid;">
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-icon"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-description"></div>
+        <div class="skeleton-footer">
+          <div class="skeleton-status"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid" id="ai-tools-content" style="display: none;">
       <div class="card js-tilt">
         <div class="card-content">
           <div class="card-icon">🤖</div>
@@ -2531,9 +2587,9 @@
     </div>
 
     <div id="section-design" class="section-header">🎨 Design & Media</div>
-    <div class="grid" id="design-tools-grid" style="display: none;">
-      <!-- Loading skeletons will be inserted here -->
-      <div class="skeleton-card" style="display: none;">
+    <div class="grid" id="design-tools-grid" style="display: grid;">
+      <!-- Loading skeletons -->
+      <div class="skeleton-card">
         <div class="skeleton-icon"></div>
         <div class="skeleton-title"></div>
         <div class="skeleton-description"></div>
@@ -2597,7 +2653,7 @@
         </div>
       </div>
     </div>
-    <div class="grid" id="design-tools-content" style="display: grid;">
+    <div class="grid" id="design-tools-content" style="display: none;">
       <div class="card js-tilt">
         <div class="card-content">
           <div class="card-icon">🎨</div>
@@ -2678,9 +2734,9 @@
     </div>
 
     <div id="section-dev" class="section-header">🔧 Dev & Tech</div>
-    <div class="grid" id="dev-tools-grid" style="display: none;">
+    <div class="grid" id="dev-tools-grid" style="display: grid;">
       <!-- Loading skeletons will be inserted here -->
-      <div class="skeleton-card" style="display: none;">
+      <div class="skeleton-card">
         <div class="skeleton-icon"></div>
         <div class="skeleton-title"></div>
         <div class="skeleton-description"></div>
@@ -2735,7 +2791,7 @@
         </div>
       </div>
     </div>
-    <div class="grid" id="dev-tools-content" style="display: grid;">
+    <div class="grid" id="dev-tools-content" style="display: none;">
       <div class="card js-tilt">
         <div class="card-content">
           <div class="card-icon">🧩</div>
@@ -2805,7 +2861,7 @@
     </div>
 
     <div id="section-seo" class="section-header">📈 SEO & Social</div>
-    <div class="grid">
+    <div class="grid" id="seo-grid">
       <div class="card js-tilt">
         <div class="card-content">
           <div class="card-icon">📈</div>
@@ -2864,7 +2920,7 @@
     </div>
 
     <div id="section-util" class="section-header">🔐 Utility & Security</div>
-    <div class="grid">
+    <div class="grid" id="util-grid">
       <div class="card js-tilt">
         <div class="card-content">
           <div class="card-icon">🔑</div>
@@ -2934,7 +2990,7 @@
     </div>
 
     <div id="section-file" class="section-header">📂 File & Convert</div>
-    <div class="grid">
+    <div class="grid" id="file-grid">
       <div class="card js-tilt">
         <div class="card-content">
           <div class="card-icon">📄</div>
@@ -4605,7 +4661,6 @@
     // --- UTILS ---
     window.closeTool = () => document.getElementById('tool-interface').classList.remove('active');
     window.closeModal = () => document.getElementById('premiumModal').style.display = 'none';
-    window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('active');
     window.scrollToTop = () => document.querySelector('.main-content').scrollTop = 0;
 
     // --- THEME TOGGLE ---
