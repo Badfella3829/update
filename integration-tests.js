@@ -217,7 +217,7 @@ class AuthIntegrationTester {
             }
 
             if (password.length < 6) {
-                return { success: false, error: 'Password must be 6+ chars' };
+                return { success: false, error: 'password must be 6+ chars' };
             }
 
             if (!acceptTerms) {
@@ -259,7 +259,9 @@ class AuthIntegrationTester {
 
     async simulatePasswordReset(email) {
         try {
-            if (!email || !email.includes('@')) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !emailRegex.test(email)) {
                 return { success: false, error: 'Please enter a valid email' };
             }
 
