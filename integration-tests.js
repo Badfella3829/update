@@ -326,13 +326,15 @@ class AuthIntegrationTester {
 }
 
 // Export for use in other files
-export default AuthIntegrationTester;
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AuthIntegrationTester;
+}
 
 // Run tests if this file is executed directly
 if (typeof window !== 'undefined' && window.location) {
     // Browser environment
     window.AuthIntegrationTester = AuthIntegrationTester;
-} else {
+} else if (typeof require !== 'undefined' && require.main === module) {
     // Node.js environment
     const tester = new AuthIntegrationTester();
     tester.runAllTests().catch(console.error);
