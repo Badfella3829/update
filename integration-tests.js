@@ -70,7 +70,7 @@ class AuthIntegrationTester {
         // Test 5: Weak password rejection
         await this.runTest('Weak Password Rejection', async () => {
             const result = await this.simulateSignup('test@example.com', '123', 'Test User');
-            return !result.success && result.error.includes('password') ?
+            return !result.success && result.error.toLowerCase().includes('password') ?
                    { passed: true, details: 'Weak password properly rejected' } :
                    { passed: false, details: 'Weak password accepted' };
         });
@@ -259,7 +259,9 @@ class AuthIntegrationTester {
 
     async simulatePasswordReset(email) {
         try {
-            if (!email || !email.includes('@')) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !emailRegex.test(email)) {
                 return { success: false, error: 'Please enter a valid email' };
             }
 
@@ -324,13 +326,15 @@ class AuthIntegrationTester {
 }
 
 // Export for use in other files
-export default AuthIntegrationTester;
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AuthIntegrationTester;
+}
 
 // Run tests if this file is executed directly
 if (typeof window !== 'undefined' && window.location) {
     // Browser environment
     window.AuthIntegrationTester = AuthIntegrationTester;
-} else {
+} else if (typeof require !== 'undefined' && require.main === module) {
     // Node.js environment
     const tester = new AuthIntegrationTester();
     tester.runAllTests().catch(console.error);
