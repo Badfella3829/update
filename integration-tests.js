@@ -70,7 +70,7 @@ class AuthIntegrationTester {
         // Test 5: Weak password rejection
         await this.runTest('Weak Password Rejection', async () => {
             const result = await this.simulateSignup('test@example.com', '123', 'Test User');
-            return !result.success && result.error.includes('password') ?
+            return !result.success && result.error.toLowerCase().includes('password') ?
                    { passed: true, details: 'Weak password properly rejected' } :
                    { passed: false, details: 'Weak password accepted' };
         });
@@ -259,7 +259,9 @@ class AuthIntegrationTester {
 
     async simulatePasswordReset(email) {
         try {
-            if (!email || !email.includes('@')) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !emailRegex.test(email)) {
                 return { success: false, error: 'Please enter a valid email' };
             }
 
