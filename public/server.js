@@ -7,10 +7,36 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// OpenAI client using Replit AI Integrations
-const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+function getOpenAIClient() {
+  const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+  const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
+
+  if (!apiKey) return null;
+
+  const config = { apiKey };
+  if (baseURL) config.baseURL = baseURL;
+
+  return new OpenAI(config);
+}
+
+function requireOpenAI(req, res) {
+  const client = getOpenAIClient();
+  if (!client) {
+    res.status(503).json({
+      error: 'AI service is not configured on the server',
+      code: 'AI_CONFIG_MISSING'
+    });
+    return null;
+  }
+  return client;
+}
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    aiConfigured: Boolean(process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY),
+    ts: new Date().toISOString()
+  });
 });
 
 // Premium plan verification middleware
@@ -43,6 +69,9 @@ function validateHistory(history) {
 
 // AI Chat API endpoint
 app.post('/api/chat', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { message, history = [] } = req.body;
 
@@ -102,6 +131,9 @@ app.post('/api/chat', async (req, res) => {
 
 // Image Generation API endpoint (FREE)
 app.post('/api/image-generate', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { prompt } = req.body;
 
@@ -131,6 +163,9 @@ app.post('/api/image-generate', async (req, res) => {
 
 // Content AI API endpoint (PREMIUM)
 app.post('/api/content-ai', requirePremium, async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { type, topic, tone = 'professional' } = req.body;
 
@@ -169,6 +204,9 @@ app.post('/api/content-ai', requirePremium, async (req, res) => {
 
 // Code AI API endpoint (PREMIUM)
 app.post('/api/code-ai', requirePremium, async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { task, language = 'javascript', code = '' } = req.body;
 
@@ -203,6 +241,9 @@ app.post('/api/code-ai', requirePremium, async (req, res) => {
 
 // Email AI API endpoint (PREMIUM)
 app.post('/api/email-ai', requirePremium, async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { type, subject, details, tone = 'professional' } = req.body;
 
@@ -241,6 +282,9 @@ app.post('/api/email-ai', requirePremium, async (req, res) => {
 
 // Voice AI - Text to Speech API endpoint (PREMIUM)
 app.post('/api/voice-ai/tts', requirePremium, async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { text, voice = 'alloy' } = req.body;
 
@@ -277,6 +321,9 @@ app.post('/api/voice-ai/tts', requirePremium, async (req, res) => {
 
 // Resume AI API endpoint (PREMIUM)
 app.post('/api/resume-ai', requirePremium, async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { name, jobTitle, experience, skills, education, summary } = req.body;
 
@@ -318,6 +365,9 @@ Generate a complete, well-formatted resume with:
 
 // Data AI API endpoint (PREMIUM)
 app.post('/api/data-ai', requirePremium, async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { data, task = 'analyze', question } = req.body;
 
@@ -353,6 +403,9 @@ app.post('/api/data-ai', requirePremium, async (req, res) => {
 
 // Logo Generator API endpoint (FREE - uses image generation)
 app.post('/api/logo-generate', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { brandName, style = 'modern', colors, industry } = req.body;
 
@@ -386,6 +439,9 @@ Requirements: Simple, memorable, scalable logo suitable for business use. White 
 
 // Non-streaming chat endpoint (simpler alternative)
 app.post('/api/chat-simple', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+
   try {
     const { message, history = [] } = req.body;
 
