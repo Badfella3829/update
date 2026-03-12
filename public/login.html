@@ -311,6 +311,8 @@
     setTimeout(() => toast.style.display = "none", 4000);
   };
 
+  window.showToast = showToast;
+
   // 1. LOGIN - Use auth-login.js module
   document.getElementById("loginForm").addEventListener('submit', async (e) => {
     e.preventDefault();
