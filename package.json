@@ -4,7 +4,8 @@
   "description": "A premium AI-powered SaaS platform built for creators, founders, and brands who want to automate smarter and scale faster.",
   "main": "integration-tests.js",
   "scripts": {
-    "test": "node integration-tests.js"
+    "test": "node integration-tests.js",
+    "check:links": "node scripts/check-links.js"
   },
   "keywords": [],
   "author": "",
