@@ -254,22 +254,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const mainContent = document.querySelector('.main-content');
 
-    if (mainContent) {
+    if (mainContent && header) {
+        let isTicking = false;
+
         mainContent.addEventListener('scroll', () => {
-            // Only apply scroll effect if user is authenticated
-            if (!auth.currentUser) return;
+            if (isTicking) return;
 
-            const scrollTop = mainContent.scrollTop;
+            isTicking = true;
+            window.requestAnimationFrame(() => {
+                // Only apply scroll effect if user is authenticated
+                if (!auth.currentUser) {
+                    isTicking = false;
+                    return;
+                }
 
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scrolling down - hide header
-                header.classList.add('hidden');
-            } else {
-                // Scrolling up - show header
-                header.classList.remove('hidden');
-            }
+                const scrollTop = mainContent.scrollTop;
 
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // Scrolling down - hide header
+                    header.classList.add('hidden');
+                } else {
+                    // Scrolling up - show header
+                    header.classList.remove('hidden');
+                }
+
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                isTicking = false;
+            });
         }, { passive: true });
     }
 });
