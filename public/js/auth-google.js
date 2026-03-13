@@ -206,11 +206,13 @@ function syncSignupGoogleButtonState() {
 
   const applyState = () => {
     const canUseGoogle = termsCheckbox.checked;
-    if (!btn.dataset.loading) {
+    const isLoading = Boolean(btn.dataset.loading);
+
+    if (!isLoading) {
       btn.disabled = !canUseGoogle;
     }
 
-    btn.setAttribute("aria-disabled", String(!canUseGoogle));
+    btn.setAttribute("aria-disabled", String(btn.disabled));
   };
 
   termsCheckbox.addEventListener("change", applyState);
