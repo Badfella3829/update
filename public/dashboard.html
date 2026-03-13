@@ -6,7 +6,7 @@
   <link rel="icon" href="logo-192.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Access the TechVyro dashboard to launch AI tools, manage credits, and streamline your workflow." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://pagead2.googlesyndication.com https://*.firebaseio.com https://*.firebase.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' https:; frame-src 'self' https:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com https://www.googleapis.com https://pagead2.googlesyndication.com https://*.firebaseio.com https://*.firebase.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' https://www.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://*.firebaseio.com https://*.firebase.com; frame-src 'self' https:;">
   <!-- 🚨 SECURITY: Prevent caching to avoid BFCache issues -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -1809,6 +1809,12 @@
     .welcome-right { top: 12px; right: 12px; }
     .welcome-text { font-size: 14px; }
     .welcome-emoji { font-size: 18px; }
+    .premium-insights-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .insight-pill { padding: 10px; }
+    .insight-value { font-size: 15px; }
+    .quick-actions-panel { padding: 12px; }
+    .quick-actions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .quick-action-chip { font-size: 12px; padding: 9px 10px; }
     .recent-activity-section { padding: 12px; }
     .recent-activity-content { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .activity-item { padding: 10px; }
@@ -1848,6 +1854,7 @@
     .sidebar { width: 240px; left: -240px; }
     .main-content { padding: 10px; }
     .grid { grid-template-columns: 1fr; gap: 10px; }
+    .premium-insights-strip { grid-template-columns: 1fr; }
     .card { padding: 14px; }
     .recent-activity-content { grid-template-columns: 1fr 1fr; gap: 8px; }
     .section-header { font-size: 16px; }
@@ -1920,7 +1927,111 @@
     }
   }
 
-  /* RECENT ACTIVITY / HISTORY SECTION - Premium Design */
+  
+
+  /* PREMIUM INSIGHTS STRIP */
+  .premium-insights-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 14px;
+  }
+  .insight-pill {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(140deg, rgba(30,41,59,.72), rgba(15,23,42,.9));
+    padding: 12px 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(2,6,23,.22);
+  }
+  .insight-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 90% -20%, rgba(96,165,250,.25), transparent 40%);
+    pointer-events: none;
+  }
+  .insight-kicker {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .insight-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+  .insight-sub {
+    font-size: 12px;
+    color: #93c5fd;
+    font-weight: 600;
+  }
+  body.light-mode .insight-pill {
+    background: linear-gradient(140deg, rgba(255,255,255,.92), rgba(248,250,252,.98));
+    border-color: rgba(15,23,42,.08);
+    box-shadow: 0 8px 20px rgba(15,23,42,.08);
+  }
+
+  /* QUICK ACTIONS */
+  .quick-actions-panel {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 0 0 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  .quick-actions-title {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  .quick-action-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    background: rgba(59, 130, 246, 0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+  .quick-action-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(96, 165, 250, 0.45);
+    background: rgba(59, 130, 246, 0.16);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.2);
+  }
+  body.light-mode .quick-actions-panel {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  }
+  body.light-mode .quick-action-chip {
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+
+/* RECENT ACTIVITY / HISTORY SECTION - Premium Design */
   .recent-activity-section {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -2407,6 +2518,41 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="premium-insights-strip" aria-label="Premium Insights">
+      <div class="insight-pill">
+        <span class="insight-kicker">Usage Score</span>
+        <div class="insight-value">94%</div>
+        <div class="insight-sub">Excellent consistency</div>
+      </div>
+      <div class="insight-pill">
+        <span class="insight-kicker">Tools Unlocked</span>
+        <div class="insight-value">120+</div>
+        <div class="insight-sub">Across all categories</div>
+      </div>
+      <div class="insight-pill">
+        <span class="insight-kicker">Today Credits</span>
+        <div class="insight-value" id="premiumTodayCredits">50</div>
+        <div class="insight-sub">Daily free quota</div>
+      </div>
+      <div class="insight-pill">
+        <span class="insight-kicker">Pro Upgrade</span>
+        <div class="insight-value">+3.2x</div>
+        <div class="insight-sub">Faster workflows</div>
+      </div>
+    </div>
+
+    <div class="quick-actions-panel" aria-label="Quick Actions">
+      <p class="quick-actions-title">⚡ Quick Actions</p>
+      <div class="quick-actions-grid">
+        <a class="quick-action-chip" href="#section-ai">🧠 AI Tools</a>
+        <a class="quick-action-chip" href="#section-dev">🔧 Dev Tools</a>
+        <a class="quick-action-chip" href="#section-design">✍️ Content Tools</a>
+        <a class="quick-action-chip" href="#section-seo">📈 Marketing</a>
+        <a class="quick-action-chip" href="pricing.html">⭐ Upgrade Plan</a>
+        <a class="quick-action-chip" href="submissions.html">💬 Send Feedback</a>
       </div>
     </div>
 

@@ -1,53 +1,33 @@
 import { db } from "./firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  DEFAULT_FEATURE_FLAGS,
+  createFeatureFlagsCache,
+  resolveFeatureEnabled
+} from "./feature-flags-core.js";
 
-// Cache for feature flags to avoid repeated Firestore calls
-let featureFlagsCache = null;
-let cacheTimestamp = null;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const cache = createFeatureFlagsCache();
 
 /**
  * Load feature flags from Firestore
  * @returns {Promise<Object>} Feature flags object
  */
 export async function loadFeatureFlags() {
-  const now = Date.now();
-
-  // Return cached flags if still valid
-  if (featureFlagsCache && cacheTimestamp && (now - cacheTimestamp) < CACHE_DURATION) {
-    return featureFlagsCache;
+  const cachedFlags = cache.get();
+  if (cachedFlags) {
+    return cachedFlags;
   }
 
   try {
     const flagsDoc = await getDoc(doc(db, "system", "feature_flags"));
     if (flagsDoc.exists()) {
-      featureFlagsCache = flagsDoc.data();
-      cacheTimestamp = now;
-      return featureFlagsCache;
-    } else {
-      // Default flags if document doesn't exist
-      featureFlagsCache = {
-        login: true,
-        signup: true,
-        password_reset: true,
-        payments: true,
-        ai_chat: true,
-        analytics: true
-      };
-      cacheTimestamp = now;
-      return featureFlagsCache;
+      return cache.set(flagsDoc.data());
     }
+
+    return cache.set({ ...DEFAULT_FEATURE_FLAGS });
   } catch (error) {
     console.error("Error loading feature flags:", error);
-    // Return default flags on error
-    return {
-      login: true,
-      signup: true,
-      password_reset: true,
-      payments: true,
-      ai_chat: true,
-      analytics: true
-    };
+    return { ...DEFAULT_FEATURE_FLAGS };
   }
 }
 
@@ -59,25 +39,12 @@ export async function loadFeatureFlags() {
  */
 export async function isFeatureEnabled(feature, userId = null) {
   const flags = await loadFeatureFlags();
-
-  // If globally enabled, return true
-  if (flags[feature] === true) {
-    return true;
-  }
-
-  // If globally disabled, check if user is in beta list
-  if (flags[feature] === false && userId && flags[`${feature}_beta_users`] && Array.isArray(flags[`${feature}_beta_users`])) {
-    return flags[`${feature}_beta_users`].includes(userId);
-  }
-
-  // Default to true if not set
-  return flags[feature] !== false;
+  return resolveFeatureEnabled(flags, feature, userId);
 }
 
 /**
  * Clear feature flags cache (useful for admin updates)
  */
 export function clearFeatureFlagsCache() {
-  featureFlagsCache = null;
-  cacheTimestamp = null;
+  cache.clear();
 }
