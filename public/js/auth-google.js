@@ -24,6 +24,13 @@ function getGoogleButton() {
   return document.getElementById("googleBtn");
 }
 
+function getAuthContext() {
+  const path = (window.location.pathname || "").toLowerCase();
+  if (path.includes("signup")) return "signup";
+  if (path.includes("login")) return "login";
+  return "generic";
+}
+
 function showAuthToast(message, type = "error") {
   if (typeof window.showToast === "function") {
     window.showToast(message, type);
@@ -50,9 +57,13 @@ function setGoogleButtonState(loading) {
 
   if (!btn) return;
   btn.disabled = loading;
+  btn.dataset.loading = loading ? "true" : "";
 
   if (textNode) {
-    textNode.textContent = loading ? "Signing in..." : "Continue with Google";
+    const context = getAuthContext();
+    const idleText = context === "signup" ? "Sign up with Google" : "Continue with Google";
+    const loadingText = context === "signup" ? "Creating account..." : "Signing in...";
+    textNode.textContent = loading ? loadingText : idleText;
   }
 }
 
@@ -186,6 +197,26 @@ async function finishGoogleAuth(user) {
   window.location.href = "dashboard.html";
 }
 
+function syncSignupGoogleButtonState() {
+  if (getAuthContext() !== "signup") return;
+
+  const termsCheckbox = document.getElementById("termsCheckbox");
+  const btn = getGoogleButton();
+  if (!termsCheckbox || !btn) return;
+
+  const applyState = () => {
+    const canUseGoogle = termsCheckbox.checked;
+    if (!btn.dataset.loading) {
+      btn.disabled = !canUseGoogle;
+    }
+
+    btn.setAttribute("aria-disabled", String(!canUseGoogle));
+  };
+
+  termsCheckbox.addEventListener("change", applyState);
+  applyState();
+}
+
 async function startRedirectSignIn(message) {
   if (message) {
     showAuthToast(message, "success");
@@ -242,6 +273,8 @@ async function handleRedirectFlow() {
 const btn = getGoogleButton();
 if (btn) {
   btn.addEventListener("click", handleGoogleSignIn);
+  setGoogleButtonState(false);
 }
 
+syncSignupGoogleButtonState();
 handleRedirectFlow();
