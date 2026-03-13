@@ -1809,6 +1809,9 @@
     .welcome-right { top: 12px; right: 12px; }
     .welcome-text { font-size: 14px; }
     .welcome-emoji { font-size: 18px; }
+    .quick-actions-panel { padding: 12px; }
+    .quick-actions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .quick-action-chip { font-size: 12px; padding: 9px 10px; }
     .recent-activity-section { padding: 12px; }
     .recent-activity-content { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .activity-item { padding: 10px; }
@@ -1920,7 +1923,62 @@
     }
   }
 
-  /* RECENT ACTIVITY / HISTORY SECTION - Premium Design */
+  
+  /* QUICK ACTIONS */
+  .quick-actions-panel {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 0 0 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  .quick-actions-title {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  .quick-action-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    background: rgba(59, 130, 246, 0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+  .quick-action-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(96, 165, 250, 0.45);
+    background: rgba(59, 130, 246, 0.16);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.2);
+  }
+  body.light-mode .quick-actions-panel {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  }
+  body.light-mode .quick-action-chip {
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+
+/* RECENT ACTIVITY / HISTORY SECTION - Premium Design */
   .recent-activity-section {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -2407,6 +2465,18 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="quick-actions-panel" aria-label="Quick Actions">
+      <p class="quick-actions-title">⚡ Quick Actions</p>
+      <div class="quick-actions-grid">
+        <a class="quick-action-chip" href="#section-ai">🧠 AI Tools</a>
+        <a class="quick-action-chip" href="#section-dev">🔧 Dev Tools</a>
+        <a class="quick-action-chip" href="#section-design">✍️ Content Tools</a>
+        <a class="quick-action-chip" href="#section-seo">📈 Marketing</a>
+        <a class="quick-action-chip" href="pricing.html">⭐ Upgrade Plan</a>
+        <a class="quick-action-chip" href="submissions.html">💬 Send Feedback</a>
       </div>
     </div>
 
