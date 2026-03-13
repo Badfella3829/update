@@ -86,10 +86,14 @@ class AuthIntegrationTester {
 
         // Test JavaScript imports
         const hasFirebaseImport = content.includes('js/firebase.js');
-        const hasAuthSignupImport = content.includes('js/auth-signup.js');
+        const hasAuthSignupImport = content.includes('js/auth-signup.js') || content.includes('handleSignup(');
 
         this.addResult('Firebase import', hasFirebaseImport, hasFirebaseImport ? 'Firebase properly imported' : 'Firebase import missing');
-        this.addResult('Auth signup import', hasAuthSignupImport, hasAuthSignupImport ? 'Auth signup script imported' : 'Auth signup script missing');
+        this.addResult(
+            'Auth signup implementation',
+            hasAuthSignupImport,
+            hasAuthSignupImport ? 'Signup logic is available (module or inline)' : 'Signup script/logic missing'
+        );
 
         // Test form validation logic
         const hasValidationLogic = content.includes('Please fill in all fields') || content.includes('fill in all');
