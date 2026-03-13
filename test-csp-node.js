@@ -54,7 +54,7 @@ async function runCSPTests() {
         const dashboardPath = path.join(__dirname, 'public', 'dashboard.html');
         const html = fs.readFileSync(dashboardPath, 'utf8');
 
-        const cspMatch = html.match(/content=["']([^"']*)["']/i);
+        const cspMatch = html.match(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*content=("|')([\s\S]*?)\1[^>]*>/i);
         if (!cspMatch) {
             console.log('❌ FAILED: Could not extract CSP policy from meta tag');
             results.failed++;
@@ -64,7 +64,7 @@ async function runCSPTests() {
                 details: 'Could not extract CSP policy from meta tag'
             });
         } else {
-            const cspPolicy = cspMatch[1];
+            const cspPolicy = cspMatch[2];
 
             // Required domains that should be allowed
             const requiredDomains = [
@@ -180,7 +180,7 @@ async function runCSPTests() {
         const dashboardPath = path.join(__dirname, 'public', 'dashboard.html');
         const html = fs.readFileSync(dashboardPath, 'utf8');
 
-        const cspMatch = html.match(/content=["']([^"']*)["']/i);
+        const cspMatch = html.match(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*content=("|')([\s\S]*?)\1[^>]*>/i);
         if (!cspMatch) {
             console.log('❌ FAILED: Could not find CSP policy');
             results.failed++;
@@ -190,7 +190,7 @@ async function runCSPTests() {
                 details: 'Could not find CSP policy'
             });
         } else {
-            const cspPolicy = cspMatch[1];
+            const cspPolicy = cspMatch[2];
 
             // Check for required directives
             const requiredDirectives = [
