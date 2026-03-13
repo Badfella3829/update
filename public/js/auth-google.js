@@ -1,17 +1,20 @@
 import { auth, db } from "./firebase.js";
 import {
   GoogleAuthProvider,
+  browserLocalPersistence,
+  fetchSignInMethodsForEmail,
+  getRedirectResult,
+  setPersistence,
   signInWithPopup,
   signInWithRedirect,
-  getRedirectResult,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   doc,
   getDoc,
+  serverTimestamp,
   setDoc,
-  updateDoc,
-  serverTimestamp
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const provider = new GoogleAuthProvider();
@@ -65,6 +68,15 @@ function signupTermsAccepted() {
   return true;
 }
 
+function shouldUseRedirectFlow() {
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua);
+  const isSamsungBrowser = /SamsungBrowser/i.test(ua);
+  const isStandalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches;
+
+  return isIOS || isSamsungBrowser || isStandalone;
+}
+
 async function upsertUserDocument(user) {
   const userRef = doc(db, "users", user.uid);
   const snap = await getDoc(userRef);
@@ -72,7 +84,6 @@ async function upsertUserDocument(user) {
   if (snap.exists()) {
     const data = snap.data();
 
-    // 🚫 BLOCKED USER CHECK
     if (data.blocked === true) {
       await signOut(auth);
       throw new Error("blocked_user");
@@ -113,9 +124,44 @@ async function upsertUserDocument(user) {
   });
 }
 
-function mapGoogleAuthError(error) {
+async function resolveAccountConflictMessage(error) {
+  if (error?.code !== "auth/account-exists-with-different-credential") {
+    return null;
+  }
+
+  const email = error?.customData?.email;
+  if (!email) {
+    return "This email is already linked to another sign-in method. Use that method first.";
+  }
+
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    if (!methods.length) {
+      return "This email is already linked to another sign-in method. Use that method first.";
+    }
+
+    if (methods.includes("password")) {
+      return "This email already has a password account. Please log in with email/password first, then connect Google from settings.";
+    }
+
+    if (methods.includes("phone")) {
+      return "This email is linked with phone sign-in. Please use phone login first.";
+    }
+
+    return `This email is linked to ${methods.join(", ")}. Please sign in using that method first.`;
+  } catch {
+    return "This email is already linked to another sign-in method. Use that method first.";
+  }
+}
+
+async function mapGoogleAuthError(error) {
   if (error?.message === "blocked_user") {
     return "Your account has been blocked by admin. Please contact support.";
+  }
+
+  const conflictMessage = await resolveAccountConflictMessage(error);
+  if (conflictMessage) {
+    return conflictMessage;
   }
 
   switch (error?.code) {
@@ -129,7 +175,7 @@ function mapGoogleAuthError(error) {
     case "auth/unauthorized-domain":
       return "This domain is not authorized for Google sign-in.";
     case "auth/popup-blocked":
-      return "Popup blocked. Trying secure redirect sign-in...";
+      return "Popup blocked. Switching to secure redirect sign-in...";
     default:
       return "Google sign-in failed. Please try again.";
   }
@@ -140,23 +186,37 @@ async function finishGoogleAuth(user) {
   window.location.href = "dashboard.html";
 }
 
+async function startRedirectSignIn(message) {
+  if (message) {
+    showAuthToast(message, "success");
+  }
+  setGoogleButtonState(true);
+  await signInWithRedirect(auth, provider);
+}
+
 async function handleGoogleSignIn() {
   if (!signupTermsAccepted()) return;
 
   setGoogleButtonState(true);
 
   try {
+    await setPersistence(auth, browserLocalPersistence);
+
+    if (shouldUseRedirectFlow()) {
+      await startRedirectSignIn("Opening secure Google sign-in...");
+      return;
+    }
+
     const result = await signInWithPopup(auth, provider);
     await finishGoogleAuth(result.user);
     return;
   } catch (error) {
     if (error?.code === "auth/popup-blocked") {
-      showAuthToast(mapGoogleAuthError(error), "success");
-      await signInWithRedirect(auth, provider);
+      await startRedirectSignIn(await mapGoogleAuthError(error));
       return;
     }
 
-    showAuthToast(mapGoogleAuthError(error), "error");
+    showAuthToast(await mapGoogleAuthError(error), "error");
   } finally {
     setGoogleButtonState(false);
   }
@@ -174,7 +234,7 @@ async function handleRedirectFlow() {
     setGoogleButtonState(true);
     await finishGoogleAuth(result.user);
   } catch (error) {
-    showAuthToast(mapGoogleAuthError(error), "error");
+    showAuthToast(await mapGoogleAuthError(error), "error");
     setGoogleButtonState(false);
   }
 }
