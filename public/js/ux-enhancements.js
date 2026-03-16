@@ -242,141 +242,57 @@ class WelcomeTour {
   }
 }
 
-// Tooltip System
+// Tooltip System - DISABLED to prevent cursor text issues
+// Uses CSS-only tooltips instead via [data-tooltip]::after
 class TooltipSystem {
   constructor() {
-    this.currentTooltip = null;
-    this.activeElement = null;
+    // No-op
   }
 
   init() {
-    // Suppress all native title tooltips on page load for elements with data-tooltip
-    document.querySelectorAll('[data-tooltip][title]').forEach(el => {
-      el.setAttribute('data-original-title', el.getAttribute('title'));
-      el.removeAttribute('title');
-    });
-
-    document.addEventListener('mouseover', (e) => {
-      const target = e.target.closest('[data-tooltip]');
-      if (target) {
-        // If hovering a different element, hide old tooltip first
-        if (this.activeElement && this.activeElement !== target) {
-          this.hideTooltip();
-        }
-        if (!this.currentTooltip) {
-          this.showTooltip(target, e);
-        }
-      } else {
-        // Not over a tooltip element, hide any existing tooltip
-        if (this.currentTooltip) {
-          this.hideTooltip();
-        }
-      }
-    });
-
-    document.addEventListener('mouseout', (e) => {
-      const target = e.target.closest('[data-tooltip], [data-original-title]');
-      // Only hide if leaving the active element and not entering another tooltip element
-      if (target && this.currentTooltip && target === this.activeElement) {
-        const relatedTarget = e.relatedTarget;
-        if (!relatedTarget || !relatedTarget.closest('[data-tooltip]')) {
-          this.hideTooltip();
-        }
-      }
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (this.currentTooltip) {
-        // Check if mouse is still over the active element
-        const elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
-        if (!elementUnderMouse || !elementUnderMouse.closest('[data-tooltip]')) {
-          this.hideTooltip();
-          return;
-        }
-        this.updateTooltipPosition(e);
-      }
-    });
-  }
-
-  showTooltip(element, event) {
-    const text = element.getAttribute('data-tooltip');
-    if (!text) return;
-
-    // Suppress native browser title tooltip to avoid duplicate text on hover
-    if (element.hasAttribute('title')) {
-      element.setAttribute('data-original-title', element.getAttribute('title'));
-      element.removeAttribute('title');
-    }
-    this.activeElement = element;
-
-    this.currentTooltip = document.createElement('div');
-    this.currentTooltip.className = 'custom-tooltip';
-    this.currentTooltip.textContent = text;
-    document.body.appendChild(this.currentTooltip);
-
-    this.updateTooltipPosition(event);
-
-    // Add CSS if not present
+    // Add CSS-only tooltip styles (no JavaScript tracking)
     if (!document.querySelector('#tooltip-styles')) {
       const styles = document.createElement('style');
       styles.id = 'tooltip-styles';
       styles.textContent = `
-        .custom-tooltip {
-          position: fixed;
+        [data-tooltip] {
+          position: relative;
+        }
+        [data-tooltip]::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-5px);
           background: rgba(2, 6, 23, 0.95);
           color: #e5e7eb;
-          padding: 8px 12px;
+          padding: 6px 10px;
           border-radius: 6px;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
+          white-space: nowrap;
           pointer-events: none;
-          z-index: 1000;
-          max-width: 200px;
-          text-align: center;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.2s ease, visibility 0.2s ease;
+          z-index: 10000;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-          backdrop-filter: blur(8px);
           border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        [data-tooltip]:hover::after {
+          opacity: 1;
+          visibility: visible;
+        }
+        /* Position tooltip below for elements near top */
+        .sidebar [data-tooltip]::after,
+        .top-nav [data-tooltip]::after {
+          bottom: auto;
+          top: 100%;
+          transform: translateX(-50%) translateY(5px);
         }
       `;
       document.head.appendChild(styles);
     }
-  }
-
-  updateTooltipPosition(event) {
-    if (!this.currentTooltip) return;
-
-    const tooltip = this.currentTooltip;
-    const x = event.clientX + 10;
-    const y = event.clientY + 10;
-
-    // Adjust position to stay within viewport
-    const rect = tooltip.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    let finalX = x;
-    let finalY = y;
-
-    if (x + rect.width > viewportWidth) {
-      finalX = x - rect.width - 20;
-    }
-
-    if (y + rect.height > viewportHeight) {
-      finalY = y - rect.height - 20;
-    }
-
-    tooltip.style.left = finalX + 'px';
-    tooltip.style.top = finalY + 'px';
-  }
-
-  hideTooltip() {
-    if (this.currentTooltip) {
-      this.currentTooltip.remove();
-      this.currentTooltip = null;
-    }
-    // Do NOT restore native title attribute - it causes duplicate tooltips
-    // The data-original-title is kept but title stays removed to prevent browser tooltip
-    this.activeElement = null;
   }
 }
 
