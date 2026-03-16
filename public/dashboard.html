@@ -3797,6 +3797,46 @@
     import './js/ux-enhancements.js';
     try { await import('./js/notifications.js'); } catch(e) { console.warn('Notifications module failed:', e); }
 
+    // --- SHOW TOAST HELPER ---
+    function showToast(message, type = 'info') {
+      // Check if global showToast exists (from premium-common.js)
+      if (typeof window.showToast === 'function') {
+        window.showToast(message, type);
+        return;
+      }
+      // Fallback toast implementation
+      const colors = {
+        success: '#22c55e',
+        error: '#ef4444',
+        warning: '#f59e0b',
+        info: '#3b82f6'
+      };
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${colors[type] || colors.info};
+        color: white;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        z-index: 10000;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        animation: toastSlide 0.3s ease;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(20px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
     // --- 3D TILT LOGIC ---
     document.querySelectorAll('.js-tilt').forEach(card => {
       card.addEventListener('mousemove', (e) => {

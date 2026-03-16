@@ -1,9 +1,7 @@
-import { app } from "./firebase.js";
-import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc } from
+import { db } from "./firebase.js";
+import { doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { logDropOff } from "./logger.js";
-
-const db = getFirestore(app);
 
 // Cache for rate limits
 let rateLimitsCache = null;
