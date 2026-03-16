@@ -250,22 +250,49 @@ class TooltipSystem {
   }
 
   init() {
+    // Suppress all native title tooltips on page load for elements with data-tooltip
+    document.querySelectorAll('[data-tooltip][title]').forEach(el => {
+      el.setAttribute('data-original-title', el.getAttribute('title'));
+      el.removeAttribute('title');
+    });
+
     document.addEventListener('mouseover', (e) => {
       const target = e.target.closest('[data-tooltip]');
-      if (target && !this.currentTooltip) {
-        this.showTooltip(target, e);
+      if (target) {
+        // If hovering a different element, hide old tooltip first
+        if (this.activeElement && this.activeElement !== target) {
+          this.hideTooltip();
+        }
+        if (!this.currentTooltip) {
+          this.showTooltip(target, e);
+        }
+      } else {
+        // Not over a tooltip element, hide any existing tooltip
+        if (this.currentTooltip) {
+          this.hideTooltip();
+        }
       }
     });
 
     document.addEventListener('mouseout', (e) => {
       const target = e.target.closest('[data-tooltip], [data-original-title]');
-      if (target && this.currentTooltip) {
-        this.hideTooltip(target);
+      // Only hide if leaving the active element and not entering another tooltip element
+      if (target && this.currentTooltip && target === this.activeElement) {
+        const relatedTarget = e.relatedTarget;
+        if (!relatedTarget || !relatedTarget.closest('[data-tooltip]')) {
+          this.hideTooltip();
+        }
       }
     });
 
     document.addEventListener('mousemove', (e) => {
       if (this.currentTooltip) {
+        // Check if mouse is still over the active element
+        const elementUnderMouse = document.elementFromPoint(e.clientX, e.clientY);
+        if (!elementUnderMouse || !elementUnderMouse.closest('[data-tooltip]')) {
+          this.hideTooltip();
+          return;
+        }
         this.updateTooltipPosition(e);
       }
     });
@@ -342,17 +369,13 @@ class TooltipSystem {
     tooltip.style.top = finalY + 'px';
   }
 
-  hideTooltip(element) {
+  hideTooltip() {
     if (this.currentTooltip) {
       this.currentTooltip.remove();
       this.currentTooltip = null;
     }
-    // Restore native title attribute if it was suppressed
-    const target = element || this.activeElement;
-    if (target && target.hasAttribute('data-original-title')) {
-      target.setAttribute('title', target.getAttribute('data-original-title'));
-      target.removeAttribute('data-original-title');
-    }
+    // Do NOT restore native title attribute - it causes duplicate tooltips
+    // The data-original-title is kept but title stays removed to prevent browser tooltip
     this.activeElement = null;
   }
 }
