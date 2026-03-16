@@ -1,12 +1,11 @@
-import { auth, app } from "./firebase.js";
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from
+import { auth, db } from "./firebase.js";
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, addDoc, query, where, getDocs, updateDoc } from
+import { doc, setDoc, collection, addDoc, query, where, getDocs, updateDoc } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { httpsCallable, getFunctions } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 import { showError, withErrorHandling } from "./error-handler.js";
 import { logAuthEvent, logError, setCurrentUser } from "./logger.js";
-const db = getFirestore(app);
 
 // Generate unique referral code
 function generateReferralCode() {
@@ -62,19 +61,36 @@ async function processReferral(referralCode, newUserId) {
   }
 }
 
+// Helper function to show toast messages
+function showSignupToast(message, type = 'error') {
+  if (typeof window.showToast === 'function') {
+    window.showToast(message, type);
+    return;
+  }
+  const toast = document.getElementById('toast');
+  if (toast) {
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 4000);
+  } else {
+    alert(message);
+  }
+}
+
 window.signup = async function () {
   const emailInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
-  const msg = document.getElementById("msg");
+  const fullNameInput = document.getElementById("fullName");
 
-  msg.innerText = "";
-  msg.style.color = "red";
-
-  let email = emailInput.value.trim();
-  const password = passwordInput.value;
+  let email = emailInput?.value.trim();
+  const password = passwordInput?.value;
+  const fullName = fullNameInput?.value.trim() || email?.split('@')[0] || 'User';
+  
   logAuthEvent('signup_attempt', { email });
+  
   if (!email || !password) {
-    msg.innerText = "Please fill all fields";
+    showSignupToast("Please fill all fields", "error");
     return;
   }
 
@@ -91,19 +107,31 @@ window.signup = async function () {
       password
     );
 
+    // Update user profile with display name
+    await updateProfile(res.user, { displayName: fullName });
+    
     // Send email verification
     await sendEmailVerification(res.user);
-    logAuthEvent('signup_success', { userId: res.user.uid, email });
+    logAuthEvent('signup_success', { userId: res.user.uid, email, name: fullName });
+    
     // Generate referral code for new user
-    const referralCode = generateReferralCode();
+    const userReferralCode = fullName.substring(0, 3).toUpperCase() + res.user.uid.substring(0, 5).toUpperCase();
 
     // Firestore user doc
     await setDoc(doc(db, "users", res.user.uid), {
-      credits: 200,
+      uid: res.user.uid,
+      email: email,
+      name: fullName,
+      displayName: fullName,
+      credits: 100,
       plan: "free",
       createdAt: new Date(),
       emailVerified: false,
-      referralCode: referralCode
+      blocked: false,
+      referralCode: userReferralCode,
+      referredBy: null,
+      lastLogin: null,
+      lastLoginDevice: null
     });
 
     // Send welcome email (non-blocking)
@@ -121,15 +149,17 @@ window.signup = async function () {
     }
 
     // Process referral code if provided
-    const inputReferralCode = document.getElementById("referralCode").value.trim().toUpperCase() ||
+    const referralInput = document.getElementById("referralCode");
+    const inputReferralCode = (referralInput?.value.trim().toUpperCase()) ||
                               new URLSearchParams(window.location.search).get('ref')?.toUpperCase();
     if (inputReferralCode) {
+      // Update new user's referredBy field
+      await updateDoc(doc(db, "users", res.user.uid), { referredBy: inputReferralCode });
       await processReferral(inputReferralCode, res.user.uid);
     }
 
-    // ✅ SUCCESS MESSAGE (GUARANTEED VISIBLE)
-    msg.style.color = "green";
-    msg.innerText = "Signup successful! Please check your email and verify your account before logging in.";
+    // SUCCESS MESSAGE
+    showSignupToast("Signup successful! Please check your email and verify your account.", "success");
 
     setTimeout(() => {
       location.href = "login.html";
@@ -138,12 +168,16 @@ window.signup = async function () {
   } catch (err) {
     logError(err, { context: 'signup', email });
     if (err.code === "auth/email-already-in-use") {
-      msg.innerText = "Account already exists. Please login.";
+      showSignupToast("Account already exists. Please login.", "error");
       setTimeout(() => {
         location.href = "login.html";
       }, 1500);
+    } else if (err.code === "auth/invalid-email") {
+      showSignupToast("Please enter a valid email address.", "error");
+    } else if (err.code === "auth/weak-password") {
+      showSignupToast("Password is too weak. Use at least 6 characters.", "error");
     } else {
-      msg.innerText = err.message;
+      showSignupToast(err.message, "error");
     }
   }
 };
