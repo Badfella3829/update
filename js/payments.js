@@ -208,9 +208,9 @@ window.buyPlan = async function (plan) {
         },
 
         prefill: {
-            name: "User Name", // Auto-fill fields (Optional)
-            email: "user@example.com",
-            contact: "9999999999"
+            name: user.displayName || user.email?.split('@')[0] || "User",
+            email: user.email || "",
+            contact: user.phoneNumber || ""
         },
 
         theme: {
@@ -258,3 +258,6 @@ window.buyPlan = async function (plan) {
         showError("Payment system encountered an error. Please try again or contact support.", { showRetry: true });
     }
 };
+
+// Expose stable reference for pricing.html wrapper to delegate to
+window._paymentsBuyPlan = window.buyPlan;
