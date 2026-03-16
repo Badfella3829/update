@@ -3,9 +3,8 @@
  * Handles in-app notifications, plan expiry reminders, and new feature alerts
  */
 
-import { db } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 import { collection, addDoc, query, where, orderBy, onSnapshot, updateDoc, doc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { auth } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { logNotificationCreated, logNotificationRead, logNotificationShown } from "./logger.js";
 

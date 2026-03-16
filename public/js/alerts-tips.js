@@ -1,7 +1,5 @@
-import { auth } from "./firebase.js";
-import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const db = getFirestore();
+import { auth, db } from "./firebase.js";
+import { collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // --- ALERTS SYSTEM ---
 async function getAlerts() {

@@ -5,7 +5,6 @@
 
 import { db } from "./firebase.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { showError } from "./error-handler.js";
 
 // Log levels
 const LOG_LEVELS = {
