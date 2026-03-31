@@ -150,7 +150,8 @@
           result.innerHTML = `<div class="error">${data.error || 'Failed to process'}</div>`;
         }
       } catch (error) {
-        result.innerHTML = `<div class="error">Error: Could not connect to server</div>`;
+        console.error("Tool error:", error);
+        result.innerHTML = `<div class="error">Error: ${error.message || "Could not connect to server"}</div>`;
       }
       
       btn.disabled = false;

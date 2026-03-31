@@ -130,7 +130,8 @@
           result.innerHTML = `<div class="error">${responseData.error || 'Failed to analyze data'}</div>`;
         }
       } catch (error) {
-        result.innerHTML = `<div class="error">Error: Could not connect to server</div>`;
+        console.error("Tool error:", error);
+        result.innerHTML = `<div class="error">Error: ${error.message || "Could not connect to server"}</div>`;
       }
       
       btn.disabled = false;

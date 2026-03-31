@@ -4578,7 +4578,8 @@
           result.innerHTML = `<p style="color: #ef4444;">Error: ${data.error || 'Failed to generate image'}</p>`;
         }
       } catch (error) {
-        result.innerHTML = `<p style="color: #ef4444;">Error: Could not connect to server</p>`;
+        console.error('Tool error:', error);
+        result.innerHTML = `<p style="color: #ef4444;">Error: ${error.message || 'Could not connect to server'}</p>`;
       }
       
       btn.disabled = false;
@@ -4623,7 +4624,8 @@
         }
         result.innerHTML = data.success ? data.content : `Error: ${data.error}`;
       } catch (error) {
-        result.innerHTML = 'Error: Could not connect to server';
+        console.error('Tool error:', error);
+        result.innerHTML = 'Error: ' + (error.message || 'Could not connect to server');
       }
     };
     
@@ -4659,7 +4661,8 @@
         }
         result.innerHTML = data.success ? data.result : `Error: ${data.error}`;
       } catch (error) {
-        result.innerHTML = 'Error: Could not connect to server';
+        console.error('Tool error:', error);
+        result.innerHTML = 'Error: ' + (error.message || 'Could not connect to server');
       }
     };
     
@@ -4696,7 +4699,8 @@
         }
         result.innerHTML = data.success ? data.email : `Error: ${data.error}`;
       } catch (error) {
-        result.innerHTML = 'Error: Could not connect to server';
+        console.error('Tool error:', error);
+        result.innerHTML = 'Error: ' + (error.message || 'Could not connect to server');
       }
     };
     
@@ -4782,7 +4786,8 @@
         }
         result.innerHTML = data.success ? data.resume : `Error: ${data.error}`;
       } catch (error) {
-        result.innerHTML = 'Error: Could not connect to server';
+        console.error('Tool error:', error);
+        result.innerHTML = 'Error: ' + (error.message || 'Could not connect to server');
       }
     };
     
@@ -4825,7 +4830,8 @@
         }
         result.innerHTML = responseData.success ? responseData.analysis : `Error: ${responseData.error}`;
       } catch (error) {
-        result.innerHTML = 'Error: Could not connect to server';
+        console.error('Tool error:', error);
+        result.innerHTML = 'Error: ' + (error.message || 'Could not connect to server');
       }
     };
     

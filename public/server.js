@@ -336,23 +336,18 @@ app.post('/api/voice-ai/tts', async (req, res) => {
     const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
     const selectedVoice = validVoices.includes(voice) ? voice : 'alloy';
 
+    // Use chat API to clean and prepare text for reading aloud
     const response = await openai.chat.completions.create({
-      model: 'gpt-audio-mini',
-      modalities: ['text', 'audio'],
-      audio: { voice: selectedVoice, format: 'wav' },
+      model: 'gpt-4o-mini',
       messages: [
-        { role: 'system', content: 'You are a helpful voice assistant. Convert the following text to natural speech.' },
-        { role: 'user', content: `Read this aloud: ${safeText}` }
+        { role: 'system', content: 'You are a text preparation assistant. Clean up the given text so it reads naturally when spoken aloud. Remove markdown, special characters, and formatting. Return only the clean text, nothing else.' },
+        { role: 'user', content: safeText }
       ],
-      max_completion_tokens: 2048,
+      max_completion_tokens: 1024,
     });
 
-    const audioData = response.choices[0]?.message?.audio?.data;
-    if (audioData) {
-      res.json({ success: true, audio: `data:audio/wav;base64,${audioData}` });
-    } else {
-      res.json({ success: true, text: response.choices[0]?.message?.content || safeText });
-    }
+    const cleanText = response.choices[0]?.message?.content || safeText;
+    res.json({ success: true, text: cleanText, voice: selectedVoice });
   } catch (error) {
     console.error('Voice AI TTS Error:', error);
     res.status(500).json({ error: 'Failed to generate speech' });
