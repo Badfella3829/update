@@ -2,7 +2,6 @@ import { auth, db } from './firebase.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, getDoc, updateDoc, increment, addDoc, collection, serverTimestamp, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const DAILY_FREE_CREDITS = 10;
 
 let currentUser = null;
 let userCredits = 0;
@@ -89,30 +88,6 @@ export function initAuthCredits(options = {}) {
           const data = userDoc.data();
           userCredits = data.credits || 0;
           userPlan = data.plan || 'free';
-
-          // Daily free credits refill for ALL users
-          const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-          const lastRefill = data.lastDailyRefill || '';
-          if (lastRefill !== today) {
-            try {
-              await updateDoc(doc(db, 'users', user.uid), {
-                credits: increment(DAILY_FREE_CREDITS),
-                lastDailyRefill: today
-              });
-              userCredits += DAILY_FREE_CREDITS;
-              await addDoc(collection(db, 'credit_history'), {
-                userId: user.uid,
-                amount: DAILY_FREE_CREDITS,
-                tool: 'daily_refill',
-                balance: userCredits,
-                timestamp: serverTimestamp(),
-                type: 'daily_refill'
-              });
-              showDailyCreditsGranted(DAILY_FREE_CREDITS);
-            } catch (refillErr) {
-              console.error('Daily refill error:', refillErr);
-            }
-          }
 
           localStorage.setItem('userPlan', userPlan);
           localStorage.setItem('userCredits', userCredits);
@@ -324,50 +299,21 @@ function showPremiumRequired() {
 }
 
 function showNoCredits(requiredCredits = 5) {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
-  const hoursLeft = Math.ceil((tomorrow - Date.now()) / 3600000);
-
   document.body.innerHTML = `
     <div style="min-height: 100vh; background: #020617; display: flex; align-items: center; justify-content: center; font-family: Inter, sans-serif;">
       <div style="text-align: center; padding: 40px; max-width: 420px;">
         <div style="font-size: 60px; margin-bottom: 20px;">⚡</div>
-        <h2 style="color: #e5e7eb; margin-bottom: 12px;">Daily Credits Used Up</h2>
-        <p style="color: #9aa0b4; margin-bottom: 10px;">Your <strong style="color:#3b82f6;">10 free daily credits</strong> are finished.</p>
-        <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; padding: 14px 20px; margin-bottom: 25px; color: #9aa0b4; font-size: 14px;">
-          🕐 New 10 credits in <strong style="color:#e5e7eb;">${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}</strong> (tomorrow morning)<br>
-          <span style="font-size: 12px; opacity: 0.8;">Or upgrade to Premium for unlimited access</span>
+        <h2 style="color: #e5e7eb; margin-bottom: 12px;">Credits Khatam Ho Gaye</h2>
+        <p style="color: #9aa0b4; margin-bottom: 20px;">Aapke free credits use ho gaye hain. Is tool ke liye <strong style="color:#3b82f6;">${requiredCredits} credits</strong> chahiye.</p>
+        <div style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 16px 20px; margin-bottom: 25px; color: #9aa0b4; font-size: 14px; line-height: 1.6;">
+          👑 <strong style="color:#e5e7eb;">Premium plan</strong> upgrade karo aur unlimited access pao.<br>
+          <span style="font-size: 12px; opacity: 0.8; margin-top: 4px; display: block;">Pro aur Premium plans mein credits automatically add hote hain.</span>
         </div>
         <a href="dashboard.html" style="display: inline-block; background: rgba(59,130,246,0.2); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); padding: 14px 30px; border-radius: 10px; text-decoration: none; margin-right: 10px;">← Dashboard</a>
-        <a href="pricing.html" style="display: inline-block; background: linear-gradient(135deg, #a855f7, #6366f1); color: white; padding: 14px 30px; border-radius: 10px; text-decoration: none;">👑 Get Premium</a>
+        <a href="pricing.html" style="display: inline-block; background: linear-gradient(135deg, #a855f7, #6366f1); color: white; padding: 14px 30px; border-radius: 10px; text-decoration: none; font-weight: 600;">👑 Upgrade Now</a>
       </div>
     </div>
   `;
-}
-
-function showDailyCreditsGranted(amount) {
-  const existing = document.getElementById('dailyCreditsNotif');
-  if (existing) return;
-  const notif = document.createElement('div');
-  notif.id = 'dailyCreditsNotif';
-  notif.innerHTML = `
-    <div style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; padding: 16px 22px; border-radius: 14px; box-shadow: 0 10px 40px rgba(34,197,94,0.4); z-index: 99999; font-family: Inter, sans-serif; animation: tvSlideIn 0.4s ease;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 26px;">🎁</span>
-        <div>
-          <div style="font-weight: 700; font-size: 15px;">+${amount} Daily Free Credits!</div>
-          <div style="font-size: 12px; opacity: 0.9; margin-top: 2px;">Refreshed every morning for free</div>
-        </div>
-        <button onclick="this.closest('#dailyCreditsNotif').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;margin-left:4px;">✕</button>
-      </div>
-    </div>
-    <style>
-      @keyframes tvSlideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    </style>
-  `;
-  document.body.appendChild(notif);
-  setTimeout(() => { if (notif.parentElement) notif.remove(); }, 6000);
 }
 
 export function setupKeyboardShortcuts(generateCallback) {
