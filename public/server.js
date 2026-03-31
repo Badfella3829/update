@@ -201,8 +201,8 @@ app.post('/api/image-generate', async (req, res) => {
   }
 });
 
-// Content AI API endpoint (PREMIUM)
-app.post('/api/content-ai', requirePremium, async (req, res) => {
+// Content AI API endpoint
+app.post('/api/content-ai', async (req, res) => {
   const openai = requireOpenAI(req, res);
   if (!openai) return;
 
@@ -242,8 +242,8 @@ app.post('/api/content-ai', requirePremium, async (req, res) => {
   }
 });
 
-// Code AI API endpoint (PREMIUM)
-app.post('/api/code-ai', requirePremium, async (req, res) => {
+// Code AI API endpoint
+app.post('/api/code-ai', async (req, res) => {
   const openai = requireOpenAI(req, res);
   if (!openai) return;
 
@@ -279,8 +279,8 @@ app.post('/api/code-ai', requirePremium, async (req, res) => {
   }
 });
 
-// Email AI API endpoint (PREMIUM)
-app.post('/api/email-ai', requirePremium, async (req, res) => {
+// Email AI API endpoint
+app.post('/api/email-ai', async (req, res) => {
   const openai = requireOpenAI(req, res);
   if (!openai) return;
 
@@ -320,8 +320,8 @@ app.post('/api/email-ai', requirePremium, async (req, res) => {
   }
 });
 
-// Voice AI - Text to Speech API endpoint (PREMIUM)
-app.post('/api/voice-ai/tts', requirePremium, async (req, res) => {
+// Voice AI - Text to Speech API endpoint
+app.post('/api/voice-ai/tts', async (req, res) => {
   const openai = requireOpenAI(req, res);
   if (!openai) return;
 
@@ -359,8 +359,8 @@ app.post('/api/voice-ai/tts', requirePremium, async (req, res) => {
   }
 });
 
-// Resume AI API endpoint (PREMIUM)
-app.post('/api/resume-ai', requirePremium, async (req, res) => {
+// Resume AI API endpoint
+app.post('/api/resume-ai', async (req, res) => {
   const openai = requireOpenAI(req, res);
   if (!openai) return;
 
@@ -403,8 +403,8 @@ Generate a complete, well-formatted resume with:
   }
 });
 
-// Data AI API endpoint (PREMIUM)
-app.post('/api/data-ai', requirePremium, async (req, res) => {
+// Data AI API endpoint
+app.post('/api/data-ai', async (req, res) => {
   const openai = requireOpenAI(req, res);
   if (!openai) return;
 
@@ -474,6 +474,165 @@ Requirements: Simple, memorable, scalable logo suitable for business use. White 
   } catch (error) {
     console.error('Logo Generator Error:', error);
     res.status(500).json({ error: 'Failed to generate logo' });
+  }
+});
+
+// Translator API endpoint
+app.post('/api/translate', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+  try {
+    const { text, targetLang = 'Hindi', sourceLang = 'auto' } = req.body;
+    if (!text || typeof text !== 'string') return res.status(400).json({ error: 'Text is required' });
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a professional translator. Translate the provided text to ${targetLang}. ${sourceLang !== 'auto' ? `Source language: ${sourceLang}.` : 'Auto-detect source language.'} Return ONLY the translated text, no explanations.` },
+        { role: 'user', content: text.slice(0, 3000) }
+      ],
+      max_completion_tokens: 2048,
+    });
+    res.json({ success: true, translation: response.choices[0]?.message?.content || '' });
+  } catch (error) {
+    console.error('Translate Error:', error);
+    res.status(500).json({ error: 'Failed to translate' });
+  }
+});
+
+// Summarizer AI endpoint
+app.post('/api/summarize-ai', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+  try {
+    const { text, style = 'bullet', length = 'medium' } = req.body;
+    if (!text || typeof text !== 'string') return res.status(400).json({ error: 'Text is required' });
+    const styleMap = {
+      bullet: 'Use bullet points for each key point.',
+      paragraph: 'Write as flowing paragraphs.',
+      tldr: 'Give a 1-2 sentence TL;DR summary.',
+      outline: 'Provide a structured outline with headings.'
+    };
+    const lengthMap = { short: '3-5 key points', medium: '6-8 key points', long: '10+ key points' };
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are an expert summarizer. ${styleMap[style] || styleMap.bullet} Extract ${lengthMap[length] || lengthMap.medium}. Be concise and capture the most important information.` },
+        { role: 'user', content: `Summarize this:\n\n${text.slice(0, 8000)}` }
+      ],
+      max_completion_tokens: 1024,
+    });
+    res.json({ success: true, summary: response.choices[0]?.message?.content || '' });
+  } catch (error) {
+    console.error('Summarize Error:', error);
+    res.status(500).json({ error: 'Failed to summarize' });
+  }
+});
+
+// Quiz Generator AI endpoint
+app.post('/api/quiz-ai', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+  try {
+    const { topic, count = 5, difficulty = 'medium' } = req.body;
+    if (!topic || typeof topic !== 'string') return res.status(400).json({ error: 'Topic is required' });
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a quiz master. Generate exactly ${count} multiple-choice questions about the given topic at ${difficulty} difficulty. Format each question as JSON in this exact structure: {"questions": [{"q": "question", "options": ["A", "B", "C", "D"], "answer": "A", "explanation": "why"}]}. Return ONLY valid JSON.` },
+        { role: 'user', content: `Topic: ${topic.slice(0, 200)}` }
+      ],
+      max_completion_tokens: 2048,
+    });
+    const raw = response.choices[0]?.message?.content || '{}';
+    try {
+      const parsed = JSON.parse(raw.replace(/```json\n?|\n?```/g, '').trim());
+      res.json({ success: true, quiz: parsed });
+    } catch {
+      res.json({ success: true, rawText: raw });
+    }
+  } catch (error) {
+    console.error('Quiz AI Error:', error);
+    res.status(500).json({ error: 'Failed to generate quiz' });
+  }
+});
+
+// Social Media AI endpoint
+app.post('/api/social-ai', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+  try {
+    const { topic, platform = 'instagram', tone = 'engaging', count = 3 } = req.body;
+    if (!topic || typeof topic !== 'string') return res.status(400).json({ error: 'Topic is required' });
+    const platformGuide = {
+      instagram: 'Instagram (use emojis, hashtags, visual language, max 2200 chars)',
+      twitter: 'Twitter/X (max 280 chars, punchy, use hashtags sparingly)',
+      linkedin: 'LinkedIn (professional, insightful, industry-focused)',
+      facebook: 'Facebook (friendly, community-driven, shareable)',
+      tiktok: 'TikTok (trendy, Gen-Z language, hook in first line)'
+    };
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a social media expert. Write ${count} unique posts for ${platformGuide[platform] || 'Instagram'}. Tone: ${tone}. Separate each post with "---". Include relevant hashtags.` },
+        { role: 'user', content: `Create social media posts about: ${topic.slice(0, 300)}` }
+      ],
+      max_completion_tokens: 1500,
+    });
+    res.json({ success: true, posts: response.choices[0]?.message?.content || '' });
+  } catch (error) {
+    console.error('Social AI Error:', error);
+    res.status(500).json({ error: 'Failed to generate posts' });
+  }
+});
+
+// Video Script AI endpoint
+app.post('/api/video-script', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+  try {
+    const { topic, duration = '60', style = 'youtube', audience = 'general' } = req.body;
+    if (!topic || typeof topic !== 'string') return res.status(400).json({ error: 'Topic is required' });
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a professional video scriptwriter. Write a complete ${duration}-second ${style} script for a ${audience} audience. Include: [HOOK], [INTRO], [MAIN CONTENT], [CALL TO ACTION], [OUTRO]. Use [B-ROLL] markers for visuals. Make it engaging and conversational.` },
+        { role: 'user', content: `Write a video script about: ${topic.slice(0, 300)}` }
+      ],
+      max_completion_tokens: 2048,
+    });
+    res.json({ success: true, script: response.choices[0]?.message?.content || '' });
+  } catch (error) {
+    console.error('Video Script Error:', error);
+    res.status(500).json({ error: 'Failed to generate script' });
+  }
+});
+
+// Idea Generator AI endpoint
+app.post('/api/idea-ai', async (req, res) => {
+  const openai = requireOpenAI(req, res);
+  if (!openai) return;
+  try {
+    const { topic, type = 'business', count = 10 } = req.body;
+    if (!topic || typeof topic !== 'string') return res.status(400).json({ error: 'Topic is required' });
+    const typeMap = {
+      business: 'business ideas and startup concepts',
+      content: 'content and blog post ideas',
+      product: 'product features and improvements',
+      marketing: 'marketing campaigns and strategies',
+      app: 'app features and digital product ideas'
+    };
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a creative strategist and idea generator. Generate ${count} unique, actionable ${typeMap[type] || 'ideas'}. Number each idea and add a brief 1-2 sentence description. Be creative, specific, and practical.` },
+        { role: 'user', content: `Generate ideas about/for: ${topic.slice(0, 300)}` }
+      ],
+      max_completion_tokens: 1500,
+    });
+    res.json({ success: true, ideas: response.choices[0]?.message?.content || '' });
+  } catch (error) {
+    console.error('Idea AI Error:', error);
+    res.status(500).json({ error: 'Failed to generate ideas' });
   }
 });
 

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media AI - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    textarea, select, input[type="text"] { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    textarea { resize: vertical; }
+    .row { display: flex; gap: 15px; }
+    .row > div { flex: 1; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; margin-bottom: 0; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .post-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-top: 15px; position: relative; }
+    .post-num { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .post-text { white-space: pre-wrap; font-size: 15px; line-height: 1.7; color: var(--text-main); }
+    .post-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 8px 18px; border-radius: 10px; cursor: pointer; font-size: 13px; }
+    .copy-btn:hover { background: rgba(59,130,246,0.3); }
+    .platforms { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+    .platform-chip { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; transition: 0.2s; }
+    .platform-chip.active { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.5); color: var(--blue); }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 600px) { .row { flex-direction: column; } }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">📱</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>📱 Social Media AI</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">Generate viral social media posts for Instagram, Twitter, LinkedIn, and more. (5 credits per use)</p>
+
+    <label>Topic or Product</label>
+    <textarea id="socialTopic" rows="3" placeholder="e.g. Launching a new fitness app, Diwali sale 50% off, Tips for productivity..."></textarea>
+
+    <label>Platform</label>
+    <div class="platforms">
+      <div class="platform-chip active" onclick="setPlatform('instagram', this)">📸 Instagram</div>
+      <div class="platform-chip" onclick="setPlatform('twitter', this)">🐦 Twitter/X</div>
+      <div class="platform-chip" onclick="setPlatform('linkedin', this)">💼 LinkedIn</div>
+      <div class="platform-chip" onclick="setPlatform('facebook', this)">📘 Facebook</div>
+      <div class="platform-chip" onclick="setPlatform('tiktok', this)">🎵 TikTok</div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Tone</label>
+        <select id="socialTone">
+          <option value="engaging">Engaging</option>
+          <option value="professional">Professional</option>
+          <option value="funny">Funny</option>
+          <option value="inspirational">Inspirational</option>
+          <option value="promotional">Promotional</option>
+        </select>
+      </div>
+      <div>
+        <label>Number of Posts</label>
+        <select id="postCount">
+          <option value="2">2 Posts</option>
+          <option value="3" selected>3 Posts</option>
+          <option value="5">5 Posts</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" id="genBtn" onclick="generatePosts()">📱 Generate Posts</button>
+
+    <div id="postsContainer"></div>
+  </div>
+
+  <script>
+    (function() {
+      setTimeout(function() { var ls = document.getElementById('loadingScreen'); if (ls) ls.classList.add('hidden'); }, 4000);
+    })();
+  </script>
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+
+    let authReady = false;
+    let creditsDeducted = false;
+    let selectedPlatform = 'instagram';
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+
+    window.setPlatform = function(platform, el) {
+      selectedPlatform = platform;
+      document.querySelectorAll('.platform-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    };
+
+    window.generatePosts = async function() {
+      if (!authReady) return;
+      const topic = document.getElementById('socialTopic').value.trim();
+      const tone = document.getElementById('socialTone').value;
+      const count = parseInt(document.getElementById('postCount').value);
+
+      if (!topic) { showToast('Please describe your topic or product', 'warning'); return; }
+
+      const btn = document.getElementById('genBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Generating Posts...';
+      document.getElementById('postsContainer').innerHTML = '';
+      creditsDeducted = false;
+
+      try {
+        const response = await fetch('/api/social-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic, platform: selectedPlatform, tone, count })
+        });
+        const data = await response.json();
+
+        if (!creditsDeducted) {
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Social Media AI');
+          creditsDeducted = true;
+        }
+
+        if (data.posts) {
+          renderPosts(data.posts);
+          showToast('Posts generated!', 'success');
+        } else {
+          showToast('Failed to generate posts', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to AI service', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '📱 Generate Posts';
+    };
+
+    function renderPosts(postsText) {
+      const container = document.getElementById('postsContainer');
+      const parts = postsText.split('---').map(p => p.trim()).filter(p => p.length > 0);
+      parts.forEach((post, i) => {
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        const escaped = post.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        card.innerHTML = `
+          <div class="post-num">Post ${i + 1}</div>
+          <div class="post-text">${escaped}</div>
+          <div class="post-actions">
+            <button class="copy-btn" onclick="copyPost(this, \`${post.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">📋 Copy</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.copyPost = function(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+        showToast('Post copied!', 'success');
+      });
+    };
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>

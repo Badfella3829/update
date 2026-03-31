@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Generator AI - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    textarea, select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    textarea { resize: vertical; }
+    .row { display: flex; gap: 15px; }
+    .row > div { flex: 1; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .idea-list { margin-top: 20px; }
+    .idea-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 14px; transition: 0.2s; }
+    .idea-card:hover { border-color: rgba(59,130,246,0.4); transform: translateX(4px); }
+    .idea-num { background: rgba(59,130,246,0.2); color: var(--blue); min-width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+    .idea-text { font-size: 15px; line-height: 1.6; flex: 1; }
+    .idea-save { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; flex-shrink: 0; }
+    .idea-save:hover { border-color: var(--blue); color: var(--blue); }
+    .idea-save.saved { border-color: #22c55e; color: #22c55e; }
+    .result-actions { display: flex; gap: 10px; margin-top: 15px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; }
+    .copy-btn:hover { background: rgba(59,130,246,0.3); }
+    .type-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+    .type-tab { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; transition: 0.2s; }
+    .type-tab.active { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.5); color: var(--blue); }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 600px) { .row { flex-direction: column; } }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">💡</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>💡 Idea Generator</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">AI-powered brainstorming for business ideas, content, products, and marketing strategies. (5 credits per use)</p>
+
+    <label>What do you want ideas for?</label>
+    <textarea id="ideaTopic" rows="3" placeholder="e.g. A sustainable clothing brand for Gen-Z, Content for a travel YouTube channel, SaaS for freelancers..."></textarea>
+
+    <label>Idea Type</label>
+    <div class="type-tabs">
+      <div class="type-tab active" onclick="setType('business', this)">🏢 Business</div>
+      <div class="type-tab" onclick="setType('content', this)">📝 Content</div>
+      <div class="type-tab" onclick="setType('product', this)">📦 Product</div>
+      <div class="type-tab" onclick="setType('marketing', this)">📢 Marketing</div>
+      <div class="type-tab" onclick="setType('app', this)">📱 App Features</div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Number of Ideas</label>
+        <select id="ideaCount">
+          <option value="5">5 Ideas</option>
+          <option value="10" selected>10 Ideas</option>
+          <option value="15">15 Ideas</option>
+          <option value="20">20 Ideas</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" id="genBtn" onclick="generateIdeas()">💡 Generate Ideas</button>
+
+    <div id="ideasContainer"></div>
+  </div>
+
+  <script>
+    (function() {
+      setTimeout(function() { var ls = document.getElementById('loadingScreen'); if (ls) ls.classList.add('hidden'); }, 4000);
+    })();
+  </script>
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+
+    let authReady = false;
+    let creditsDeducted = false;
+    let selectedType = 'business';
+    let lastIdeas = '';
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+
+    window.setType = function(type, el) {
+      selectedType = type;
+      document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    };
+
+    window.generateIdeas = async function() {
+      if (!authReady) return;
+      const topic = document.getElementById('ideaTopic').value.trim();
+      const count = parseInt(document.getElementById('ideaCount').value);
+
+      if (!topic) { showToast('Please describe what you need ideas for', 'warning'); return; }
+
+      const btn = document.getElementById('genBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Generating Ideas...';
+      document.getElementById('ideasContainer').innerHTML = '';
+      creditsDeducted = false;
+
+      try {
+        const response = await fetch('/api/idea-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic, type: selectedType, count })
+        });
+        const data = await response.json();
+
+        if (!creditsDeducted) {
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Idea Generator');
+          creditsDeducted = true;
+        }
+
+        if (data.ideas) {
+          lastIdeas = data.ideas;
+          renderIdeas(data.ideas);
+          showToast(`${count} ideas generated!`, 'success');
+        } else {
+          showToast('Failed to generate ideas', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to AI service', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '💡 Generate Ideas';
+    };
+
+    function renderIdeas(text) {
+      const container = document.getElementById('ideasContainer');
+      const lines = text.split('\n').filter(l => l.trim().length > 0);
+      container.innerHTML = '<div class="idea-list" id="ideaList"></div><div class="result-actions"><button class="copy-btn" onclick="copyAll()">📋 Copy All Ideas</button></div>';
+      const list = document.getElementById('ideaList');
+      let ideaNum = 0;
+
+      lines.forEach(line => {
+        const match = line.match(/^(\d+[\.\):]?\s*)(.*)/);
+        if (match) {
+          ideaNum++;
+          const num = match[1].trim().replace(/[.\):]$/, '');
+          const content = match[2];
+          const card = document.createElement('div');
+          card.className = 'idea-card';
+          card.innerHTML = `
+            <div class="idea-num">${num}</div>
+            <div class="idea-text">${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+            <button class="idea-save" onclick="saveIdea(this, \`${content.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">⭐ Save</button>
+          `;
+          list.appendChild(card);
+        }
+      });
+
+      if (ideaNum === 0) {
+        list.innerHTML = `<div style="white-space: pre-wrap; font-size: 15px; line-height: 1.7;">${text.replace(/</g, '&lt;')}</div>`;
+      }
+    }
+
+    window.copyAll = function() {
+      if (!lastIdeas) return;
+      navigator.clipboard.writeText(lastIdeas);
+      showToast('All ideas copied!', 'success');
+    };
+
+    window.saveIdea = function(btn, text) {
+      const saved = JSON.parse(localStorage.getItem('tvSavedIdeas') || '[]');
+      saved.push({ text, date: new Date().toISOString() });
+      localStorage.setItem('tvSavedIdeas', JSON.stringify(saved));
+      btn.textContent = '✅ Saved';
+      btn.classList.add('saved');
+      showToast('Idea saved locally!', 'success');
+    };
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>

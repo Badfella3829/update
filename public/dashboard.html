@@ -3176,21 +3176,10 @@
         <div class="card-content">
           <div class="card-icon">🎙️</div>
           <h3>Voice AI</h3>
-          <p class="card-description">Convert text to speech and speech to text</p>
+          <p class="card-description">Convert text to speech with 6 AI voices</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn" onclick="openPremiumTool('voice')">Open</button>
-          </div>
-        </div>
-      </div>
-      <div class="card js-tilt">
-        <div class="card-content">
-          <div class="card-icon">🎥</div>
-          <h3>Video AI</h3>
-          <p class="card-description">Create and edit videos with AI assistance</p>
-          <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="showComingSoon('Video AI')">Coming Soon</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('voice')">Open</button>
           </div>
         </div>
       </div>
@@ -3200,8 +3189,8 @@
           <h3>Content AI</h3>
           <p class="card-description">Generate articles, blogs, and marketing content</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn" onclick="openPremiumTool('content')">Open</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('content')">Open</button>
           </div>
         </div>
       </div>
@@ -3211,8 +3200,8 @@
           <h3>Code AI</h3>
           <p class="card-description">AI-powered code generation and debugging</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn" onclick="openPremiumTool('code')">Open</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('code')">Open</button>
           </div>
         </div>
       </div>
@@ -3222,8 +3211,8 @@
           <h3>Resume AI</h3>
           <p class="card-description">Create professional resumes with AI help</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn upgrade" onclick="openPremiumTool('resume')">Open</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('resume')">Open</button>
           </div>
         </div>
       </div>
@@ -3233,8 +3222,8 @@
           <h3>Email AI</h3>
           <p class="card-description">Generate professional emails and responses</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn" onclick="openPremiumTool('email')">Open</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('email')">Open</button>
           </div>
         </div>
       </div>
@@ -3244,8 +3233,52 @@
           <h3>Data AI</h3>
           <p class="card-description">Analyze and visualize data with AI insights</p>
           <div class="card-footer">
-            <span class="card-status premium">🔒 Premium</span>
-            <button class="card-btn" onclick="openPremiumTool('data')">Open</button>
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('data')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🧩</div>
+          <h3>Quiz Generator</h3>
+          <p class="card-description">Create AI-powered quizzes on any topic</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('quiz')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">📱</div>
+          <h3>Social Media AI</h3>
+          <p class="card-description">Generate posts for Instagram, Twitter, LinkedIn</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('social')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">🎬</div>
+          <h3>Video Script</h3>
+          <p class="card-description">AI-generated video scripts for YouTube, Reels</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('videoscript')">Open</button>
+          </div>
+        </div>
+      </div>
+      <div class="card js-tilt">
+        <div class="card-content">
+          <div class="card-icon">💡</div>
+          <h3>Idea Generator</h3>
+          <p class="card-description">AI-powered brainstorming for business and content</p>
+          <div class="card-footer">
+            <span class="card-status free">🟢 Free</span>
+            <button class="card-btn" onclick="checkCreditAndOpen('idea')">Open</button>
           </div>
         </div>
       </div>
@@ -4456,7 +4489,11 @@
         passgen: 'Password Generator', qr: 'QR Generator', hashtag: 'Hashtag Generator',
         utm: 'UTM Generator', case: 'Case Convert', unit: 'Unit Convert',
         imgconvert: 'Image Convert', ip: 'IP Lookup', fakedata: 'Fake Data',
-        wordcounter: 'Word Counter'
+        wordcounter: 'Word Counter',
+        quiz: 'Quiz Generator',
+        social: 'Social Media AI',
+        videoscript: 'Video Script AI',
+        idea: 'Idea Generator'
       };
       if (window.trackToolUsage) {
         window.trackToolUsage(toolNames[toolType] || toolType);
@@ -4492,7 +4529,11 @@
         imgconvert: 'img-convert.html',
         ip: 'ip-lookup.html',
         fakedata: 'fake-data.html',
-        wordcounter: 'word-counter.html'
+        wordcounter: 'word-counter.html',
+        quiz: 'quiz-gen.html',
+        social: 'social-ai.html',
+        videoscript: 'video-script.html',
+        idea: 'idea-gen.html'
       };
       
       const page = toolPages[toolType];

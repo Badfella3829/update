@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Generator - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    input[type="text"], select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    .row { display: flex; gap: 15px; }
+    .row > div { flex: 1; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .quiz-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-top: 15px; }
+    .quiz-q { font-size: 16px; font-weight: 600; margin-bottom: 14px; color: var(--text-main); }
+    .quiz-q span { background: rgba(59,130,246,0.2); color: var(--blue); padding: 3px 10px; border-radius: 20px; font-size: 13px; margin-right: 8px; }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .option-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 12px 16px; border-radius: 10px; cursor: pointer; text-align: left; font-size: 14px; transition: 0.2s; }
+    .option-btn:hover { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.4); }
+    .option-btn.correct { background: rgba(34,197,94,0.2); border-color: #22c55e; color: #22c55e; }
+    .option-btn.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #ef4444; }
+    .explanation { margin-top: 12px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 10px; padding: 12px; font-size: 13px; color: var(--text-muted); display: none; }
+    .quiz-score { text-align: center; padding: 25px; font-size: 20px; font-weight: 700; }
+    .raw-result { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 20px; white-space: pre-wrap; font-size: 14px; line-height: 1.7; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 600px) { .options { grid-template-columns: 1fr; } .row { flex-direction: column; } }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">🧩</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🧩 Quiz Generator</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">Generate interactive multiple-choice quizzes on any topic using AI. (5 credits per quiz)</p>
+
+    <label>Quiz Topic</label>
+    <input type="text" id="quizTopic" placeholder="e.g. Indian History, JavaScript, Space Science, Cricket...">
+
+    <div class="row">
+      <div>
+        <label>Number of Questions</label>
+        <select id="quizCount">
+          <option value="3">3 Questions</option>
+          <option value="5" selected>5 Questions</option>
+          <option value="8">8 Questions</option>
+          <option value="10">10 Questions</option>
+        </select>
+      </div>
+      <div>
+        <label>Difficulty Level</label>
+        <select id="quizDifficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" id="genBtn" onclick="generateQuiz()">🧩 Generate Quiz</button>
+
+    <div id="quizContainer"></div>
+  </div>
+
+  <script>
+    (function() {
+      setTimeout(function() {
+        var ls = document.getElementById('loadingScreen');
+        if (ls) ls.classList.add('hidden');
+      }, 4000);
+    })();
+  </script>
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+
+    let authReady = false;
+    let creditsDeducted = false;
+    let score = 0;
+    let answered = 0;
+    let totalQ = 0;
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+
+    window.generateQuiz = async function() {
+      if (!authReady) return;
+      const topic = document.getElementById('quizTopic').value.trim();
+      const count = parseInt(document.getElementById('quizCount').value);
+      const difficulty = document.getElementById('quizDifficulty').value;
+
+      if (!topic) { showToast('Please enter a quiz topic', 'warning'); return; }
+
+      const btn = document.getElementById('genBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Generating Quiz...';
+      document.getElementById('quizContainer').innerHTML = '';
+      score = 0; answered = 0; totalQ = count;
+      creditsDeducted = false;
+
+      try {
+        const response = await fetch('/api/quiz-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic, count, difficulty })
+        });
+        const data = await response.json();
+
+        if (!creditsDeducted) {
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Quiz Generator');
+          creditsDeducted = true;
+        }
+
+        if (data.quiz && data.quiz.questions) {
+          renderQuiz(data.quiz.questions);
+          showToast('Quiz generated!', 'success');
+        } else if (data.rawText) {
+          document.getElementById('quizContainer').innerHTML = `<div class="raw-result">${data.rawText}</div>`;
+          showToast('Quiz generated (raw format)', 'success');
+        } else {
+          showToast('Failed to generate quiz', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to AI service', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '🧩 Generate Quiz';
+    };
+
+    function renderQuiz(questions) {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = '';
+      questions.forEach((q, i) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.innerHTML = `
+          <div class="quiz-q"><span>Q${i+1}</span>${q.q}</div>
+          <div class="options" id="opts-${i}">
+            ${q.options.map((opt, j) => `
+              <button class="option-btn" onclick="selectOption(${i}, '${q.options[j].replace(/'/g,"\\'")}', '${q.answer}', this)" id="opt-${i}-${j}">${opt}</button>
+            `).join('')}
+          </div>
+          <div class="explanation" id="exp-${i}">💡 ${q.explanation || 'Correct answer: ' + q.answer}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.selectOption = function(qi, selected, answer, btn) {
+      const opts = document.querySelectorAll(`#opts-${qi} .option-btn`);
+      opts.forEach(o => o.disabled = true);
+      const expEl = document.getElementById(`exp-${qi}`);
+      if (selected === answer) {
+        btn.classList.add('correct');
+        score++;
+        showToast('Correct! ✅', 'success');
+      } else {
+        btn.classList.add('wrong');
+        opts.forEach(o => { if (o.textContent.trim() === answer) o.classList.add('correct'); });
+        showToast('Wrong answer ❌', 'error');
+      }
+      expEl.style.display = 'block';
+      answered++;
+      if (answered === totalQ) {
+        const scoreEl = document.createElement('div');
+        scoreEl.className = 'quiz-score';
+        const pct = Math.round((score/totalQ)*100);
+        const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '🎯' : '📚';
+        scoreEl.innerHTML = `${emoji} Final Score: ${score}/${totalQ} (${pct}%)`;
+        document.getElementById('quizContainer').appendChild(scoreEl);
+      }
+    };
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>

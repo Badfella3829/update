@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Script AI - TechVyro</title>
+  <link rel="icon" href="logo-192.png" type="image/png">
+  <style>
+    :root { --bg-dark: #020617; --blue: #3b82f6; --text-main: #e5e7eb; --text-muted: #9aa0b4; --border: rgba(255,255,255,0.08); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--blue); padding: 10px 20px; border-radius: 10px; font-size: 14px; text-decoration: none; transition: 0.2s; }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .header h1 { font-size: 20px; font-weight: 700; flex: 1; }
+    .credits-badge { background: rgba(34,197,94,0.2); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tool-container { flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+    .tool-description { color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+    label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 13px; }
+    textarea, select, input[type="text"] { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-size: 14px; margin-bottom: 15px; }
+    textarea { resize: vertical; }
+    .row { display: flex; gap: 15px; }
+    .row > div { flex: 1; }
+    .btn { background: var(--blue); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-top: 25px; white-space: pre-wrap; font-size: 15px; line-height: 1.8; color: var(--text-main); }
+    .result-box .section-tag { display: inline-block; background: rgba(59,130,246,0.2); color: var(--blue); padding: 2px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+    .result-actions { display: flex; gap: 10px; margin-top: 15px; }
+    .copy-btn { background: rgba(59,130,246,0.2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; }
+    .copy-btn:hover { background: rgba(59,130,246,0.3); }
+    .download-btn { background: rgba(34,197,94,0.2); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px; }
+    .loading-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .loading-screen.hidden { display: none; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 600px) { .row { flex-direction: column; } }
+  </style>
+  <link rel="stylesheet" href="css/premium-common.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader"><div class="loader-spinner"></div></div>
+  <div id="loadingScreen" class="loading-screen">
+    <div style="text-align: center; color: var(--text-muted);"><div style="font-size: 40px; margin-bottom: 15px;">🎬</div><p>Loading...</p></div>
+  </div>
+
+  <div class="header">
+    <a href="dashboard.html" class="back-btn">← Back</a>
+    <h1>🎬 Video Script AI</h1>
+    <span id="creditsBadge" class="credits-badge">⚡ -- credits</span>
+  </div>
+
+  <div class="tool-container">
+    <p class="tool-description">Generate professional video scripts for YouTube, Instagram Reels, TikTok, and more. (5 credits per script)</p>
+
+    <label>Video Topic</label>
+    <textarea id="videoTopic" rows="3" placeholder="e.g. Top 5 productivity hacks for students, How to start a dropshipping business, My morning routine..."></textarea>
+
+    <div class="row">
+      <div>
+        <label>Video Duration</label>
+        <select id="videoDuration">
+          <option value="30">30 seconds (Reel/Short)</option>
+          <option value="60" selected>60 seconds (1 min)</option>
+          <option value="180">3 minutes</option>
+          <option value="300">5 minutes</option>
+          <option value="600">10 minutes</option>
+        </select>
+      </div>
+      <div>
+        <label>Platform / Style</label>
+        <select id="videoStyle">
+          <option value="youtube">YouTube</option>
+          <option value="reels">Instagram Reels</option>
+          <option value="tiktok">TikTok</option>
+          <option value="podcast">Podcast</option>
+          <option value="corporate">Corporate / Training</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Target Audience</label>
+        <select id="videoAudience">
+          <option value="general">General Audience</option>
+          <option value="students">Students</option>
+          <option value="entrepreneurs">Entrepreneurs</option>
+          <option value="professionals">Professionals</option>
+          <option value="kids">Kids / Teenagers</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" id="genBtn" onclick="generateScript()">🎬 Generate Script</button>
+
+    <div id="scriptResult" style="display:none;">
+      <div class="result-box" id="scriptOutput"></div>
+      <div class="result-actions">
+        <button class="copy-btn" onclick="copyScript()">📋 Copy Script</button>
+        <button class="download-btn" onclick="downloadScript()">⬇️ Download .txt</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      setTimeout(function() { var ls = document.getElementById('loadingScreen'); if (ls) ls.classList.add('hidden'); }, 4000);
+    })();
+  </script>
+  <script type="module">
+    import { initAuthCredits, deductCredits, logToolUsage } from './js/auth-credits.js';
+
+    let authReady = false;
+    let creditsDeducted = false;
+    let lastScript = '';
+
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
+      .then(({ credits }) => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
+        authReady = true;
+      }).catch(err => console.log('Auth error:', err));
+
+    window.generateScript = async function() {
+      if (!authReady) return;
+      const topic = document.getElementById('videoTopic').value.trim();
+      const duration = document.getElementById('videoDuration').value;
+      const style = document.getElementById('videoStyle').value;
+      const audience = document.getElementById('videoAudience').value;
+
+      if (!topic) { showToast('Please enter a video topic', 'warning'); return; }
+
+      const btn = document.getElementById('genBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Writing Script...';
+      creditsDeducted = false;
+
+      try {
+        const response = await fetch('/api/video-script', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic, duration, style, audience })
+        });
+        const data = await response.json();
+
+        if (!creditsDeducted) {
+          const newCredits = await deductCredits(5);
+          document.getElementById('creditsBadge').textContent = `⚡ ${newCredits} credits`;
+          await logToolUsage('Video Script AI');
+          creditsDeducted = true;
+        }
+
+        if (data.script) {
+          lastScript = data.script;
+          const outputEl = document.getElementById('scriptOutput');
+          outputEl.innerHTML = data.script
+            .replace(/\[(HOOK|INTRO|MAIN CONTENT|CALL TO ACTION|OUTRO|B-ROLL[^\]]*)\]/g, '<span class="section-tag">[$1]</span>')
+            .replace(/</g, (m, offset) => m === '<span' || m === '</span>' ? m : '&lt;');
+          document.getElementById('scriptResult').style.display = 'block';
+          showToast('Script generated!', 'success');
+        } else {
+          showToast('Failed to generate script', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to AI service', 'error');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '🎬 Generate Script';
+    };
+
+    window.copyScript = function() {
+      if (!lastScript) return;
+      navigator.clipboard.writeText(lastScript);
+      showToast('Script copied!', 'success');
+    };
+
+    window.downloadScript = function() {
+      if (!lastScript) return;
+      const blob = new Blob([lastScript], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'video-script.txt';
+      a.click();
+      showToast('Script downloaded!', 'success');
+    };
+  </script>
+  <div class="live-users-badge"><span class="pulse"></span><span id="liveCount">128</span> users online now</div>
+  <button class="back-to-top" id="backToTop">↑</button>
+  <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
+  <script src="js/premium-common.js"></script>
+</body>
+</html>
