@@ -2176,6 +2176,253 @@
     transition: color 0.2s;
   }
   .notification-mark-all:hover { color: #60a5fa; }
+
+  /* ============ FAVORITE BUTTON ============ */
+  .fav-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.4);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 2;
+    line-height: 1;
+    padding: 0;
+  }
+  .fav-btn:hover {
+    background: rgba(251,191,36,0.15);
+    border-color: rgba(251,191,36,0.4);
+    color: #fbbf24;
+    transform: scale(1.1);
+  }
+  .fav-btn.active {
+    background: rgba(251,191,36,0.15);
+    border-color: rgba(251,191,36,0.5);
+    color: #fbbf24;
+  }
+  .card { position: relative; }
+
+  /* ============ PROFILE COMPLETION ============ */
+  .profile-completion-bar {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .profile-completion-info {
+    flex: 1;
+    min-width: 200px;
+  }
+  .profile-completion-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+  .profile-completion-info p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .profile-completion-track {
+    flex: 2;
+    min-width: 180px;
+  }
+  .profile-completion-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .profile-completion-progress {
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .profile-completion-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 20px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .profile-completion-cta {
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: #60a5fa;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .profile-completion-cta:hover {
+    background: rgba(59,130,246,0.25);
+    color: #93c5fd;
+  }
+
+  /* ============ ONBOARDING TOUR ============ */
+  .tour-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 99998;
+    display: none;
+    backdrop-filter: blur(4px);
+  }
+  .tour-overlay.active { display: block; }
+  .tour-card {
+    position: fixed;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.1);
+    z-index: 99999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: tourCardIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes tourCardIn {
+    from { opacity: 0; transform: translate(-50%, -48%) scale(0.95); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  .tour-step-indicator {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .tour-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: all 0.3s;
+  }
+  .tour-dot.active { background: #3b82f6; width: 20px; border-radius: 4px; }
+  .tour-icon { font-size: 36px; margin-bottom: 14px; display: block; }
+  .tour-card h3 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+  .tour-card p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 24px; }
+  .tour-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .tour-skip { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 13px; cursor: pointer; padding: 0; }
+  .tour-skip:hover { color: rgba(255,255,255,0.7); }
+  .tour-next {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border: none;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    max-width: 200px;
+    transition: all 0.2s;
+  }
+  .tour-next:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ============ SESSION TIMEOUT ============ */
+  .session-timeout-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .session-timeout-overlay.active { display: flex; }
+  .session-timeout-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: tourCardIn 0.3s ease;
+  }
+  .session-timeout-icon { font-size: 50px; margin-bottom: 16px; display: block; }
+  .session-timeout-card h3 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+  .session-timeout-card p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 8px; }
+  .session-countdown { font-size: 40px; font-weight: 800; color: #ef4444; margin: 16px 0; font-variant-numeric: tabular-nums; }
+  .session-timeout-actions { display: flex; gap: 12px; margin-top: 24px; }
+  .session-continue-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border: none;
+    color: #fff;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .session-logout-btn {
+    flex: 1;
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #ef4444;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  /* ============ COPY/DOWNLOAD BUTTONS ============ */
+  .result-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .result-copy-btn, .result-download-btn {
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: #60a5fa;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .result-copy-btn:hover, .result-download-btn:hover {
+    background: rgba(59,130,246,0.25);
+    transform: translateY(-1px);
+  }
+  .result-copy-btn.copied {
+    background: rgba(34,197,94,0.15);
+    border-color: rgba(34,197,94,0.3);
+    color: #4ade80;
+  }
   </style>
   <link rel="stylesheet" href="css/premium-common.css">
 </head>
@@ -2465,6 +2712,24 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- PROFILE COMPLETION BAR -->
+    <div class="profile-completion-bar" id="profileCompletionBar">
+      <div class="profile-completion-info">
+        <h4 id="profileCompletionTitle">Complete Your Profile</h4>
+        <p id="profileCompletionHint">Add more details to unlock personalized recommendations</p>
+      </div>
+      <div class="profile-completion-track">
+        <div class="profile-completion-label">
+          <span>Profile Strength</span>
+          <span id="profileCompletionPct">0%</span>
+        </div>
+        <div class="profile-completion-progress">
+          <div class="profile-completion-fill" id="profileCompletionFill" style="width:0%"></div>
+        </div>
+      </div>
+      <a href="profile.html" class="profile-completion-cta">Complete Profile →</a>
     </div>
 
     <div class="quick-actions-panel" aria-label="Quick Actions">
@@ -3454,6 +3719,10 @@
       </select>
       <button onclick="generateContent()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Content</button>
       <div id="content-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
+      <div class="result-actions" id="content-result-actions" style="display:none;">
+        <button class="result-copy-btn" onclick="copyResult('content-result', this)">📋 Copy</button>
+        <button class="result-download-btn" onclick="downloadResult('content-result', 'content.txt')">⬇ Download</button>
+      </div>
     </div>
 
     <div id="code-tool" class="tool-content" style="display:none; padding: 20px; max-width: 900px; margin: 0 auto;">
@@ -3472,6 +3741,10 @@
       <textarea id="code-input" placeholder="Paste your code here (optional - for debugging/improvements)" style="width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); padding: 15px; font-family: monospace; font-size: 13px; resize: none; margin-bottom: 15px;"></textarea>
       <button onclick="generateCode()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Get Help</button>
       <div id="code-result" style="margin-top: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; white-space: pre-wrap; font-family: monospace; font-size: 13px; display: none; overflow-x: auto;"></div>
+      <div class="result-actions" id="code-result-actions" style="display:none;">
+        <button class="result-copy-btn" onclick="copyResult('code-result', this)">📋 Copy Code</button>
+        <button class="result-download-btn" onclick="downloadResult('code-result', 'code.txt')">⬇ Download</button>
+      </div>
     </div>
 
     <div id="email-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
@@ -3495,6 +3768,10 @@
       </select>
       <button onclick="generateEmail()" style="background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 14px; cursor: pointer;">Generate Email</button>
       <div id="email-result" style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; white-space: pre-wrap; display: none;"></div>
+      <div class="result-actions" id="email-result-actions" style="display:none;">
+        <button class="result-copy-btn" onclick="copyResult('email-result', this)">📋 Copy Email</button>
+        <button class="result-download-btn" onclick="downloadResult('email-result', 'email.txt')">⬇ Download</button>
+      </div>
     </div>
 
     <div id="voice-tool" class="tool-content" style="display:none; padding: 20px; max-width: 800px; margin: 0 auto;">
@@ -5649,5 +5926,384 @@
   <button class="back-to-top" id="backToTop">↑</button>
   <button class="theme-toggle-fixed" id="themeToggle">🌙</button>
   <script src="js/premium-common.js"></script>
+
+  <!-- ONBOARDING TOUR OVERLAY -->
+  <div class="tour-overlay" id="tourOverlay"></div>
+  <div class="tour-card" id="tourCard" style="display:none;">
+    <div class="tour-step-indicator" id="tourDots"></div>
+    <span class="tour-icon" id="tourIcon">👋</span>
+    <h3 id="tourTitle">Welcome to TechVyro!</h3>
+    <p id="tourDesc">Your all-in-one AI tools dashboard. Let us show you around in 30 seconds.</p>
+    <div class="tour-actions">
+      <button class="tour-skip" onclick="endTour()">Skip Tour</button>
+      <button class="tour-next" id="tourNextBtn" onclick="nextTourStep()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SESSION TIMEOUT MODAL -->
+  <div class="session-timeout-overlay" id="sessionTimeoutOverlay">
+    <div class="session-timeout-card">
+      <span class="session-timeout-icon">⏰</span>
+      <h3>Session Expiring Soon</h3>
+      <p>You've been inactive for a while.</p>
+      <p style="font-size:13px;">Your session will expire in:</p>
+      <div class="session-countdown" id="sessionCountdown">60</div>
+      <div class="session-timeout-actions">
+        <button class="session-continue-btn" onclick="continueSession()">Stay Logged In</button>
+        <button class="session-logout-btn" onclick="logout()">Logout Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ============ FAVORITES SYSTEM ============
+  (function() {
+    const FAV_KEY = 'tvFavorites';
+
+    function getFavorites() {
+      try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch { return []; }
+    }
+    function saveFavorites(favs) {
+      localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    }
+
+    function addFavoriteButtons() {
+      const cards = document.querySelectorAll('.card:not(.external-card)');
+      cards.forEach(card => {
+        if (card.querySelector('.fav-btn')) return;
+        const titleEl = card.querySelector('h3');
+        if (!titleEl) return;
+        const toolName = titleEl.textContent.trim();
+        const favs = getFavorites();
+        const isFav = favs.includes(toolName);
+        const btn = document.createElement('button');
+        btn.className = 'fav-btn' + (isFav ? ' active' : '');
+        btn.title = isFav ? 'Remove from favorites' : 'Add to favorites';
+        btn.innerHTML = isFav ? '⭐' : '☆';
+        btn.onclick = function(e) {
+          e.stopPropagation();
+          toggleFavorite(btn, toolName);
+        };
+        card.appendChild(btn);
+      });
+    }
+
+    window.toggleFavorite = function(btn, toolName) {
+      let favs = getFavorites();
+      if (favs.includes(toolName)) {
+        favs = favs.filter(f => f !== toolName);
+        btn.classList.remove('active');
+        btn.innerHTML = '☆';
+        btn.title = 'Add to favorites';
+        showToast('Removed from favorites', 'info');
+      } else {
+        favs.push(toolName);
+        btn.classList.add('active');
+        btn.innerHTML = '⭐';
+        btn.title = 'Remove from favorites';
+        showToast('Added to favorites ⭐', 'success');
+      }
+      saveFavorites(favs);
+      renderFavoritesSection();
+    };
+
+    function renderFavoritesSection() {
+      const favs = getFavorites();
+      const section = document.getElementById('section-favorites');
+      const grid = document.getElementById('favorites-grid');
+      if (!section || !grid) return;
+
+      if (favs.length === 0) {
+        section.style.display = 'none';
+        grid.style.display = 'none';
+        return;
+      }
+
+      section.style.display = '';
+      grid.style.display = 'grid';
+      grid.innerHTML = '';
+
+      favs.forEach(toolName => {
+        const origCard = Array.from(document.querySelectorAll('.card:not(.external-card) h3'))
+          .find(h => h.textContent.trim() === toolName);
+        if (origCard) {
+          const clone = origCard.closest('.card').cloneNode(true);
+          clone.querySelectorAll('.fav-btn').forEach(b => b.remove());
+          const removBtn = document.createElement('button');
+          removBtn.className = 'fav-btn active';
+          removBtn.innerHTML = '⭐';
+          removBtn.title = 'Remove from favorites';
+          removBtn.onclick = function(e) {
+            e.stopPropagation();
+            let f = getFavorites().filter(x => x !== toolName);
+            saveFavorites(f);
+            renderFavoritesSection();
+            addFavoriteButtons();
+            showToast('Removed from favorites', 'info');
+          };
+          clone.appendChild(removBtn);
+          grid.appendChild(clone);
+        }
+      });
+    }
+
+    // Init after DOM loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        addFavoriteButtons();
+        renderFavoritesSection();
+      }, 800);
+
+      // Also re-add after skeleton loading (content shown)
+      const observer = new MutationObserver(() => {
+        addFavoriteButtons();
+      });
+      const grids = document.querySelectorAll('[id$="-content"]');
+      grids.forEach(g => observer.observe(g, { attributes: true, attributeFilter: ['style'] }));
+    });
+  })();
+
+  // ============ PROFILE COMPLETION ============
+  (function() {
+    function calcProfileCompletion() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      let score = 0;
+      const checks = [
+        !!user.email,
+        !!user.displayName || !!user.name,
+        !!user.photoURL,
+        !!user.plan,
+        !!localStorage.getItem('theme'),
+        !!localStorage.getItem('tvFavorites') && JSON.parse(localStorage.getItem('tvFavorites') || '[]').length > 0,
+        !!user.phone,
+        !!user.bio
+      ];
+      score = checks.filter(Boolean).length;
+      return Math.round((score / checks.length) * 100);
+    }
+
+    function updateProfileBar() {
+      const pct = calcProfileCompletion();
+      const fill = document.getElementById('profileCompletionFill');
+      const pctLabel = document.getElementById('profileCompletionPct');
+      const title = document.getElementById('profileCompletionTitle');
+      const hint = document.getElementById('profileCompletionHint');
+      const bar = document.getElementById('profileCompletionBar');
+
+      if (!fill) return;
+      setTimeout(() => { fill.style.width = pct + '%'; }, 300);
+      if (pctLabel) pctLabel.textContent = pct + '%';
+
+      if (pct === 100) {
+        if (bar) bar.style.display = 'none';
+      } else if (pct >= 75) {
+        if (title) title.textContent = 'Almost There!';
+        if (hint) hint.textContent = 'Your profile is looking great. Add a few more details.';
+      } else if (pct >= 50) {
+        if (title) title.textContent = 'Good Progress!';
+        if (hint) hint.textContent = 'Keep going — complete your profile for personalized tools.';
+      } else {
+        if (title) title.textContent = 'Complete Your Profile';
+        if (hint) hint.textContent = 'Add your details to unlock personalized recommendations.';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(updateProfileBar, 600);
+    });
+  })();
+
+  // ============ ONBOARDING TOUR ============
+  (function() {
+    const TOUR_KEY = 'tvTourDone';
+    const steps = [
+      { icon: '👋', title: 'Welcome to TechVyro!', desc: 'Your all-in-one AI tools dashboard. Let us show you around in just 30 seconds.' },
+      { icon: '🧠', title: 'AI-Powered Tools', desc: 'Use AI Chat, Image Generator, Code AI, Email AI and more — all in one place. Free tools are open to everyone!' },
+      { icon: '⭐', title: 'Save Favorites', desc: 'Click the ☆ star button on any tool card to save it to your Favorites section at the top for quick access.' },
+      { icon: '🔍', title: 'Search Any Tool', desc: 'Use the search bar in the header to instantly find any of the 30+ built-in tools or 280+ directory tools.' },
+      { icon: '💳', title: 'Your Credits', desc: 'Each AI tool uses credits. Your balance is shown in the header. Upgrade to Pro for 10x more credits!' },
+      { icon: '🚀', title: 'You\'re All Set!', desc: 'Explore the dashboard, try some tools, and upgrade when you\'re ready. Enjoy TechVyro! 🎉' }
+    ];
+    let currentStep = 0;
+
+    function showTour() {
+      if (localStorage.getItem(TOUR_KEY)) return;
+      const overlay = document.getElementById('tourOverlay');
+      const card = document.getElementById('tourCard');
+      if (!overlay || !card) return;
+      overlay.classList.add('active');
+      card.style.display = 'block';
+      renderTourStep(0);
+    }
+
+    function renderTourStep(step) {
+      currentStep = step;
+      const s = steps[step];
+      document.getElementById('tourIcon').textContent = s.icon;
+      document.getElementById('tourTitle').textContent = s.title;
+      document.getElementById('tourDesc').textContent = s.desc;
+      const nextBtn = document.getElementById('tourNextBtn');
+      if (nextBtn) nextBtn.textContent = step === steps.length - 1 ? 'Get Started! 🚀' : 'Next →';
+      const dots = document.getElementById('tourDots');
+      if (dots) {
+        dots.innerHTML = steps.map((_, i) =>
+          `<div class="tour-dot${i === step ? ' active' : ''}"></div>`
+        ).join('');
+      }
+    }
+
+    window.nextTourStep = function() {
+      if (currentStep < steps.length - 1) {
+        renderTourStep(currentStep + 1);
+      } else {
+        endTour();
+      }
+    };
+
+    window.endTour = function() {
+      localStorage.setItem(TOUR_KEY, '1');
+      const overlay = document.getElementById('tourOverlay');
+      const card = document.getElementById('tourCard');
+      if (overlay) overlay.classList.remove('active');
+      if (card) card.style.display = 'none';
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(showTour, 1500);
+    });
+  })();
+
+  // ============ SESSION TIMEOUT WARNING ============
+  (function() {
+    const INACTIVE_WARN_MS = 25 * 60 * 1000;
+    const COUNTDOWN_SECONDS = 60;
+    let inactivityTimer = null;
+    let countdownTimer = null;
+    let countdownVal = COUNTDOWN_SECONDS;
+    let isWarningShown = false;
+
+    function resetTimer() {
+      if (isWarningShown) return;
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(showSessionWarning, INACTIVE_WARN_MS);
+    }
+
+    function showSessionWarning() {
+      isWarningShown = true;
+      countdownVal = COUNTDOWN_SECONDS;
+      const overlay = document.getElementById('sessionTimeoutOverlay');
+      const cd = document.getElementById('sessionCountdown');
+      if (overlay) overlay.classList.add('active');
+      if (cd) cd.textContent = countdownVal;
+
+      countdownTimer = setInterval(() => {
+        countdownVal--;
+        if (cd) cd.textContent = countdownVal;
+        if (countdownVal <= 0) {
+          clearInterval(countdownTimer);
+          window.logout && window.logout();
+        }
+      }, 1000);
+    }
+
+    window.continueSession = function() {
+      isWarningShown = false;
+      clearInterval(countdownTimer);
+      const overlay = document.getElementById('sessionTimeoutOverlay');
+      if (overlay) overlay.classList.remove('active');
+      resetTimer();
+    };
+
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, resetTimer, { passive: true });
+    });
+
+    resetTimer();
+  })();
+
+  // ============ COPY / DOWNLOAD RESULT BUTTONS ============
+  window.copyResult = function(resultId, btn) {
+    const el = document.getElementById(resultId);
+    if (!el) return;
+    const text = el.innerText || el.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.innerHTML = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  };
+
+  window.downloadResult = function(resultId, filename) {
+    const el = document.getElementById(resultId);
+    if (!el) return;
+    const text = el.innerText || el.textContent;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Downloaded ' + filename, 'success');
+  };
+
+  // ============ SHOW COPY BUTTONS WHEN RESULT IS READY ============
+  function watchResultDiv(resultId, actionsId) {
+    const el = document.getElementById(resultId);
+    const actions = document.getElementById(actionsId);
+    if (!el || !actions) return;
+    const obs = new MutationObserver(() => {
+      if (el.style.display !== 'none' && el.textContent.trim()) {
+        actions.style.display = 'flex';
+      } else {
+        actions.style.display = 'none';
+      }
+    });
+    obs.observe(el, { attributes: true, childList: true, characterData: true, subtree: true });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    watchResultDiv('content-result', 'content-result-actions');
+    watchResultDiv('code-result', 'code-result-actions');
+    watchResultDiv('email-result', 'email-result-actions');
+  });
+
+  // ============ TOAST HELPER ============
+  function showToast(msg, type) {
+    const existing = document.getElementById('tvCustomToast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.id = 'tvCustomToast';
+    const colors = { success: '#22c55e', info: '#3b82f6', error: '#ef4444' };
+    toast.style.cssText = `
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: rgba(15,23,42,0.96); color: #fff; padding: 12px 24px;
+      border-radius: 12px; font-size: 14px; font-weight: 600; z-index: 99999;
+      border-left: 3px solid ${colors[type] || colors.info};
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4); animation: toastSlide 0.3s ease;
+      white-space: nowrap;
+    `;
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.3s';
+      setTimeout(() => toast.remove(), 300);
+    }, 2500);
+  }
+  </script>
 </body>
 </html>

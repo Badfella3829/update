@@ -7,6 +7,46 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ============ IN-MEMORY RATE LIMITER ============
+const rateLimitStore = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 30;
+
+function rateLimit(req, res, next) {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW_MS;
+
+  if (!rateLimitStore.has(ip)) {
+    rateLimitStore.set(ip, []);
+  }
+
+  const timestamps = rateLimitStore.get(ip).filter(t => t > windowStart);
+  timestamps.push(now);
+  rateLimitStore.set(ip, timestamps);
+
+  if (timestamps.length > RATE_LIMIT_MAX_REQUESTS) {
+    return res.status(429).json({
+      error: 'Too many requests. Please slow down and try again in a minute.',
+      code: 'RATE_LIMIT_EXCEEDED',
+      retryAfter: 60
+    });
+  }
+  next();
+}
+
+// Clean up old entries every 5 minutes
+setInterval(() => {
+  const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS;
+  for (const [ip, timestamps] of rateLimitStore.entries()) {
+    const fresh = timestamps.filter(t => t > cutoff);
+    if (fresh.length === 0) rateLimitStore.delete(ip);
+    else rateLimitStore.set(ip, fresh);
+  }
+}, 5 * 60 * 1000);
+
+app.use('/api/', rateLimit);
+
 function getOpenAIClient() {
   const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
   const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
