@@ -93,7 +93,7 @@
     let authReady = false;
     let userPlan = 'free';
     let lastCode = '';
-    initAuthCredits({ requireAuth: true, requirePremium: true, creditCost: 5 })
+    initAuthCredits({ requireAuth: true, requirePremium: false, creditCost: 5 })
       .then(({ credits, plan }) => {
         document.getElementById('loadingScreen').classList.add('hidden');
         document.getElementById('creditsBadge').textContent = `⚡ ${credits} credits`;
